@@ -1,0 +1,119 @@
+﻿<md-sidenav flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
+
+    <md-toolbar style="height:200px">
+        <h1>{{main.site.name}}</h1>
+    </md-toolbar>
+
+    <md-content>
+        <md-list>
+
+            <!--<md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'sia'}" ng-click="main.setSelectedItem('sia')">
+                <img src="./app/assets/images/sia.png" class="md-avatar-icon" style="width:45px;height:45px;background-color:#eef;border:1px solid #f3f3f3" />
+                <div class="md-list-item-text" layout="column">
+                    <h3>Sia Analysis</h3>
+                </div>
+            </md-list-item>-->
+            <md-divider></md-divider>
+            <md-subheader class="md-sticky">Detectors</md-subheader>
+            <md-divider></md-divider>
+
+            <div layout-padding>
+
+                <md-autocomplete md-search-text="main.searchText" md-items="item in main.detectorList | filter:main.searchText" md-item-text="item.displayName"
+                                 md-min-length="1" placeholder="Search Detectors">
+
+                    <md-item-template>
+                        <span md-highlight-text="main.searchText" md-highlight-flags="^i">{{item.displayName}}</span>
+                    </md-item-template>
+
+                    <md-not-found>
+                        No detectors matching "{{main.searchText}}" were found.
+                    </md-not-found>
+
+                </md-autocomplete>
+            </div>
+
+            <md-list-item class="md-2-line" ng-repeat="detector in main.detectorList | filter:main.searchText" ng-class="{'selected' : main.selectedItem === detector.name}" ng-click="main.setSelectedItem(detector.name)">
+
+                <ng-letter-avatar data="{{detector.displayName}}" class="md-avatar-icon" shape="round" fontFamily="Roboto,sans-serif"></ng-letter-avatar>
+
+                <div class="md-list-item-text" style="margin-left:10px">
+                    <h3>{{ detector.displayName }}</h3>
+                    <h4></h4>
+                    <p>{{ detector.description }}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+</md-sidenav>
+
+<div layout="column" flex>
+    <md-toolbar class="md-hue-2">
+        <div class="md-toolbar-tools">
+            <md-button hide-gt-sm class="md-icon-button" ng-click="main.toggleSideNav()" aria-label="Toggle side menu.">
+                <md-icon md-svg-icon="menu"></md-icon>
+            </md-button>
+            <h1 class="md-display-3">
+                App Lens
+            </h1>
+            <h3 class="md-subhead">(2.0)</h3>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="More">
+                <ng-md-icon icon="more_vert" style="fill:rgba(255,255,255,0.87)" size="30"></ng-md-icon>
+            </md-button>
+
+        </div>
+    </md-toolbar>
+
+
+    <md-content layout="column" flex id="wrapper">
+
+        <div flex="25" layout="row">
+
+            <md-card flex="100">
+
+                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="{'height':main.containerHeight}">
+                    <div layout="column" layout-align="center center">
+                        <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                    </div>
+                </div>
+
+                <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
+                    <div flex>
+                        <nvd3 options="main.availabilityChartOptions" data="main.avaiabilityChartData"></nvd3>
+
+                    </div>
+                </md-card-content>
+
+            </md-card>
+        </div>
+
+        <div flex="25" layout="row">
+
+            <md-card flex="100">
+
+                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="{'height':main.containerHeight}">
+                    <div layout="column" layout-align="center center">
+                        <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                    </div>
+                </div>
+
+                <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
+                    <div flex>
+                        <nvd3 options="main.requestsChartOptions" data="main.requestsChartData"></nvd3>
+
+                    </div>
+                </md-card-content>
+
+            </md-card>
+        </div>
+
+        <div flex layout="row">
+
+            <div flex ui-view="childContent"></div>
+
+        </div>
+    </md-content>
+</div>
+
