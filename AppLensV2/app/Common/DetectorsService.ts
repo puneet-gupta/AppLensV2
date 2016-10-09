@@ -8,6 +8,8 @@ module SupportCenter {
         detectorList: Detector[];
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string): ng.IPromise<DetectorResponse>;
         getAppAnalysisResponse(site: Site, startTime: string, endTime: string): ng.IPromise<SiaResponse>;
+        getDetectorWiki(detectorName: string): ng.IPromise<string>;
+        getDetectorSolution(detectorName: string): ng.IPromise<string>;
     }
 
     export interface ICache<T> {
@@ -18,12 +20,16 @@ module SupportCenter {
 
         private detectorsResponseCache: ICache<DetectorResponse>;
         private siaResponseCache: ICache<SiaResponse>;
+        private detectorsWikiCache: ICache<string>;
+        private detectorsSolutionCache: ICache<string>;
 
         static $inject = ['$q', '$http'];
 
         constructor(private $q: ng.IQService, private $http: ng.IHttpService) {
             this.detectorsResponseCache = {};
             this.siaResponseCache = {};
+            this.detectorsWikiCache = {};
+            this.detectorsSolutionCache = {};
         }
 
         getDetectorList(): ng.IPromise<Detector[]> {
@@ -90,6 +96,57 @@ module SupportCenter {
                         response = data.Properties;
                         this.siaResponseCache["sia"] = response;
                         deferred.resolve(response);
+                    }
+                })
+                .error((data: any) => {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        }
+
+        getDetectorWiki(detectorName: string): ng.IPromise<string> {
+            return this.getDetectorDocument(detectorName, "wiki.md");
+        }
+
+        getDetectorSolution(detectorName: string): ng.IPromise<string> {
+            return this.getDetectorDocument(detectorName, "solution.md");
+        }
+
+        private getDetectorDocument(detectorName: string, documentName: string): ng.IPromise<string> {
+
+            var cacheObject = undefined;
+            var deferred = this.$q.defer<string>();
+            
+            switch (documentName.toLocaleLowerCase()) {
+                case "solution.md":
+                    cacheObject = this.detectorsSolutionCache;
+                    break;
+                case "wiki.md":
+                    cacheObject = this.detectorsWikiCache;
+                    break;
+            }
+            
+            if (angular.isDefined(cacheObject) && angular.isDefined(cacheObject[detectorName])) {
+                deferred.resolve(cacheObject[detectorName]);
+                return deferred.promise;
+            }
+            
+            this.$http({
+                method: "GET",
+                url: UriPaths.DetectorsDocumentApiPath(detectorName, documentName)
+            })
+                .success((data: string) => {
+                    if (angular.isDefined(data) && data !== '') {
+
+                        if (angular.isDefined(cacheObject)) {
+                            cacheObject[detectorName] = data;
+                        }
+
+                        deferred.resolve(data);
+                    }
+                    else {
+                        deferred.reject(data);
                     }
                 })
                 .error((data: any) => {

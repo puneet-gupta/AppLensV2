@@ -10,6 +10,29 @@ module SupportCenter {
         info: any;
     }
 
+    export class DetectorViewCtrl {
+        public static $inject: string[] = ["DetectorsService", "$stateParams", "$window"];
+
+        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
+
+            var self = this;
+            let detectorName = this.$stateParams.detectorName.toLowerCase();
+            this.wikiContent = '';
+            this.solutionContent = '';
+
+            this.DetectorsService.getDetectorWiki(detectorName).then(function (wikiResponse) {
+                self.wikiContent = wikiResponse;
+            });
+
+            this.DetectorsService.getDetectorSolution(detectorName).then(function (solutionRespons) {
+                self.solutionContent = solutionRespons;
+            });
+        }
+        
+        wikiContent: string;
+        solutionContent: string;
+    }
+
     export class DetectorViewDir implements ng.IDirective {
 
         public restrict: string = 'E';
@@ -17,9 +40,7 @@ module SupportCenter {
         public templateUrl: string = './app/Detector/detectorview.html';
         public bindToController: boolean = true;
         public controllerAs: string = 'detectorviewctrl';
-        public controller = function () {
-            this.containerHeight = window.innerHeight * 0.4 + 'px';
-        }
+        public controller = DetectorViewCtrl;
         public link = function (scope: IDetectorViewScope) {
         }
 

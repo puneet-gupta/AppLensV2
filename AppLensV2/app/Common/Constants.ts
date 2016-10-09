@@ -11,6 +11,7 @@ module SupportCenter {
 
         private static siteDetails: string = "/api/sites/{siteName}";
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
+        private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
         // Uri Paths of Geo Region Diagnostic Role APIs
         private static baseAPIPath: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
@@ -25,6 +26,12 @@ module SupportCenter {
 
         public static DiagnosticsPassThroughAPIPath(): string {
             return UriPaths.diagnosticsPassThroughApiPath;
+        }
+
+        public static DetectorsDocumentApiPath(detectorName: string, fileName: string): string {
+            return UriPaths.detectorsDocumentAPIPath
+                .replace("{detectorName}", detectorName)
+                .replace("{fileName}", fileName);
         }
 
         public static AppAnalysisPath(site: Site, startTime: string, endTime: string): string {

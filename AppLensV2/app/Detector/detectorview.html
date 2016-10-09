@@ -5,29 +5,58 @@
             <h5 style="margin:auto 10px auto;font-weight:500">{{detectorviewctrl.info.displayName}}</h5>
         </md-toolbar>
         <div layout-padding>
-
-            <div ng-if="detectorviewctrl.loading" layout="row" layout-sm="column" layout-align="space-around" style="height:25%">
+            
+            <div ng-if="detectorviewctrl.loading" layout="row" layout-sm="column" layout-align="space-around" style="height:30%">
+                
                 <div layout="column" layout-align="center center">
                     <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                 </div>
             </div>
-
+            
             <md-tabs md-dynamic-height md-border-bottom ng-if="!detectorviewctrl.loading">
                 <md-tab label="Metrics">
-                    <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"></nvd3>
+                    <md-tab-label>
+                        Metrics
+                    </md-tab-label>
+                    <md-tab-body>
+                        <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"></nvd3>
+
+                    </md-tab-body>
 
                 </md-tab>
-                <md-tab label="Additional Data" ng-disabled="true">
-
+                <md-tab>
+                    <md-tab-label>
+                        Additional Data
+                    </md-tab-label>
+                    
                 </md-tab>
-                <md-tab label="Mitigations" ng-disabled="true">
-
+                <md-tab>
+                    <md-tab-label>
+                        Solution <md-badge ng-show="detectorviewctrl.solutionContent === ''" class="md-warn">!</md-badge>
+                    </md-tab-label>
+                     <md-tab-body>
+                         <div btf-markdown="detectorviewctrl.solutionContent" class="markdown">
+                         </div>
+                     </md-tab-body>
+                    
                 </md-tab>
-                <md-tab label="Data Source" ng-disabled="true">
-
+                <md-tab>
+                    <md-tab-label>
+                        Data source
+                    </md-tab-label>
+                    <md-tab-body>
+                        
+                    </md-tab-body>
                 </md-tab>
-                <md-tab label="Notes" ng-disabled="true">
-
+                <md-tab>
+                    <md-tab-label>
+                        Wiki <md-badge ng-show="detectorviewctrl.wikiContent === ''" class="md-warn">!</md-badge>
+                    </md-tab-label>
+                    <md-tab-body>
+                        <div btf-markdown="detectorviewctrl.wikiContent" class="markdown">
+                        </div>
+                    </md-tab-body>
+                    
                 </md-tab>
             </md-tabs>
 
