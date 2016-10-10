@@ -3,7 +3,7 @@
 module SupportCenter {
     "use strict";
 
-    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3"])
+    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown"])
         .service("DetectorsService", DetectorsService)
         .service("SiteService", SiteService)
         .controller("MainCtrl", MainCtrl)

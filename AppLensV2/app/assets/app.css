@@ -104,3 +104,54 @@ md-content::-webkit-scrollbar-thumb {
 md-tabs-content-wrapper{
     margin-top:30px;
 }
+
+md-badge{
+  margin: 0 0 0 4px;
+  background-color: #259b24;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 50%;
+}
+.md-warn{
+  background-color: #F44336;
+}
+
+/*Mardown CSS*/
+.markdown{
+    font-family:Roboto;
+    margin-left:30px;
+    margin-right:30px;
+}
+
+.markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6{
+    margin-top:0;
+    margin-bottom: 16px;
+    padding-bottom: 0.3em;
+    font-weight: 500;
+    line-height: 1.25;
+    border-bottom: 1px solid #eee;
+}
+.markdown h1{
+    font-size: 2em;
+}
+.markdown h2{
+    font-size: 1.4em;
+}
+.markdown>*:last-child {
+    margin-bottom: 0 !important;
+}
+.markdown ul, .markdown ol {
+    padding-left: 2em;
+}
+.markdown p, .markdown blockquote, .markdown ul, .markdown ol, .markdown dl, .markdown table, .markdown pre {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+.markdown li{
+    font-size:1.15em;
+    font-weight:400;
+    color:#5a5a5a;
+}
+    .markdown li + li {
+        margin-top: 0.4em;
+    }

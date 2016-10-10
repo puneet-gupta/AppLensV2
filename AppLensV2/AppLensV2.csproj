@@ -101,6 +101,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GeoRegionClient.cs" />
+    <Compile Include="Helpers\GithubClient.cs" />
     <Compile Include="Helpers\SupportObserverClient.cs" />
   </ItemGroup>
   <ItemGroup>
