@@ -14,16 +14,18 @@ module SupportCenter {
 
             switch (detectorName.toLowerCase()) {
                 case 'runtimeavailability':
+                case 'cpuanalysis':
+                case 'memoryanalysis':
                     options.chart.type = 'lineChart';
                     break;
             }
-
             return options;
         }
 
         public GetChartData(detectorResponse: DetectorResponse, detectorName: string = ''): any {
-
             var self = this;
+            var perWorkerGraph: boolean = false;
+            
             var chartData = [];
 
             // Workaround to round down time
@@ -34,6 +36,7 @@ module SupportCenter {
             var coeff = 1000 * 60 * 5;
 
             for (let metric of detectorResponse.Metrics) {
+                var workerChartData: any = {};
 
                 var roundedStartTime = new Date(Math.round(startTime.getTime() / coeff) * coeff);
                 var roundedEndTime = new Date(Math.round(endTime.getTime() / coeff) * coeff);
@@ -43,36 +46,68 @@ module SupportCenter {
                     defaultValue = 100;
                 }
 
-                var dataSeries: any = {
-                    key: metric.Name,
-                    values: [],
-                    area: false
-                };
+                let workerName = Constants.aggregatedWorkerName;
+                for (let point of metric.Values) {
+                    if ((!angular.isDefined(point.IsAggregated) || point.IsAggregated === false) && angular.isDefined(point.RoleInstance)) {
+                        perWorkerGraph = true;
+                        workerName = point.RoleInstance;
+                    }
+
+                    if (!angular.isDefined(workerChartData[workerName])) {
+
+                        workerChartData[workerName] = {
+                            key: metric.Name + ' - ' + workerName,
+                            worker: workerName,
+                            isActive: true,
+                            values: [],
+                            area: false
+                        };
+                    }
+                }
 
                 for (var d = roundedStartTime; d < roundedEndTime; d.setTime(d.getTime() + coeff)) {
 
                     let xDate = new Date(d.getTime());
-                    let yValue = defaultValue;
+                    
+                    let workerName = Constants.aggregatedWorkerName;
 
-                    let element = _.find(metric.Values, function (item) {
+                    let elements = _.filter(metric.Values, function (item) {
                         var itemDate = new Date(item.Timestamp);
 
                         return itemDate.getTime() == xDate.getTime();
                     });
 
-                    if (angular.isDefined(element)) {
-                        yValue = element.Total;
-                    }
+                    for (let worker in workerChartData) {
+                        let yValue = defaultValue;
+                        let element = _.find(elements, function (element) {
+                            return element.RoleInstance === worker || !perWorkerGraph;
+                        });
 
-                    dataSeries.values.push(
-                        {
-                            x: self.ConvertToUTCTime(xDate),
-                            y: yValue
+                        if (angular.isDefined(element)) {
+                            if ((!angular.isDefined(element.IsAggregated) || element.IsAggregated === false) && angular.isDefined(element.RoleInstance)) {
+                                perWorkerGraph = true;
+                                workerName = element.RoleInstance;
+                            }
+
+                            yValue = element.Total;
                         }
-                    );
+
+                        workerChartData[worker].values.push(
+                            {
+                                x: self.ConvertToUTCTime(xDate),
+                                y: yValue
+                            }
+                        );
+                    }
                 }
 
-                chartData.push(dataSeries);
+                for (let worker in workerChartData) {
+                    if (perWorkerGraph && worker === Constants.aggregatedWorkerName) {
+                        continue;
+                    }
+
+                    chartData.push(workerChartData[worker]);
+                }
             }
 
             return chartData;

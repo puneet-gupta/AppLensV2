@@ -24,9 +24,9 @@ module SupportCenter {
                 this.$stateParams.endTime = '';
             }
 
-            this.chartData = [];
+            this.chartData = [];            
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-            this.chartOptions = helper.GetChartOptions();
+            this.chartOptions = helper.GetChartOptions(this.detectorName);
 
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
