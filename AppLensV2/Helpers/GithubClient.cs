@@ -12,7 +12,7 @@ namespace AppLensV2
 {
     public sealed class GithubClient
     {
-        private const string apiEndpoint = "https://api.github.com/repos/ShekharGupta1988/AppLensV2/contents/Documents/{0}/{1}?ref=master";
+        private const string apiEndpoint = "https://api.github.com/repos/PraveenTB/AppLensDocs/contents/Documents/{0}/{1}?ref=master";
 
         public static async Task<string> GetFileContent(string detectorName, string fileName)
         {
