@@ -39,7 +39,11 @@ module SupportCenter {
     export class DiagnosticMetricSample {
         constructor(
             public Timestamp: string,
-            public Total: number
+            public Total: number,
+            public Maximum: number,
+            public Minimum: number,
+            public RoleInstance: string,
+            public IsAggregated: boolean
         ) {
         }
     }
