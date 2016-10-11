@@ -5,6 +5,7 @@ module SupportCenter {
 
     export class Constants {
         public static geoRegionApiRouteHeaderName: string = "GeoRegionApiRoute";
+        public static aggregatedWorkerName: string = "aggregated";
     }
 
     export class UriPaths {
