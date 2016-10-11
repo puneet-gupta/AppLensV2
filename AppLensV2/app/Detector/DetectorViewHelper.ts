@@ -36,6 +36,11 @@ module SupportCenter {
             var coeff = 1000 * 60 * 5;
 
             for (let metric of detectorResponse.Metrics) {
+
+                if (detectorName === "memoryanalysis" && metric.Name.toLowerCase().indexOf("total") == -1) {
+                    continue;
+                }
+
                 var workerChartData: any = {};
 
                 var roundedStartTime = new Date(Math.round(startTime.getTime() / coeff) * coeff);
