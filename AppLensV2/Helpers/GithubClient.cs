@@ -12,6 +12,7 @@ namespace AppLensV2
 {
     public sealed class GithubClient
     {
+        private static Random random = new Random();
         private const string apiEndpoint = "https://api.github.com/repos/PraveenTB/AppLensDocs/contents/Documents/{0}/{1}?ref=master";
 
         public static async Task<string> GetFileContent(string detectorName, string fileName)
@@ -26,7 +27,7 @@ namespace AppLensV2
                 client.Timeout = TimeSpan.FromSeconds(60);
                 client.MaxResponseContentBufferSize = Int32.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("User-Agent", "AppName");
+                client.DefaultRequestHeaders.Add("User-Agent", RandomString(6));
                 try
                 {
                     var response = await client.GetAsync(string.Format(apiEndpoint, detectorName, fileName));
@@ -48,6 +49,13 @@ namespace AppLensV2
 
                 return string.Empty; ;
             }
+        }
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }
