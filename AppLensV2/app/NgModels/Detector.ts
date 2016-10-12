@@ -2,12 +2,14 @@
 
 module SupportCenter {
     "use strict";
-
-    export class Detector {
+    
+    export class DetectorDefinition {
         constructor(
-            public name: string,
-            public displayName: string,
-            public description: string
+            public Name: string,
+            public DisplayName: string,
+            public Description: string,
+            public Rank: number,
+            public IsEnabled: boolean
         ) {
         }
     }

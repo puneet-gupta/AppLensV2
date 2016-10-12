@@ -19,11 +19,11 @@
 
             <div layout-padding>
 
-                <md-autocomplete md-search-text="main.searchText" md-items="item in main.detectorList | filter:main.searchText" md-item-text="item.displayName"
+                <md-autocomplete md-search-text="main.searchText" md-items="item in main.detectors | filter:main.searchText" md-item-text="item.DisplayName"
                                  md-min-length="1" placeholder="Search Detectors">
 
                     <md-item-template>
-                        <span md-highlight-text="main.searchText" md-highlight-flags="^i">{{item.displayName}}</span>
+                        <span md-highlight-text="main.searchText" md-highlight-flags="^i">{{item.DisplayName}}</span>
                     </md-item-template>
 
                     <md-not-found>
@@ -33,14 +33,16 @@
                 </md-autocomplete>
             </div>
 
-            <md-list-item class="md-2-line" ng-repeat="detector in main.detectorList | filter:main.searchText" ng-class="{'selected' : main.selectedItem === detector.name}" ng-click="main.setSelectedItem(detector.name)">
+            <md-list-item layout="column" layout-align="center center" ng-if="!main.detectorListLoaded">
+                <md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
+            </md-list-item>
 
-                <ng-letter-avatar data="{{detector.displayName}}" class="md-avatar-icon" shape="round" fontFamily="Roboto,sans-serif"></ng-letter-avatar>
+            <md-list-item class="md-2-line" ng-repeat="detector in main.detectors | filter:main.searchText | orderBy:'Rank'" ng-class="{'selected' : main.selectedItem === detector.Name}" ng-click="main.setSelectedItem(detector.Name)">
+
+                <ng-letter-avatar data="{{detector.DisplayName}}" class="md-avatar-icon" shape="round" fontFamily="Roboto,sans-serif"></ng-letter-avatar>
 
                 <div class="md-list-item-text" style="margin-left:10px">
-                    <h3>{{ detector.displayName }}</h3>
-                    <h4></h4>
-                    <p>{{ detector.description }}</p>
+                    <h3>{{ detector.DisplayName }}</h3>
                 </div>
             </md-list-item>
         </md-list>
@@ -82,7 +84,6 @@
                 <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
                     <div flex>
                         <nvd3 options="main.availabilityChartOptions" data="main.avaiabilityChartData"></nvd3>
-
                     </div>
                 </md-card-content>
 
