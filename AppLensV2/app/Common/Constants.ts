@@ -16,7 +16,7 @@ module SupportCenter {
 
         // Uri Paths of Geo Region Diagnostic Role APIs
         private static baseAPIPath: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
-        private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}";
+        private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
         private static appAnalysis: string = UriPaths.baseAPIPath + "/appAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = UriPaths.baseAPIPath + "/detectors";
         private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
@@ -35,20 +35,20 @@ module SupportCenter {
                 .replace("{fileName}", fileName);
         }
 
-        public static AppAnalysisPath(site: Site, startTime: string, endTime: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.appAnalysis, site, startTime, endTime);
+        public static AppAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.appAnalysis, site, startTime, endTime, timeGrain);
         }
 
         public static ListDetectorsPath(site: Site): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, site, '', '');
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, site, '', '', '');
         }
 
-        public static DetectorResourcePath(site: Site, detectorName: string, startTime: string, endTime: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, site, startTime, endTime)
+        public static DetectorResourcePath(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, site, startTime, endTime, timeGrain)
                 .replace("{detectorName}", detectorName);
         }
 
-        private static CreateGeoRegionAPIPath(pathFormat: string, site: Site, startTime: string, endTime: string): string {
+        private static CreateGeoRegionAPIPath(pathFormat: string, site: Site, startTime: string, endTime: string, timeGrain: string): string {
 
             var path = pathFormat
                 .replace("{sub}", site.subscriptionId)
@@ -56,7 +56,8 @@ module SupportCenter {
                 .replace("{site}", site.name)
                 .replace("{stamp}", site.stampName)
                 .replace("{start}", startTime)
-                .replace("{end}", endTime);
+                .replace("{end}", endTime)
+                .replace("{grain}", timeGrain);
 
             var hostNamesFilter = '';
 

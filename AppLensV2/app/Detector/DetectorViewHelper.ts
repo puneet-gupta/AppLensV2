@@ -32,7 +32,6 @@ module SupportCenter {
             //until API is fixed.Issue - https://github.com/ShekharGupta1988/AppLensV2/issues/9
             var startTime = new Date(detectorResponse.StartTime);
             var endTime = new Date(detectorResponse.EndTime);
-
             var coeff = 1000 * 60 * 5;
 
             for (let metric of detectorResponse.Metrics) {
@@ -43,6 +42,7 @@ module SupportCenter {
 
                 var workerChartData: any = {};
 
+                coeff = this.GetTimeSpanInMilliseconds(metric.TimeGrain);
                 var roundedStartTime = new Date(Math.round(startTime.getTime() / coeff) * coeff);
                 var roundedEndTime = new Date(Math.round(endTime.getTime() / coeff) * coeff);
 
@@ -68,6 +68,17 @@ module SupportCenter {
                             area: false
                         };
                     }
+                }
+
+                // Take care of the case where no metric sets have data
+                if (Object.keys(workerChartData).length < 1) {
+                    workerChartData[Constants.aggregatedWorkerName] = {
+                        key: metric.Name,
+                        worker: workerName,
+                        isActive: true,
+                        values: [],
+                        area: false
+                    };
                 }
 
                 for (var d = roundedStartTime; d < roundedEndTime; d.setTime(d.getTime() + coeff)) {
@@ -121,6 +132,11 @@ module SupportCenter {
         public ConvertToUTCTime(localDate: Date): Date {
             var utcTime = new Date(localDate.getUTCFullYear(), localDate.getUTCMonth(), localDate.getUTCDate(), localDate.getUTCHours(), localDate.getUTCMinutes(), localDate.getUTCSeconds());
             return utcTime;
+        }
+
+        private GetTimeSpanInMilliseconds(timeSpan: string) {
+            var a = timeSpan.split(':');
+            return ((+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])) * 1000;
         }
 
         private graphHeight: any = this.$window.innerHeight * 0.2;
