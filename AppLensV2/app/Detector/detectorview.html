@@ -5,14 +5,14 @@
             <h5 style="margin:auto 10px auto;font-weight:500">{{detectorviewctrl.info.DisplayName}}</h5>
         </md-toolbar>
         <div layout-padding>
-            
+
             <div ng-if="detectorviewctrl.loading" layout="row" layout-sm="column" layout-align="space-around" style="height:30%">
-                
+
                 <div layout="column" layout-align="center center">
                     <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                 </div>
             </div>
-            
+
             <md-tabs md-dynamic-height md-border-bottom ng-if="!detectorviewctrl.loading">
                 <md-tab label="Metrics">
                     <md-tab-label>
@@ -28,7 +28,7 @@
                     <md-tab-label>
                         Additional Data
                     </md-tab-label>
-                    
+
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
@@ -38,14 +38,19 @@
                          <div btf-markdown="detectorviewctrl.solutionContent" class="markdown">
                          </div>
                      </md-tab-body>
-                    
+
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
                         Data source
                     </md-tab-label>
                     <md-tab-body>
-                        
+                        <li ng-repeat="instruction in detectorviewctrl.responsemetadata.DataSource.Instructions" class="markdown">
+                            {{instruction}}
+                        </li>
+                        <li ng-repeat="uri in detectorviewctrl.responsemetadata.DataSource.DataSourceUri" class="markdown">
+                            <a href="{{uri.Value}}" target="_blank">{{uri.Name}}</a>
+                        </li>
                     </md-tab-body>
                 </md-tab>
                 <md-tab>
@@ -56,7 +61,7 @@
                         <div btf-markdown="detectorviewctrl.wikiContent" class="markdown">
                         </div>
                     </md-tab-body>
-                    
+
                 </md-tab>
             </md-tabs>
 
