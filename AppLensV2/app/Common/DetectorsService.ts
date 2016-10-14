@@ -4,8 +4,7 @@ module SupportCenter {
     "use strict";
 
     export interface IDetectorsService {
-        getDetectors(): ng.IPromise<Detector[]>;
-        detectorList: Detector[];
+        getDetectors(site: Site): ng.IPromise<DetectorDefinition[]>;
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
         getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
@@ -105,7 +104,7 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    var response = new DetectorResponse(startTime, endTime, [], []);
+                    var response = new DetectorResponse(startTime, endTime, [], [], {});
 
                     if (angular.isDefined(data.Properties)) {
                         response = data.Properties;
