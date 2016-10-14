@@ -41,7 +41,7 @@ module SupportCenter {
 
             // if no child route is defined, then set default child route to sia
             if (this.$state.current.name === 'home') {
-                this.setSelectedItem('servicehealth');
+                this.setSelectedItem('sia');
             }
 
             if (this.$state.current.name === 'home.sia') {

@@ -16,7 +16,7 @@ module SupportCenter {
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
 
             var self = this;
-            let detectorName = this.$stateParams.detectorName.toLowerCase();
+            let detectorName = "A";
             this.wikiContent = '';
             this.solutionContent = '';
 

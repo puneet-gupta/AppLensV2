@@ -1,1 +1,72 @@
-﻿<div>{{sia.SiaResponse}}</div>
+﻿
+<md-list style="width:100%;background-color:none" ng-repeat="timePeriod in sia.SiaResponse.AbnormalTimePeriods | orderBy:'StartTime':true">
+
+    <md-divider></md-divider>
+    <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;">
+        <ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> 
+        Start Time : {{:: timePeriod.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{:: timePeriod.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
+    </md-subheader>
+
+    <div ng-repeat="event in timePeriod.Events">
+
+        <md-list-item layout="row" style="padding:0">
+
+            <div layout="column" flex="5" style="background-color:blue">
+                
+            </div>
+
+            <div layout="column" flex="95" style="padding-top:20px">
+
+                <div layout="row">
+
+                    <div style="background-color:#78C0A0;padding:20px;padding-left:10px;color:white;font-size:20px;border-radius:10px;border-bottom-left-radius:0">
+                        {{::event.Message}}
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </md-list-item>
+
+        <md-list-item layout="row" style="padding:0">
+
+            <div layout="column" flex="5">
+
+            </div>
+
+            <div layout="column" flex="95">
+
+                <div style="display: inline-block;">
+                    Solution goes here
+                </div>
+
+            </div>
+
+        </md-list-item>
+
+        <md-list-item layout="row" style="padding:0">
+
+            <div layout="column" flex="5">
+
+            </div>
+
+            <div layout="column" flex="95">
+
+                <div style="display: inline-block;">
+                    
+                    <detector-view loading="true"
+                                   chartoptions=""
+                                   chartdata=""
+                                   info="">
+                    </detector-view>
+
+                </div>
+
+            </div>
+
+        </md-list-item>
+
+    </div>
+
+</md-list>
