@@ -8,6 +8,7 @@ module SupportCenter {
         chartoptions: any;
         chartdata: any;
         info: any;
+        responsemetadata: any;
     }
 
     export class DetectorViewCtrl {
@@ -48,7 +49,8 @@ module SupportCenter {
             loading: '=',
             chartoptions: '=',
             chartdata: '=',
-            info: '='
+            info: '=',
+            responsemetadata:'='
         };
     }
 }

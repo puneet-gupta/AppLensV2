@@ -28,6 +28,10 @@ module SupportCenter {
                 this.$stateParams.endTime = '';
             }
 
+            if (!angular.isDefined(this.$stateParams.timeGrain)) {
+                this.$stateParams.timeGrain = '';
+            }
+
             var self = this;
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
@@ -92,7 +96,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data, 'runtimeavailability');
                 self.dataLoading = false;

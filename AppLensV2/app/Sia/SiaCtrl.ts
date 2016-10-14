@@ -19,10 +19,14 @@ module SupportCenter {
                 this.$stateParams.endTime = '';
             }
 
+            if (!angular.isDefined(this.$stateParams.timeGrain)) {
+                this.$stateParams.timeGrain = '';
+            }
+
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
 
-                self.DetectorsService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime).then(function (data: SiaResponse) {
+                self.DetectorsService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: SiaResponse) {
                     self.SiaResponse = data;
                 });
             });
