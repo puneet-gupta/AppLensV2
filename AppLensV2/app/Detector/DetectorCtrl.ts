@@ -20,6 +20,10 @@ module SupportCenter {
                 this.$stateParams.endTime = '';
             }
 
+            if (!angular.isDefined(this.$stateParams.timeGrain)) {
+                this.$stateParams.timeGrain = '';
+            }
+
             this.chartData = [];            
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
             this.chartOptions = helper.GetChartOptions(this.detectorName);
@@ -32,8 +36,7 @@ module SupportCenter {
                         return item.Name.toLowerCase() === self.detectorName;
                     });
                 });
-
-                self.DetectorsService.getDetectorResponse(self.site, self.detectorName, self.$stateParams.startTime, self.$stateParams.endTime).then(function (data: DetectorResponse) {
+                self.DetectorsService.getDetectorResponse(self.site, self.detectorName, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
                     self.chartData = helper.GetChartData(data, self.detectorName);
                     self.dataLoading = false;

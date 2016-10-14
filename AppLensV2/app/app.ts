@@ -24,7 +24,7 @@ module SupportCenter {
 
             $stateProvider
                 .state('home', {
-                    url: '/sites/{siteName}?{startTime}&{endTime}',
+                    url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'

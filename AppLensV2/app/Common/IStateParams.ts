@@ -7,6 +7,7 @@ module SupportCenter {
         siteName: string;
         startTime: string;
         endTime: string;
+        timeGrain: string;
         detectorName: string;
     }
 }

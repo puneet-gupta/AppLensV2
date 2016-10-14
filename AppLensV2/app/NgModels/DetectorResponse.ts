@@ -49,19 +49,19 @@ module SupportCenter {
         }
     }
     
-....export class ResponseMetaData {
-........constructor(
-............public DataSource: DataSource
-........) {
-........}
-....}
+    export class ResponseMetaData {
+        constructor(
+            public DataSource: DataSource
+        ) {
+        }
+    }
 
-....export class DataSource {
-........constructor(
-............public Instructions: string[],
-............public DataSourceUri: NameValuePair[][]
-........) {
-........}
+    export class DataSource {
+        constructor(
+            public Instructions: string[],
+            public DataSourceUri: NameValuePair[][]
+        ) {
+        }
     }
 
     export class NameValuePair {

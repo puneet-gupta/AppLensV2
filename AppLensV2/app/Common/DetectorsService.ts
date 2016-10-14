@@ -5,8 +5,8 @@ module SupportCenter {
 
     export interface IDetectorsService {
         getDetectors(site: Site): ng.IPromise<DetectorDefinition[]>;
-        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string): ng.IPromise<DetectorResponse>;
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string): ng.IPromise<SiaResponse>;
+        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
+        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
     }
@@ -86,7 +86,7 @@ module SupportCenter {
             return deferred.promise;
         }
 
-        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string): ng.IPromise<DetectorResponse> {
+        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse> {
 
             var deferred = this.$q.defer<DetectorResponse>();
 
@@ -99,12 +99,12 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(site, detectorName, startTime, endTime)
+                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(site, detectorName, startTime, endTime, timeGrain)
                 }
             })
                 .success((data: any) => {
 
-                    var response = new DetectorResponse(startTime, endTime, [], []);
+                    var response = new DetectorResponse(startTime, endTime, [], [], null);
 
                     if (angular.isDefined(data.Properties)) {
                         response = data.Properties;
@@ -123,7 +123,7 @@ module SupportCenter {
             return deferred.promise;
         }
 
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string): ng.IPromise<SiaResponse> {
+        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse> {
 
             var deferred = this.$q.defer<SiaResponse>();
 
@@ -136,7 +136,7 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(site, startTime, endTime)
+                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(site, startTime, endTime, timeGrain)
                 }
             })
                 .success((data: any) => {
