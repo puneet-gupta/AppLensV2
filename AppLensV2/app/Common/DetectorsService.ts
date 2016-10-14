@@ -104,7 +104,7 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    var response = new DetectorResponse(startTime, endTime, [], [], {});
+                    var response = new DetectorResponse(startTime, endTime, [], [], null);
 
                     if (angular.isDefined(data.Properties)) {
                         response = data.Properties;
