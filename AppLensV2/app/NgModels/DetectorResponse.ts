@@ -8,7 +8,8 @@ module SupportCenter {
             public StartTime: string,
             public EndTime: string,
             public Metrics: DiagnosticMetricSet[],
-            public Data: NameValuePair[][]
+            public Data: NameValuePair[][],
+            public ResponseMetaData: ResponseMetaData
         ) {
         }
     }
@@ -46,6 +47,21 @@ module SupportCenter {
             public IsAggregated: boolean
         ) {
         }
+    }
+    
+....export class ResponseMetaData {
+........constructor(
+............public DataSource: DataSource
+........) {
+........}
+....}
+
+....export class DataSource {
+........constructor(
+............public Instructions: string[],
+............public DataSourceUri: NameValuePair[][]
+........) {
+........}
     }
 
     export class NameValuePair {

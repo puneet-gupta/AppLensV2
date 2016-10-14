@@ -33,10 +33,14 @@ module SupportCenter {
             }
 
             var self = this;
-            this.detectorList = this.DetectorsService.detectorList;
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
                 self.getRuntimeAvailability();
+
+                self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
+                    self.detectors = data;
+                    self.detectorListLoaded = true;
+                });
             });
 
             // if no child route is defined, then set default child route to sia
@@ -50,15 +54,16 @@ module SupportCenter {
                 this.selectedItem = this.$state.params['detectorName'];
             }
         }
-
-        detectorList: Detector[];
+        
+        detectors: DetectorDefinition[];
+        detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
         requestsChartOptions: any;
         requestsChartData: any;
-        dataLoading: Boolean = true;
+        dataLoading: boolean = true;
         containerHeight: string;
 
         toggleSideNav(): void {
@@ -68,11 +73,16 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             if (name === 'sia') {
                 this.selectedItem = "sia";
-                this.$state.go('home.sia');
+
+                if (this.$state.current.name !== 'home.sia') {
+                    this.$state.go('home.sia');
+                }
             }
             else {
                 this.selectedItem = name;
-                this.$state.go('home.detector', { detectorName: name });
+                if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
+                    this.$state.go('home.detector', { detectorName: name });
+                }
             }
 
             var sidenav = this.$mdSidenav('left');

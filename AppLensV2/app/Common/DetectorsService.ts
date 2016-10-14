@@ -4,7 +4,7 @@ module SupportCenter {
     "use strict";
 
     export interface IDetectorsService {
-        getDetectorList(): ng.IPromise<Detector[]>;
+        getDetectors(): ng.IPromise<Detector[]>;
         detectorList: Detector[];
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
         getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse>;
@@ -22,6 +22,7 @@ module SupportCenter {
         private siaResponseCache: ICache<SiaResponse>;
         private detectorsWikiCache: ICache<string>;
         private detectorsSolutionCache: ICache<string>;
+        private detectorsListCache: ICache<DetectorDefinition[]>;
 
         static $inject = ['$q', '$http'];
 
@@ -30,10 +31,60 @@ module SupportCenter {
             this.siaResponseCache = {};
             this.detectorsWikiCache = {};
             this.detectorsSolutionCache = {};
+            this.detectorsListCache = {};
         }
 
-        getDetectorList(): ng.IPromise<Detector[]> {
-            return this.$q.when(this.detectorList);
+        getDetectors(site: Site): ng.IPromise<DetectorDefinition[]> {
+
+            var detectors: DetectorDefinition[] = [];
+            var deferred = this.$q.defer<DetectorDefinition[]>();
+
+            if (angular.isDefined(this.detectorsListCache["detectorList"])) {
+                deferred.resolve(this.detectorsListCache["detectorList"]);
+                return deferred.promise;
+            }
+
+            var self = this;
+
+            this.$http({
+                method: "GET",
+                url: UriPaths.DiagnosticsPassThroughAPIPath(),
+                headers: {
+                    'GeoRegionApiRoute': UriPaths.ListDetectorsPath(site)
+                }
+            })
+                .success((data: any) => {
+
+                    if (angular.isDefined(data.Value)) {
+
+                        _.each(data.Value, function (item: any) {
+
+                            if (angular.isDefined(item.Properties)) {
+
+                                var detector = new DetectorDefinition(
+                                    item.Properties.Name,
+                                    item.Properties.DisplayName,
+                                    item.Properties.Description,
+                                    item.Properties.Rank,
+                                    item.Properties.IsEnabled);
+
+                                detectors.push(detector);
+                            }
+                        });
+
+                        self.detectorsListCache["detectorList"] = detectors;
+                        deferred.resolve(detectors);
+                    }
+                    else {
+                        deferred.reject("Value not present in detectors api response");
+                    }
+
+                })
+                .error((data: any) => {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
         }
 
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse> {
@@ -117,7 +168,7 @@ module SupportCenter {
 
             var cacheObject = undefined;
             var deferred = this.$q.defer<string>();
-            
+
             switch (documentName.toLocaleLowerCase()) {
                 case "solution.md":
                     cacheObject = this.detectorsSolutionCache;
@@ -126,12 +177,12 @@ module SupportCenter {
                     cacheObject = this.detectorsWikiCache;
                     break;
             }
-            
+
             if (angular.isDefined(cacheObject) && angular.isDefined(cacheObject[detectorName])) {
                 deferred.resolve(cacheObject[detectorName]);
                 return deferred.promise;
             }
-            
+
             this.$http({
                 method: "GET",
                 url: UriPaths.DetectorsDocumentApiPath(detectorName, documentName)
@@ -155,55 +206,5 @@ module SupportCenter {
 
             return deferred.promise;
         }
-
-        // TODO: When we have a geo-region API to get all detectors, this section will be replaced by the API call
-        // Issue : https://github.com/ShekharGupta1988/AppLensV2/issues/3
-        public detectorList: Detector[] = [
-            {
-                name: "servicehealth",
-                displayName: 'Antares LSIs',
-                description: ''
-            },
-            {
-                name: "cpuanalysis",
-                displayName: 'CPU Analysis',
-                description: ''
-            },
-            {
-                name: "memoryanalysis",
-                displayName: 'Memory Analysis',
-                description: ''
-            },
-            {
-                name: "siteswap",
-                displayName: 'Site Swap Operations',
-                description: ''
-            },
-            {
-                name: "storagefailover",
-                displayName: 'Storage Volumes Failover',
-                description: ''
-            },
-            {
-                name: "siterestartuserinitiated",
-                displayName: 'User Initiated Site Restarts',
-                description: ''
-            },
-            {
-                name: "siterestartsettingupdate",
-                displayName: 'Config Update Site Restarts',
-                description: ''
-            },
-            {
-                name: "sitecrashes",
-                displayName: 'App Crashes',
-                description: ''
-            },
-            {
-                name: "deployment",
-                displayName: 'App Deployments',
-                description: ''
-            }
-        ];
     }
 }

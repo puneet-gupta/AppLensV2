@@ -11,11 +11,7 @@ module SupportCenter {
 
             var self = this;
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
-
-            this.detectorInfo = _.find(this.DetectorsService.detectorList, function (item) {
-                return item.name.toLowerCase() === self.detectorName;
-            });
-
+            
             if (!angular.isDefined(this.$stateParams.startTime)) {
                 this.$stateParams.startTime = '';
             }
@@ -35,6 +31,11 @@ module SupportCenter {
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
 
+                self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
+                    self.detectorInfo = _.find(data, function (item: DetectorDefinition) {
+                        return item.Name.toLowerCase() === self.detectorName;
+                    });
+                });
                 self.DetectorsService.getDetectorResponse(self.site, self.detectorName, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
                     self.chartData = helper.GetChartData(data, self.detectorName);
@@ -49,6 +50,6 @@ module SupportCenter {
         chartOptions: any;
         chartData: any;
         dataLoading: Boolean = true;
-        detectorInfo: Detector;
+        detectorInfo: DetectorDefinition;
     }
 }
