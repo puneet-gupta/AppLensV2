@@ -10,7 +10,38 @@ module SupportCenter {
 
         public GetChartOptions(detectorName: string = ''): any {
 
-            var options: any = this.chartOptions;
+            var options: any = {
+                chart: {
+                    type: 'multiBarChart',
+                    height: this.graphHeight,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 50,
+                        left: 60
+                    },
+                    color: this.defaultColors,
+                    useInteractiveGuideline: true,
+                    transitionDuration: 350,
+                    showLegend: true,
+                    stacked: true,
+                    clipEdge: false,
+                    showControls: false,
+                    x: function (d) { return d.x; },
+                    y: function (d) { return d.y; },
+                    xAxis: {
+                        showMaxMin: false,
+                        axisLabel: 'Time (UTC)',
+                        staggerLabels: true,
+                        tickFormat: function (d) { return d3.time.format('%a %I %M %p')(new Date(d)); }
+                    },
+                    yAxis: {
+                        axisLabel: '',
+                        showMaxMin: false,
+                        tickFormat: d3.format('.2f')
+                    }
+                }
+            };
 
             switch (detectorName.toLowerCase()) {
                 case 'runtimeavailability':
@@ -21,20 +52,19 @@ module SupportCenter {
             }
             return options;
         }
+        
+        public GetChartData(startTimeStr: string, endTimeStr: string, metrics: DiagnosticMetricSet[], detectorName: string = ''): any {
 
-        public GetChartData(detectorResponse: DetectorResponse, detectorName: string = ''): any {
             var self = this;
             var perWorkerGraph: boolean = false;
             
             var chartData = [];
-
-            // Workaround to round down time
-            //until API is fixed.Issue - https://github.com/ShekharGupta1988/AppLensV2/issues/9
-            var startTime = new Date(detectorResponse.StartTime);
-            var endTime = new Date(detectorResponse.EndTime);
+            
+            var startTime = new Date(startTimeStr);
+            var endTime = new Date(endTimeStr);
             var coeff = 1000 * 60 * 5;
 
-            for (let metric of detectorResponse.Metrics) {
+            for (let metric of metrics) {
 
                 if (detectorName === "memoryanalysis" && metric.Name.toLowerCase().indexOf("total") == -1) {
                     continue;
@@ -140,40 +170,8 @@ module SupportCenter {
         }
 
         private graphHeight: any = this.$window.innerHeight * 0.2;
-
-        private chartOptions: any = {
-            chart: {
-                type: 'multiBarChart',
-                height: this.graphHeight,
-                margin: {
-                    top: 20,
-                    right: 20,
-                    bottom: 50,
-                    left: 60
-                },
-                useInteractiveGuideline: true,
-                transitionDuration: 350,
-                showLegend: true,
-                stacked: true,
-                clipEdge: false,
-                showControls: false,
-                x: function (d) { return d.x; },
-                y: function (d) { return d.y; },
-                xAxis: {
-                    showMaxMin: false,
-                    axisLabel: 'Time (UTC)',
-                    staggerLabels: true,
-                    tickFormat: function (d) { return d3.time.format('%a %I %M %p')(new Date(d)); }
-                },
-                yAxis: {
-                    axisLabel: '',
-                    showMaxMin: false,
-                    tickFormat: d3.format('.2f')
-                }
-            }
-        };
-
-        private defaultColors: [string] = ["", ""];
+        
+        private defaultColors: [string] = ["#DD2C00", "#0D47A1", "#00695C", "#3E2723", "#FF6F00", "#aa0000", "#311B92", "#D4E157", "#4DB6AC", "#880E4F"];
         public static runtimeAvailabilityColors: [string] = ["#117dbb", "hsl(120, 57%, 40%)"];
         public static requestsColors: [string] = ["#117dbb", "#aa0000"];
 

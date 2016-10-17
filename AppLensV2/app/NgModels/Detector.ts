@@ -13,4 +13,14 @@ module SupportCenter {
         ) {
         }
     }
+    
+    export class DetectorViewParams {
+        loading: boolean;
+        chartoptions: any;
+        chartdata: any;
+        info: DetectorDefinition;
+        responsemetadata: ResponseMetaData;
+        wiki: string;
+        solution: string;
+    }
 }

@@ -86,6 +86,9 @@
     <Content Include="app\assets\app.css" />
     <Content Include="app\assets\images\sia.png" />
     <Content Include="app\assets\svg\menu.svg" />
+    <Content Include="app\assets\svg\search.svg" />
+    <Content Include="app\assets\svg\success.svg" />
+    <Content Include="app\assets\svg\warning.svg" />
     <Content Include="app\Detector\detector.html" />
     <Content Include="app\Detector\detectorview.html" />
     <Content Include="app\Main\main.html" />

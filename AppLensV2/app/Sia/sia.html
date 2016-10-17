@@ -1,25 +1,67 @@
-﻿
-<md-list style="width:100%;background-color:none" ng-repeat="timePeriod in sia.SiaResponse.AbnormalTimePeriods | orderBy:'StartTime':true">
+﻿<div layout="row" flex flex-offset="5" layout-align="center center" style="height:200px" ng-if="sia.isLoading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+</div>
+
+<div ng-if="!sia.isLoading" style="margin-left:15px;">
+    <div ng-if="::sia.SiaResponse.AbnormalTimePeriods.length > 0">
+        <h2 class="md-title" style="margin-bottom:0;text-decoration:underline">Application Downtime Periods</h2>
+        <h3 class="md-subhead" style="margin-top:5px">(With Correlated Events)</h3>
+    </div>
+    
+    <div ng-if="::sia.SiaResponse.AbnormalTimePeriods.length === 0">
+        <h2 class="md-title" style="margin-bottom:0;text-decoration:underline">No Application Downtime Periods found.</h2>
+    </div>
+
+</div>
+
+<md-list style="width:100%;" ng-repeat="timePeriod in ::sia.SiaResponse.AbnormalTimePeriods | orderBy:'StartTime':true">
 
     <md-divider></md-divider>
+
     <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;">
         <ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> 
         Start Time : {{:: timePeriod.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{:: timePeriod.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
     </md-subheader>
 
-    <div ng-repeat="event in timePeriod.Events">
+    <div ng-if="::timePeriod.Events.length === 0">
+        <md-list-item layout="row" style="padding:0">
+
+            <div class="discussion-timeline"></div>
+            <div layout="column" flex="5">
+                <div class="discussion-timeline-nodata-icon" layout-align="center center">
+                    <ng-md-icon icon="priority_high" style="fill: white;padding-left:2px;padding-top:6px" size="20"></ng-md-icon> 
+                </div>
+            </div>
+
+            <div layout="column" flex="95" style="padding-top:10px">
+                <div layout="row">
+
+                    <div class="sia-dialog" style="background-color:#EFEBE9;color:black">
+                        No Correlated Events found.
+                    </div>
+
+                </div>
+            </div>
+
+        </md-list-item>
+    </div>
+
+    <div ng-repeat="event in ::timePeriod.Events">
 
         <md-list-item layout="row" style="padding:0">
 
-            <div layout="column" flex="5" style="background-color:blue">
-                
+            <div class="discussion-timeline"></div>
+            <div layout="column" flex="5">
+                <div class="discussion-timeline-problem-icon">
+                    #{{::event.Priority}}
+                </div>
             </div>
 
             <div layout="column" flex="95" style="padding-top:20px">
 
                 <div layout="row">
 
-                    <div style="background-color:#78C0A0;padding:20px;padding-left:10px;color:white;font-size:20px;border-radius:10px;border-bottom-left-radius:0">
+                    <div class="sia-dialog">
                         {{::event.Message}}
                     </div>
                     
@@ -31,34 +73,49 @@
 
         <md-list-item layout="row" style="padding:0">
 
+            <div class="discussion-timeline"></div>
             <div layout="column" flex="5">
-
+                <div class="discussion-timeline-solution-icon">
+                    <md-icon md-svg-icon="success" style="height:100%;width:100%"></md-icon>
+                </div>
             </div>
 
-            <div layout="column" flex="95">
+            <div layout="column" flex="95" style="padding-top:10px">
 
-                <div style="display: inline-block;">
-                    Solution goes here
+                <div layout="row">
+
+                    <div class="sia-dialog">
+                        <div btf-markdown="::sia.DetectorData[event.Source].solution" class="sia-markdown">
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
 
         </md-list-item>
 
-        <md-list-item layout="row" style="padding:0">
+        <md-list-item layout="row" style="padding:0;padding-bottom:30px">
 
+            <div class="discussion-timeline"></div>
             <div layout="column" flex="5">
-
+                <div class="discussion-timeline-data-icon">
+                    <md-icon md-svg-icon="evidence" style="height:100%;width:100%"></md-icon>
+                </div>
+                
             </div>
 
-            <div layout="column" flex="95">
+            <div layout="column" flex="95" style="padding-top:10px">
 
                 <div style="display: inline-block;">
                     
-                    <detector-view loading="true"
-                                   chartoptions=""
-                                   chartdata=""
-                                   info="">
+                    <detector-view loading="::sia.DetectorData[event.Source].loading"
+                                   chartoptions="::sia.DetectorData[event.Source].chartoptions"
+                                   chartdata="::sia.DetectorData[event.Source].chartdata"
+                                   info="::sia.DetectorData[event.Source].info",
+                                   responsemetadata=""
+                                   wiki="::sia.DetectorData[event.Source].wiki"
+                                   solution="::sia.DetectorData[event.Source].solution">
                     </detector-view>
 
                 </div>

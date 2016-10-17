@@ -1,6 +1,17 @@
-﻿<detector-view loading="detector.dataLoading"
-               chartoptions="detector.chartOptions"
-               chartdata="detector.chartData"
-               info="detector.detectorInfo"
-               responsemetadata="detector.detectorResponse.ResponseMetaData">
-</detector-view>
+﻿<div layout="row" flex>
+
+    <div layout="column" flex="5">
+    </div>
+
+    <div layout="column" flex>
+        <detector-view loading="detector.dataLoading"
+                       chartoptions="::detector.chartOptions"
+                       chartdata="::detector.chartData"
+                       info="::detector.detectorInfo"
+                       responsemetadata="::detector.detectorResponse.ResponseMetaData"
+                       wiki="::detector.wikiContent"
+                       solution="::detector.solutionContent">
+        </detector-view>
+    </div>
+
+</div>
