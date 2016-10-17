@@ -155,3 +155,105 @@ md-badge{
     .markdown li + li {
         margin-top: 0.4em;
     }
+
+.sia-markdown{
+    font-family:Roboto;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+.sia-markdown h1, .sia-markdown h2, .sia-markdown h3, .sia-markdown h4, .sia-markdown h5, .sia-markdown h6{
+    margin-top:0;
+    margin-bottom: 10px;
+    padding-bottom: 0.3em;
+    font-weight: 500;
+    line-height: 1.25;
+    border-bottom: 1px solid #eee;
+}
+.sia-markdown h1{
+    font-size: 1.3em;
+}
+.sia-markdown h2{
+    font-size: 0.9em;
+}
+.sia-markdown>*:last-child {
+    margin-bottom: 0 !important;
+}
+.sia-markdown ul, .sia-markdown ol {
+    padding-left: 2em;
+}
+.sia-markdown p, .sia-markdown blockquote, .sia-markdown ul, .sia-markdown ol,
+ .sia-markdown dl, .sia-markdown table, .sia-markdown pre {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+.sia-markdown li{
+    font-size:17px;
+    color:white;
+}
+    .sia-markdown li + li {
+        margin-top: 5px;
+    }
+
+/*timeline*/
+.discussion-timeline {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2.5%;
+    display: block;
+    width: 1px;
+    background-color: #d4d4d4;
+}
+.discussion-timeline-problem-icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    margin:0 auto;
+    z-index:1;
+    background-color:rgb(228, 198,80);
+    color:white;
+    text-align:center;
+    color:white;
+    font-size:17px;
+    line-height:1.8;
+    font-weight:300;
+}
+.discussion-timeline-solution-icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    margin:0 auto;
+    z-index:1;
+}
+.discussion-timeline-data-icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    margin:0 auto;
+    z-index:1;
+}
+.discussion-timeline-nodata-icon{
+    width:30px;
+    height:30px;
+    border-radius:50%;
+    margin:0 auto;
+    z-index:1;
+    background-color:#FF7043;
+    color:white;
+    text-align:center;
+    color:white;
+    font-size:17px;
+    line-height:1.8;
+    font-weight:300;
+}
+.sia-dialog{
+    background-color:#00838F;
+    padding:14px;
+    padding-left:7px;
+    color:white;
+    font-size:17px;
+    border-radius:10px;
+    border-bottom-left-radius:0;
+    max-width:65%;
+}

@@ -1,8 +1,7 @@
 ﻿<md-card>
-
     <div flex>
-        <md-toolbar style="min-height:40px;background-color:#F4F4F4;color:rgb(0,150,136)">
-            <h5 style="margin:auto 10px auto;font-weight:500">{{detectorviewctrl.info.DisplayName}}</h5>
+        <md-toolbar style="min-height:40px;background-color:#F4F4F4;color:rgb(0,150,136);z-index:0">
+            <h5 style="margin:auto 10px auto;font-weight:500">{{::detectorviewctrl.info.DisplayName}}</h5>
         </md-toolbar>
         <div layout-padding>
 
@@ -32,10 +31,10 @@
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
-                        Solution <md-badge ng-show="detectorviewctrl.solutionContent === ''" class="md-warn">!</md-badge>
+                        Solution <md-badge ng-show="detectorviewctrl.solution === ''" class="md-warn">!</md-badge>
                     </md-tab-label>
                      <md-tab-body>
-                         <div btf-markdown="detectorviewctrl.solutionContent" class="markdown">
+                         <div btf-markdown="::detectorviewctrl.solution" class="markdown">
                          </div>
                      </md-tab-body>
 
@@ -45,20 +44,23 @@
                         Data source
                     </md-tab-label>
                     <md-tab-body>
-                        <li ng-repeat="instruction in detectorviewctrl.responsemetadata.DataSource.Instructions" class="markdown">
-                            {{instruction}}
-                        </li>
-                        <li ng-repeat="uri in detectorviewctrl.responsemetadata.DataSource.DataSourceUri" class="markdown">
-                            <a href="{{uri.Value}}" target="_blank">{{uri.Name}}</a>
-                        </li>
+                        <ul>
+                            <li ng-repeat="instruction in ::detectorviewctrl.responsemetadata.DataSource.Instructions">
+                                {{::instruction}}
+                            </li>
+                            <li ng-repeat="uri in ::detectorviewctrl.responsemetadata.DataSource.DataSourceUri">
+                                <a href="{{::uri.Value}}" target="_blank">{{::uri.Name}}</a>
+                            </li>
+                        </ul>
+                        
                     </md-tab-body>
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
-                        Wiki <md-badge ng-show="detectorviewctrl.wikiContent === ''" class="md-warn">!</md-badge>
+                        Wiki <md-badge ng-show="detectorviewctrl.wiki === ''" class="md-warn">!</md-badge>
                     </md-tab-label>
                     <md-tab-body>
-                        <div btf-markdown="detectorviewctrl.wikiContent" class="markdown">
+                        <div btf-markdown="::detectorviewctrl.wiki" class="markdown">
                         </div>
                     </md-tab-body>
 
@@ -66,7 +68,6 @@
             </md-tabs>
 
         </div>
-
     </div>
 </md-card>
 

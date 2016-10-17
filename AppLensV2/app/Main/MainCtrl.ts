@@ -45,7 +45,7 @@ module SupportCenter {
 
             // if no child route is defined, then set default child route to sia
             if (this.$state.current.name === 'home') {
-                this.setSelectedItem('servicehealth');
+                this.setSelectedItem('sia');
             }
 
             if (this.$state.current.name === 'home.sia') {
@@ -97,8 +97,8 @@ module SupportCenter {
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
             this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
-
-                let chartDataList: any = helper.GetChartData(data, 'runtimeavailability');
+                
+                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
                 self.dataLoading = false;
                 var iterator = 0;
                 var requestsIterator = 0;

@@ -1,29 +1,28 @@
-﻿<md-sidenav flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
+﻿<md-sidenav style="width:260px" flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
 
     <md-toolbar style="height:200px">
-        <h1>{{main.site.name}}</h1>
+        <h1>{{::main.site.name}}</h1>
     </md-toolbar>
 
     <md-content>
         <md-list>
 
-            <!--<md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'sia'}" ng-click="main.setSelectedItem('sia')">
-                <img src="./app/assets/images/sia.png" class="md-avatar-icon" style="width:45px;height:45px;background-color:#eef;border:1px solid #f3f3f3" />
+            <md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'sia'}" ng-click="main.setSelectedItem('sia')">
                 <div class="md-list-item-text" layout="column">
-                    <h3>Sia Analysis</h3>
+                    <h3>Application Analysis</h3>
                 </div>
-            </md-list-item>-->
+            </md-list-item>
             <md-divider></md-divider>
-            <md-subheader class="md-sticky">Detectors</md-subheader>
+            <md-subheader class="md-sticky">All Detectors</md-subheader>
             <md-divider></md-divider>
 
             <div layout-padding>
 
-                <md-autocomplete md-search-text="main.searchText" md-items="item in main.detectors | filter:main.searchText" md-item-text="item.DisplayName"
+                <md-autocomplete md-search-text="main.searchText" md-items="item in ::main.detectors | filter:main.searchText" md-item-text="item.DisplayName"
                                  md-min-length="1" placeholder="Search Detectors">
 
                     <md-item-template>
-                        <span md-highlight-text="main.searchText" md-highlight-flags="^i">{{item.DisplayName}}</span>
+                        <span md-highlight-text="main.searchText" md-highlight-flags="^i">{{::item.DisplayName}}</span>
                     </md-item-template>
 
                     <md-not-found>
@@ -37,13 +36,14 @@
                 <md-progress-circular md-mode="indeterminate" md-diameter="30"></md-progress-circular>
             </md-list-item>
 
-            <md-list-item class="md-2-line" ng-repeat="detector in main.detectors | filter:main.searchText | orderBy:'Rank'" ng-class="{'selected' : main.selectedItem === detector.Name}" ng-click="main.setSelectedItem(detector.Name)">
-
-                <ng-letter-avatar data="{{detector.DisplayName}}" class="md-avatar-icon" shape="round" fontFamily="Roboto,sans-serif"></ng-letter-avatar>
+            <md-list-item class="md-2-line" ng-repeat="detector in main.detectors | filter:main.searchText | orderBy:'Rank'" ng-class="{'selected' : main.selectedItem === detector.Name}" ng-click="main.setSelectedItem(detector.Name)" >
+                
+                <!--<ng-letter-avatar data="{{::detector.DisplayName}}" class="md-avatar-icon" shape="round" fontFamily="Roboto,sans-serif"></ng-letter-avatar>-->
 
                 <div class="md-list-item-text" style="margin-left:10px">
-                    <h3>{{ detector.DisplayName }}</h3>
+                    <h3>{{ :: detector.DisplayName }}</h3>
                 </div>
+
             </md-list-item>
         </md-list>
     </md-content>
@@ -68,14 +68,13 @@
         </div>
     </md-toolbar>
 
-
     <md-content layout="column" flex id="wrapper">
 
-        <div flex="25" layout="row">
+        <div flex="25" layout="row" class="md-sticky">
+            <div layout="column" flex="5"></div>
+            <md-card flex="95">
 
-            <md-card flex="100">
-
-                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="{'height':main.containerHeight}">
+                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':main.containerHeight}">
                     <div layout="column" layout-align="center center">
                         <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                     </div>
@@ -83,38 +82,43 @@
 
                 <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
                     <div flex>
-                        <nvd3 options="main.availabilityChartOptions" data="main.avaiabilityChartData"></nvd3>
+                        <nvd3 options="::main.availabilityChartOptions" data="::main.avaiabilityChartData"></nvd3>
                     </div>
                 </md-card-content>
 
             </md-card>
         </div>
 
-        <div flex="25" layout="row">
+        <md-content flex layout="column">
 
-            <md-card flex="100">
+            <div flex="25" layout="row">
+                <div layout="column" flex="5" layout-align="center center"></div>
+                <md-card flex="95">
 
-                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="{'height':main.containerHeight}">
-                    <div layout="column" layout-align="center center">
-                        <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                    <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':main.containerHeight}">
+                        <div layout="column" layout-align="center center">
+                            <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+                        </div>
                     </div>
-                </div>
 
-                <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
-                    <div flex>
-                        <nvd3 options="main.requestsChartOptions" data="main.requestsChartData"></nvd3>
+                    <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
+                        <div flex>
+                            <nvd3 options="::main.requestsChartOptions" data="::main.requestsChartData"></nvd3>
 
-                    </div>
-                </md-card-content>
+                        </div>
+                    </md-card-content>
 
-            </md-card>
-        </div>
+                </md-card>
+            </div>
 
-        <div flex layout="row">
+            <div flex layout="row">
 
-            <div flex ui-view="childContent"></div>
+                <div flex ui-view="childContent"></div>
 
-        </div>
+            </div>
+
+        </md-content>
+
     </md-content>
 </div>
 

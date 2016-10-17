@@ -22,6 +22,15 @@ module SupportCenter {
             $mdIconProvider
                 .icon('menu', './app/assets/svg/menu.svg', 24);
 
+            $mdIconProvider
+                .icon('evidence', './app/assets/svg/search.svg', 30);
+
+            $mdIconProvider
+                .icon('success', './app/assets/svg/success.svg', 30);
+
+            $mdIconProvider
+                .icon('warning', './app/assets/svg/warning.svg', 30);
+
             $stateProvider
                 .state('home', {
                     url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',

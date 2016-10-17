@@ -9,29 +9,16 @@ module SupportCenter {
         chartdata: any;
         info: any;
         responsemetadata: any;
+        wiki: string;
+        solution: string;
     }
 
     export class DetectorViewCtrl {
         public static $inject: string[] = ["DetectorsService", "$stateParams", "$window"];
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
-
-            var self = this;
-            let detectorName = this.$stateParams.detectorName.toLowerCase();
-            this.wikiContent = '';
-            this.solutionContent = '';
-
-            this.DetectorsService.getDetectorWiki(detectorName).then(function (wikiResponse) {
-                self.wikiContent = wikiResponse;
-            });
-
-            this.DetectorsService.getDetectorSolution(detectorName).then(function (solutionRespons) {
-                self.solutionContent = solutionRespons;
-            });
+            
         }
-        
-        wikiContent: string;
-        solutionContent: string;
     }
 
     export class DetectorViewDir implements ng.IDirective {
@@ -50,7 +37,9 @@ module SupportCenter {
             chartoptions: '=',
             chartdata: '=',
             info: '=',
-            responsemetadata:'='
+            responsemetadata: '=',
+            wiki: '=',
+            solution: '='
         };
     }
 }
