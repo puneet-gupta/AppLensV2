@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using System.Web.Http.ExceptionHandling;
 
 namespace AppLensV2
 {
@@ -13,6 +11,9 @@ namespace AppLensV2
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            //Register Global Exception Logger
+            config.Services.Add(typeof(IExceptionLogger), new APIExceptionLogger());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
