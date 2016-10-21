@@ -20,12 +20,12 @@
                     </md-tab-label>
                     <md-tab-body>
                         <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
-                              ng-if="detectorviewctrl.info.DisplayName != 'Instance Allocations Event'"></nvd3>
+                              ng-if="detectorviewctrl.info.Name != 'instanceallocations'"></nvd3>
                         <table style="width: 100%; border-spacing: 1px; padding-right: 25px; border-collapse: separate;" 
-                               ng-if="detectorviewctrl.info.DisplayName == 'Instance Allocations Event'">
+                               ng-if="detectorviewctrl.info.Name == 'instanceallocations'">
                             <tr ng-repeat="instance in detectorviewctrl.chartdata">
                                 <td class="small" style="width: 55px;">
-                                    <span style="font-size: 9px;">MDW_123</span>
+                                    <span style="font-size: 10px;">{{instance.key|worker}}</span>
                                 </td>
                                 <td ng-repeat="change in instance.values" data-toggle="tooltip"
                                      ng-style="{'background-color':(change.y == 1?'#009933':'#efefef')}"

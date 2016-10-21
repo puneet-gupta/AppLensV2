@@ -52,4 +52,13 @@ module SupportCenter {
 
             $locationProvider.html5Mode(true);
         });
+
+    app.filter('worker', function () {
+        return function (input) {
+            return input.replace("SmallDedicatedWebWorkerRole_IN", "SDW")
+                .replace("MediumDedicatedWebWorkerRole_IN", "MDW")
+                .replace("LargeDedicatedWebWorkerRole_IN", "LDW")
+                .replace("WebWorkerRole_IN_", "W").replace(" - aggregated", "");
+        };
+    });
 }
