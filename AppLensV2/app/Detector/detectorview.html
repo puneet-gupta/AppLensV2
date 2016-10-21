@@ -28,7 +28,7 @@
                                 </td>
                                 <td ng-repeat="change in instance.values" data-toggle="tooltip"
                                      ng-style="{'background-color':(change.y == 1?'#009933':'#efefef')}"
-                                    data-placement="top" title="{{instance.key}} | {{change.x}}">
+                                    data-placement="top" title="{{instance.key}} | {{change.x | date: 'EEE MMM-dd, hh:mm a'}} (UTC)">
                                     <span style="font-size: 1px;">.</span>
                                 </td>
 
