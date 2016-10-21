@@ -19,8 +19,22 @@
                         Metrics
                     </md-tab-label>
                     <md-tab-body>
-                        <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"></nvd3>
+                        <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
+                              ng-if="detectorviewctrl.info.DisplayName != 'Instance Allocations Event'"></nvd3>
+                        <table style="width: 100%; border-spacing: 1px; padding-right: 25px; border-collapse: separate;" 
+                               ng-if="detectorviewctrl.info.DisplayName == 'Instance Allocations Event'">
+                            <tr ng-repeat="instance in detectorviewctrl.chartdata">
+                                <td class="small" style="width: 55px;">
+                                    <span style="font-size: 9px;">MDW_123</span>
+                                </td>
+                                <td ng-repeat="change in instance.values" data-toggle="tooltip"
+                                     ng-style="{'background-color':(change.y == 1?'#009933':'#efefef')}"
+                                    data-placement="top" title="{{instance.key}} | {{change.x}}">
+                                    <span style="font-size: 1px;">.</span>
+                                </td>
 
+                            </tr>
+                        </table>
                     </md-tab-body>
 
                 </md-tab>
