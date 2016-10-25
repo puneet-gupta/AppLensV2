@@ -194,6 +194,9 @@ md-badge{
     .sia-markdown li + li {
         margin-top: 5px;
     }
+    .sia-markdown li a {
+        color: antiquewhite;
+    }
 
 /*timeline*/
 .discussion-timeline {

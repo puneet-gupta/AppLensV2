@@ -48,7 +48,11 @@
                         Solution <md-badge ng-show="detectorviewctrl.solution === ''" class="md-warn">!</md-badge>
                     </md-tab-label>
                      <md-tab-body>
-                         <div btf-markdown="::detectorviewctrl.solution" class="markdown">
+                         <md-button class="md-raised" style="position:absolute;right:0;top:0" href="https://github.com/PraveenTB/AppLensDocs/blob/master/Documents/{{::detectorviewctrl.info.Name}}/solution.md" target="_blank">
+                             Edit on Github
+                             <ng-md-icon icon="github-circle" style="fill: #303030" size="24"></ng-md-icon>
+                         </md-button>
+                         <div btf-markdown="::detectorviewctrl.solution" class="markdown" style="padding-top:20px">
                          </div>
                      </md-tab-body>
 
@@ -73,8 +77,13 @@
                     <md-tab-label>
                         Wiki <md-badge ng-show="detectorviewctrl.wiki === ''" class="md-warn">!</md-badge>
                     </md-tab-label>
+                    
                     <md-tab-body>
-                        <div btf-markdown="::detectorviewctrl.wiki" class="markdown">
+                        <md-button class="md-raised" style="position:absolute;right:0;top:0" href="https://github.com/PraveenTB/AppLensDocs/blob/master/Documents/{{::detectorviewctrl.info.Name}}/wiki.md" target="_blank">
+                            Edit on Github
+                            <ng-md-icon icon="github-circle" style="fill: #303030" size="24"></ng-md-icon>
+                        </md-button>
+                        <div btf-markdown="::detectorviewctrl.wiki" class="markdown" style="padding-top:20px">
                         </div>
                     </md-tab-body>
 
