@@ -66,10 +66,6 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if (detectorName === "memoryanalysis" && metric.Name.toLowerCase().indexOf("total") == -1) {
-                    continue;
-                }
-
                 var workerChartData: any = {};
 
                 coeff = this.GetTimeSpanInMilliseconds(metric.TimeGrain);
