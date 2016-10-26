@@ -32,7 +32,7 @@ namespace AppLensV2
                 client.Timeout = TimeSpan.FromSeconds(60);
                 client.MaxResponseContentBufferSize = Int32.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("internal-applens", "false");
+                client.DefaultRequestHeaders.Add("internal-applens", "true");
 
                 var response = await client.GetAsync(GeoRegionEndpoint + apiRoute);
                 
