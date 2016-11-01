@@ -41,7 +41,14 @@
                     <md-tab-label>
                         Additional Data
                     </md-tab-label>
-
+                    <md-tab-body>
+                        <table>
+                            <tr ng-repeat="data in ::detectorviewctrl.additionaldata[0]">
+                                <td> {{::data.Name }} :</td>
+                                <td> {{::data.Value }}</td>
+                            </tr>
+                       </table>
+                    </md-tab-body>
                 </md-tab>
                 <md-tab>
                     <md-tab-label>
