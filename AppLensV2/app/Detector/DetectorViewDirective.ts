@@ -11,6 +11,7 @@ module SupportCenter {
         responsemetadata: any;
         wiki: string;
         solution: string;
+        additionaldata: any;
     }
 
     export class DetectorViewCtrl {
@@ -39,7 +40,8 @@ module SupportCenter {
             info: '=',
             responsemetadata: '=',
             wiki: '=',
-            solution: '='
+            solution: '=',
+            additionaldata: '='
         };
     }
 }
