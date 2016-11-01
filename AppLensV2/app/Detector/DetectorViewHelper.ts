@@ -67,10 +67,6 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if (detectorName === "memoryanalysis" && metric.Name.toLowerCase().indexOf("total") == -1) {
-                    continue;
-                }
-
                 var workerChartData: any = {};
 
                 coeff = this.GetTimeSpanInMilliseconds(metric.TimeGrain);
@@ -174,7 +170,7 @@ module SupportCenter {
         
         private defaultColors: [string] = ["#DD2C00", "#0D47A1", "#00695C", "#3E2723", "#FF6F00", "#aa0000", "#311B92", "#D4E157", "#4DB6AC", "#880E4F"];
         public static runtimeAvailabilityColors: [string] = ["#117dbb", "hsl(120, 57%, 40%)"];
-        public static requestsColors: [string] = ["#117dbb", "#aa0000"];
+        public static requestsColors: [string] = ["#117dbb", "hsl(120, 57%, 40%)", "#D4E157", "rgb(173, 90, 16)", "#aa0000"];
 
     }
 }
