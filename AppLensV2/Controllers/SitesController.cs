@@ -39,9 +39,24 @@ namespace AppLensV2
             var hostnamesTask = SupportObserverClient.GetHostnames(siteName);
             var siteDetailsTask = SupportObserverClient.GetSite(siteName);
 
-            var stampResponse = await stampTask;
-            var hostNameResponse = await hostnamesTask;
-            var siteDetailsResponse = await siteDetailsTask;
+            //var stampResponse = await stampTask;
+            //var hostNameResponse = await hostnamesTask;
+            //var siteDetailsResponse = await siteDetailsTask;
+
+            var stampResponse = new
+            {
+                Name = "sternsdev"
+            };
+            var hostNameResponse = new[] {
+                new  {
+                    Name = "steve.sternsdev.antares-test.windows-int.net",
+                    SiteType = 0
+                    }
+            };
+            var siteDetailsResponse = new []
+            {
+                new  { SiteName = "steve", SubscriptionName = "steve" } 
+            };
 
             return Ok(new
             {
