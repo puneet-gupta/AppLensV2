@@ -46,6 +46,7 @@ module SupportCenter {
             switch (detectorName.toLowerCase()) {
                 case 'runtimeavailability':
                 case 'cpuanalysis':
+                case 'workeravailability':
                 case 'memoryanalysis':
                     options.chart.type = 'lineChart';
                     break;
