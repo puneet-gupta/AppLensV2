@@ -18,7 +18,7 @@
 
     <md-divider></md-divider>
 
-    <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;">
+    <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;" ng-click="timePeriod.expanded ">
         <ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> 
         Start Time : {{:: timePeriod.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{:: timePeriod.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
     </md-subheader>
@@ -113,7 +113,7 @@
                                    chartoptions="::sia.DetectorData[event.Source].chartoptions"
                                    chartdata="::sia.DetectorData[event.Source].chartdata"
                                    info="::sia.DetectorData[event.Source].info",
-                                   responsemetadata=""
+                                   responsemetadata="::sia.DetectorData[event.Source].responsemetadata"
                                    wiki="::sia.DetectorData[event.Source].wiki"
                                    solution="::sia.DetectorData[event.Source].solution">
                     </detector-view>

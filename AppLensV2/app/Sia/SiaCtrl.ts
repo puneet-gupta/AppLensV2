@@ -56,13 +56,10 @@ module SupportCenter {
                     this.DetectorData[detectorAnalysisData.Source].chartoptions.chart.height + (this.DetectorData[detectorAnalysisData.Source].chartdata.length / 8) * 20;
                 this.DetectorData[detectorAnalysisData.Source].chartoptions.chart.margin.top = 20 + (this.DetectorData[detectorAnalysisData.Source].chartdata.length / 8) * 20;
 
-                var self = this;
+                this.DetectorData[detectorAnalysisData.Source].responsemetadata = detectorAnalysisData.DetectorMetaData;
+                this.DetectorData[detectorAnalysisData.Source].info = detectorAnalysisData.DetectorDefinition;
 
-                this.DetectorsService.getDetectors(this.site).then(function (data: DetectorDefinition[]) {
-                    self.DetectorData[detectorAnalysisData.Source].info = _.find(data, function (item: DetectorDefinition) {
-                        return item.Name.toLowerCase() === detectorAnalysisData.Source.toLowerCase();
-                    });
-                });
+                var self = this;
 
                 this.DetectorsService.getDetectorWiki(detectorAnalysisData.Source).then(function (wikiResponse) {
                     self.DetectorData[detectorAnalysisData.Source].wiki = wikiResponse;
