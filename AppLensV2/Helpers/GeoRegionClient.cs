@@ -11,8 +11,8 @@ namespace AppLensV2
 {
     public sealed class GeoRegionClient
     {
-        private const string GeoRegionEndpoint = //"https://gr-prod-msftintdm3.cloudapp.net:1743/";
-        "https://sternsgeoregionsvc.cloudapp.net:1743/";
+        private const string GeoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
+        //"https://shgupgr1.cloudapp.net:1743/";
 
         public static async Task<dynamic> GetResource(string apiRoute)
         {
@@ -58,7 +58,7 @@ namespace AppLensV2
                 //1241D6C92881FF9BB075BF3C01B19CE41B383C9D
                 X509Certificate2Collection certCollection = certStore.Certificates.Find(
                                        X509FindType.FindByThumbprint,
-                                       "D8D2125683F7169186DEE9469F0070F1C4302311",
+                                       "1241D6C92881FF9BB075BF3C01B19CE41B383C9D",
                                        false);
                 // Get the first cert with the thumbprint
                 if (certCollection.Count > 0)
