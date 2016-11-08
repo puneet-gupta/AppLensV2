@@ -166,6 +166,10 @@ module SupportCenter {
         }
 
         private graphHeight: any = this.$window.innerHeight * 0.2;
+
+        private GetGraphHeight(detectorName: string) {
+
+        }
         
         private defaultColors: [string] = ["#DD2C00", "#0D47A1", "#00695C", "#3E2723", "#FF6F00", "#aa0000", "#311B92", "#D4E157", "#4DB6AC", "#880E4F"];
         public static runtimeAvailabilityColors: [string] = ["#117dbb", "hsl(120, 57%, 40%)"];
