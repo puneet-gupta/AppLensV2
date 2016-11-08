@@ -39,6 +39,10 @@ module SupportCenter {
                 self.DetectorsService.getDetectorResponse(self.site, self.detectorName, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
                     self.chartData = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, self.detectorName);
+
+                    self.chartOptions.chart.height =
+                        self.chartOptions.chart.height + (self.chartData.length / 8) * 20;
+                    self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
                     self.dataLoading = false;
                 });
 
