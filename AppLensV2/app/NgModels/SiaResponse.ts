@@ -26,7 +26,9 @@ module SupportCenter {
         constructor(
             public Source: string,
             public Metrics: DiagnosticMetricSet[],
-            public Data: NameValuePair[][]
+            public Data: NameValuePair[][],
+            public DetectorMetaData: ResponseMetaData,
+            public DetectorDefinition: DetectorDefinition
         ) {
         }
     }
