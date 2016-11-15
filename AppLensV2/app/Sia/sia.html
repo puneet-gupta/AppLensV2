@@ -19,7 +19,9 @@
     <md-divider></md-divider>
 
     <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;" ng-click="timePeriod.Visible = !timePeriod.Visible">
-        <ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> 
+        <ng-md-icon icon="expand_more" style="fill: rgb(100, 100, 100)" size="23" ng-if="timePeriod.Visible"></ng-md-icon>
+        <ng-md-icon icon="expand_less" style="fill: rgb(100, 100, 100)" size="23" ng-if="!timePeriod.Visible"></ng-md-icon> 
+        <!--<ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> -->
         Start Time : {{:: timePeriod.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{:: timePeriod.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
     </md-subheader>
     <div ng-if="timePeriod.Visible">
