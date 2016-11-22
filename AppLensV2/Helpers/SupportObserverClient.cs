@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
@@ -8,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using AppLensV2.Helpers;
 
 namespace AppLensV2
 {
@@ -37,8 +39,8 @@ namespace AppLensV2
                 {
                     if (Debugger.IsAttached)
                     {
-                        //hashKey =
-                        //    ConfigHelper.Evaluate(ConfigurationManager.AppSettings["SimpleHashAuthenticationHashKey"]);
+                        hashKey =
+                            ConfigHelper.Evaluate(ConfigurationManager.AppSettings["SimpleHashAuthenticationHashKey"]);
                     }
                     else
                     {
