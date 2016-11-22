@@ -39,8 +39,6 @@ namespace AppLensV2
                     {
                         //hashKey =
                         //    ConfigHelper.Evaluate(ConfigurationManager.AppSettings["SimpleHashAuthenticationHashKey"]);
-
-                        hashKey = "2CD7B59F-BD66-4ADA-B986-B108C33BE624";
                     }
                     else
                     {
