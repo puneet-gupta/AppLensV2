@@ -1,0 +1,13 @@
+﻿<div flex>
+    <div flex>
+        <nvd3 options="detailedctrl.chartoptions" data="detailedctrl.graphData"></nvd3>
+    </div>
+    <div flex>
+        <md-input-container>
+            <label>Instance</label>
+            <md-select ng-model="detailedctrl.selectedWorker">
+                <md-option ng-value="worker" ng-repeat="worker in detailedctrl.allMetrics.instanceList">{{ worker }}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+</div>

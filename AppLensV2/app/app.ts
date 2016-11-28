@@ -10,6 +10,7 @@ module SupportCenter {
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
+        .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
             $mdIconProvider: angular.material.IIconProvider,
             $locationProvider: angular.ILocationProvider,

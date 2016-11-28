@@ -50,6 +50,9 @@ module SupportCenter {
                 case 'memoryanalysis':
                     options.chart.type = 'lineChart';
                     break;
+                case 'cpuanalysisdetailed':
+                    options.chart.type = 'stackedAreaChart';
+                    break;
             }
             return options;
         }
@@ -66,6 +69,10 @@ module SupportCenter {
             var coeff = 1000 * 60 * 5;
 
             for (let metric of metrics) {
+
+                if (detectorName === 'cpuanalysis' && metric.Name.indexOf("_Total") < 0) {
+                    continue;
+                }
 
                 var workerChartData: any = {};
 
@@ -108,6 +115,8 @@ module SupportCenter {
                     };
                 }
 
+
+
                 for (let worker in workerChartData) {
 
                     var workerData = _.filter(metric.Values, function (item) {
@@ -148,6 +157,84 @@ module SupportCenter {
             }
 
             return chartData;
+        }
+
+        public GetDetailedChartData(metrics: DiagnosticMetricSet[], detectorName: string = ''): DetailedGraphData {
+            var self = this;
+            var perWorkerGraph: boolean = false;
+
+            var chartData = [];
+            var allDetailedChartData: DetailedGraphData = new DetailedGraphData();
+
+            for (let metric of metrics) {
+                var startTime = new Date(metric.StartTime);
+                var endTime = new Date(metric.EndTime);
+
+                var coeff = this.GetTimeSpanInMilliseconds(metric.TimeGrain);
+                var roundedStartTime = new Date(Math.round(startTime.getTime() / coeff) * coeff);
+                var roundedEndTime = new Date(Math.round(endTime.getTime() / coeff) * coeff);
+
+                var defaultValue: number = 0;
+                //if (metric.Name.toLowerCase().indexOf("availability") > -1) {
+                //    defaultValue = 100;
+                //}
+
+                //var workerData = _.filter(metric.Values, function (item) {
+                //    return item.RoleInstance === worker || worker === Constants.aggregatedWorkerName;
+                //});
+
+                var metricData = metric.Values.reverse();
+
+                // Create instance list
+                if (allDetailedChartData.instanceList === null || allDetailedChartData.instanceList.length < 1) {
+                    metric.Values.forEach(function (point, index) {
+                        if (allDetailedChartData.instanceList.indexOf(point.RoleInstance) < 0) {
+                            allDetailedChartData.instanceList.push(point.RoleInstance);
+                        }
+                        //if (!angular.isDefined(allDetailedChartData.allMetricData[point.RoleInstance])) {
+                        //    allDetailedChartData.allMetricData[point.RoleInstance] = {};
+                        //}
+                    });
+                }
+
+                allDetailedChartData.processList.push(metric.Name);
+
+                for (let index in allDetailedChartData.instanceList) {
+
+                    var workerData = _.filter(metric.Values, function (item) {
+                        return item.RoleInstance === allDetailedChartData.instanceList[index];
+                    });
+
+                    //workerData.reverse();
+                    var workerChartData = [];
+                    var nextElementToAdd = workerData.pop();
+
+                    for (var d = new Date(roundedStartTime.getTime()); d < roundedEndTime; d.setTime(d.getTime() + coeff)) {
+
+                        let xDate = new Date(d.getTime());
+                        let yValue = defaultValue;
+
+                        if (angular.isDefined(nextElementToAdd) && xDate.getTime() === new Date(nextElementToAdd.Timestamp).getTime()) {
+                            yValue = nextElementToAdd.Total;
+
+                            var last = nextElementToAdd;
+
+                            //For bug in CPU data where points are repeated.
+                            do {
+                                nextElementToAdd = workerData.pop();
+                            }
+                            while (angular.isDefined(nextElementToAdd) && new Date(nextElementToAdd.Timestamp).getTime() <= new Date(last.Timestamp).getTime());
+
+                        }
+
+                        workerChartData.push(new GraphPoint(self.ConvertToUTCTime(xDate), yValue));
+                    }
+
+                    allDetailedChartData.metricData.push(new GraphSeries(metric.Name, allDetailedChartData.instanceList[index], workerChartData))
+                }
+            }
+
+            return allDetailedChartData;
         }
 
         public ConvertToUTCTime(localDate: Date): Date {

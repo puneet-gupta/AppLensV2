@@ -12,6 +12,7 @@ module SupportCenter {
         wiki: string;
         solution: string;
         additionaldata: any;
+        metricsets: DiagnosticMetricSet[];
     }
 
     export class DetectorViewCtrl {
@@ -41,7 +42,8 @@ module SupportCenter {
             responsemetadata: '=',
             wiki: '=',
             solution: '=',
-            additionaldata: '='
+            additionaldata: '=',
+            metricsets: '='
         };
     }
 }

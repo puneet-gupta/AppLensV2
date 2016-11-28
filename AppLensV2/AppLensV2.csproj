@@ -122,6 +122,7 @@
     <Content Include="app\assets\svg\search.svg" />
     <Content Include="app\assets\svg\success.svg" />
     <Content Include="app\assets\svg\warning.svg" />
+    <Content Include="app\DetailDetector\detaileddetectorview.html" />
     <Content Include="app\Detector\detector.html" />
     <Content Include="app\Detector\detectorview.html" />
     <Content Include="app\Main\main.html" />
@@ -152,6 +153,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <None Include="applensv2-staging - FTP.pubxml" />
+    <None Include="applensv2-staging - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -169,12 +172,14 @@
     <TypeScriptCompile Include="app\Common\DetectorsService.ts" />
     <TypeScriptCompile Include="app\Common\IStateParams.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
+    <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorCtrl.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorViewDirective.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorViewHelper.ts" />
     <TypeScriptCompile Include="app\Main\MainCtrl.ts" />
     <TypeScriptCompile Include="app\NgModels\Detector.ts" />
     <TypeScriptCompile Include="app\NgModels\DetectorResponse.ts" />
+    <TypeScriptCompile Include="app\NgModels\GraphSeries.ts" />
     <TypeScriptCompile Include="app\NgModels\SiaResponse.ts" />
     <TypeScriptCompile Include="app\NgModels\Site.ts" />
     <TypeScriptCompile Include="app\references.ts" />
