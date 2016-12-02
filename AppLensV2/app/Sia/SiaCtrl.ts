@@ -58,6 +58,7 @@ module SupportCenter {
 
                 this.DetectorData[detectorAnalysisData.Source].responsemetadata = detectorAnalysisData.DetectorMetaData;
                 this.DetectorData[detectorAnalysisData.Source].info = detectorAnalysisData.DetectorDefinition;
+                this.DetectorData[detectorAnalysisData.Source].metricsets = detectorAnalysisData.Metrics;
 
                 this.SiaResponse.AbnormalTimePeriods.forEach(x => {
                     x.Visible = false;

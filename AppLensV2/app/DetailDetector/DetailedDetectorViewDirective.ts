@@ -25,30 +25,35 @@ module SupportCenter {
         public helper: DetectorViewHelper;
         public graphData: any;
         public allMetrics: DetailedGraphData;
-        public chartoptions: any;
+        public detailedchartoptions: any;
+        public selectedworker: string;
         public selectedWorker: string;
+        public selectedProcesses: string[];
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
             var self = this;
             this.helper = new DetectorViewHelper($window);
             this.allMetrics = this.helper.GetDetailedChartData(this.metricsets);
 
-            var now = new Date();
+            if (!angular.isDefined(this.selectedworker) || this.allMetrics.instanceList.indexOf(this.selectedworker) < 0) {
+                this.selectedWorker = this.allMetrics.instanceList[0];
+            }
+            else {
+                this.selectedWorker = this.selectedworker;
+            }
+
+            this.selectedProcesses = this.allMetrics.processList;
+
+            this.detailedchartoptions = this.helper.GetChartOptions('cpuanalysisdetailed');
+            this.detailedchartoptions.chart.height = this.detailedchartoptions.chart.height * 2;
+            this.updateGraphData();
+        }
+
+        public updateGraphData() {
+            var self = this;
             this.graphData = _.filter(this.allMetrics.metricData, function (item) {
-                return item.instance === self.allMetrics.instanceList[0] && item.key.indexOf("_Total") == -1;
+                return item.instance === self.selectedWorker && self.selectedProcesses.indexOf(item.key);
             });
-            console.log(this.chartoptions);
-            this.chartoptions = this.helper.GetChartOptions('cpuanalysisdetailed');
-            this.chartoptions.chart.height = this.chartoptions.chart.height * 2;
-            this.chartoptions.chart.showLegend = false;
-            this.chartoptions.chart.tooltipContent = function (key, x, y, e, graph) {
-                if (key == '1')
-                    return '<div id="tooltipcustom">' + '<p id="head">' + x + '</p>' +
-                        '<p>' + y + ' cent/kWh/h/Runtime ' + '</p></div>'
-            };
-            //this.chartoptions.chart.type = 'stackedAreaGraph';
-            console.log(this.chartoptions);
-            console.log(new Date().getTime() - now.getTime());
         }
     }
 
@@ -66,13 +71,7 @@ module SupportCenter {
         public scope: { [boundProperty: string]: string } = {
             loading: '=',
             metricsets: '=',
-            chartoptions: '=',
-            chartdata: '=',
-            //info: '=',
-           // responsemetadata: '=',
-            //wiki: '=',
-            //solution: '=',
-            //additionaldata: '='
+            selectedworker: '='
         };
     }
 }

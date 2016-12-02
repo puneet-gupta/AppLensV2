@@ -18,11 +18,14 @@
                         Metrics
                     </md-tab-label>
                     <md-tab-body>
-                        <detailed-detector-view loading="detectorviewctrl.loading" chartoptions="detectorviewctrl.chartoptions" 
-                                                chartdata="detectorviewctrl.chartdata" metricsets="detectorviewctrl.metricsets"
-                               ng-if="detectorviewctrl.info.Name == 'cpuanalysis'" ></detailed-detector-view>
                         <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
-                               ng-if="detectorviewctrl.info.Name != 'instanceallocations' && detectorviewctrl.info.Name != 'cpuanalysis'"></nvd3>
+                               ng-if="detectorviewctrl.info.Name != 'instanceallocations'"></nvd3>
+                        <detailed-detector-view loading="detectorviewctrl.loading" metricsets="detectorviewctrl.metricsets"
+                                                ng-if="detectorviewctrl.info.Name === 'cpuanalysis' && detectorviewctrl.showDetailedView"></detailed-detector-view>
+                        <md-button ng-click="detectorviewctrl.showDetailedView = !detectorviewctrl.showDetailedView" ng-if="detectorviewctrl.info.Name === 'cpuanalysis'">
+                            <span ng-if="!detectorviewctrl.showDetailedView">Show Per Instance Data</span>
+                            <span ng-if="detectorviewctrl.showDetailedView">Hide Per Instance Data</span>
+                        </md-button>
                         <table style="width: 100%; border-spacing: 1px; padding-right: 25px; border-collapse: separate;" 
                                ng-if="detectorviewctrl.info.Name == 'instanceallocations'">
                             <tr ng-repeat="instance in detectorviewctrl.chartdata">

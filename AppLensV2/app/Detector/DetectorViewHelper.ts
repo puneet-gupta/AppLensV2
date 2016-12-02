@@ -48,10 +48,8 @@ module SupportCenter {
                 case 'cpuanalysis':
                 case 'workeravailability':
                 case 'memoryanalysis':
-                    options.chart.type = 'lineChart';
-                    break;
                 case 'cpuanalysisdetailed':
-                    options.chart.type = 'stackedAreaChart';
+                    options.chart.type = 'lineChart';
                     break;
             }
             return options;
@@ -70,7 +68,7 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if (detectorName === 'cpuanalysis' && metric.Name.indexOf("_Total") < 0) {
+                if (detectorName === 'cpuanalysis' && metric.Name !== "PercentTotalProcessorTime") {
                     continue;
                 }
 
@@ -175,15 +173,19 @@ module SupportCenter {
                 var roundedEndTime = new Date(Math.round(endTime.getTime() / coeff) * coeff);
 
                 var defaultValue: number = 0;
-                //if (metric.Name.toLowerCase().indexOf("availability") > -1) {
-                //    defaultValue = 100;
-                //}
 
-                //var workerData = _.filter(metric.Values, function (item) {
-                //    return item.RoleInstance === worker || worker === Constants.aggregatedWorkerName;
-                //});
+                var metricData = metric.Values.sort(function (a, b) {
 
-                var metricData = metric.Values.reverse();
+                    var dateA = new Date(a.Timestamp).getTime();
+                    var dateB = new Date(b.Timestamp).getTime();
+                    if (dateA > dateB) {
+                        return -1;
+                    }
+                    if (dateA < dateB) {
+                        return 1;
+                    }
+                    return 0;
+                });
 
                 // Create instance list
                 if (allDetailedChartData.instanceList === null || allDetailedChartData.instanceList.length < 1) {
@@ -191,9 +193,6 @@ module SupportCenter {
                         if (allDetailedChartData.instanceList.indexOf(point.RoleInstance) < 0) {
                             allDetailedChartData.instanceList.push(point.RoleInstance);
                         }
-                        //if (!angular.isDefined(allDetailedChartData.allMetricData[point.RoleInstance])) {
-                        //    allDetailedChartData.allMetricData[point.RoleInstance] = {};
-                        //}
                     });
                 }
 
@@ -224,7 +223,6 @@ module SupportCenter {
                                 nextElementToAdd = workerData.pop();
                             }
                             while (angular.isDefined(nextElementToAdd) && new Date(nextElementToAdd.Timestamp).getTime() <= new Date(last.Timestamp).getTime());
-
                         }
 
                         workerChartData.push(new GraphPoint(self.ConvertToUTCTime(xDate), yValue));
