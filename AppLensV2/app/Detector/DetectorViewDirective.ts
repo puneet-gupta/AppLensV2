@@ -12,10 +12,12 @@ module SupportCenter {
         wiki: string;
         solution: string;
         additionaldata: any;
+        metricsets: DiagnosticMetricSet[];
     }
 
     export class DetectorViewCtrl {
         public static $inject: string[] = ["DetectorsService", "$stateParams", "$window"];
+        public showDetailedView: boolean = false;
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
             
@@ -41,7 +43,8 @@ module SupportCenter {
             responsemetadata: '=',
             wiki: '=',
             solution: '=',
-            additionaldata: '='
+            additionaldata: '=',
+            metricsets: '='
         };
     }
 }

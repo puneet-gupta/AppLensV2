@@ -22,5 +22,6 @@ module SupportCenter {
         responsemetadata: ResponseMetaData;
         wiki: string;
         solution: string;
+        metricsets: DiagnosticMetricSet[];
     }
 }
