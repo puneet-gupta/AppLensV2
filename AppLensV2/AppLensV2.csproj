@@ -141,6 +141,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ApplicationInsightsClient.cs" />
+    <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\GeoRegionClient.cs" />
     <Compile Include="Helpers\GithubClient.cs" />
     <Compile Include="Helpers\SupportObserverClient.cs" />
