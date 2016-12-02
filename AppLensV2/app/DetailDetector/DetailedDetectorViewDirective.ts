@@ -51,8 +51,8 @@ module SupportCenter {
 
         public updateGraphData() {
             var self = this;
-            this.graphData = _.filter(this.allMetrics.metricData, function (item) {
-                return item.instance === self.selectedWorker && self.selectedProcesses.indexOf(item.key);
+            this.graphData = _.filter(this.allMetrics.metricData, function (item: GraphSeries) {
+                return item.instance === self.selectedWorker;
             });
         }
     }
