@@ -8,11 +8,6 @@ module SupportCenter {
         metricsets: DiagnosticMetricSet[];
         chartoptions: any;
         chartdata: any;
-        //info: any;
-        //responsemetadata: any;
-        //: string;
-        //: string;
-        //additionaldata: any;
     }
 
     export interface IDetailedDetectorCtrl  {
