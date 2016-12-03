@@ -62,7 +62,13 @@ module SupportCenter {
 
                 this.SiaResponse.AbnormalTimePeriods.forEach(x => {
                     x.Visible = false;
-                    x.Events.forEach(detector => detector.Visible = false);
+                    x.Events.forEach(detector => {
+                        detector.Visible = false
+                        if (detector.Source === 'cpuanalysis') {
+                            detector.Instance = detector.Message.split('\'')[1];
+                        }
+                    });
+                    x.Events
                 });
 
                 var self = this;

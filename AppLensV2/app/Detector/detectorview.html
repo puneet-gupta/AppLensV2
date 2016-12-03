@@ -20,7 +20,7 @@
                     <md-tab-body>
                         <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
                                ng-if="detectorviewctrl.info.Name != 'instanceallocations'"></nvd3>
-                        <detailed-detector-view loading="detectorviewctrl.loading" metricsets="detectorviewctrl.metricsets"
+                        <detailed-detector-view loading="detectorviewctrl.loading" metricsets="detectorviewctrl.metricsets" selectedworker="detectorviewctrl.selectedworker"
                                                 ng-if="detectorviewctrl.info.Name === 'cpuanalysis' && detectorviewctrl.showDetailedView"></detailed-detector-view>
                         <md-button ng-click="detectorviewctrl.showDetailedView = !detectorviewctrl.showDetailedView" ng-if="detectorviewctrl.info.Name === 'cpuanalysis'">
                             <span ng-if="!detectorviewctrl.showDetailedView">Show Per Instance Data</span>

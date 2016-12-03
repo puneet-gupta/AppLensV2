@@ -21,7 +21,8 @@ module SupportCenter {
             public Message: string = '',
             public Source: string = '',
             public Priority: number = 0,
-            public Visible?: boolean
+            public Visible?: boolean,
+            public Instance: string = ''
         ) {
         }
     }
