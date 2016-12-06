@@ -22,7 +22,7 @@ namespace AppLensV2
         /// Support API Endpoint
         /// </summary>
         private const string SupportObserverApiEndpoint = "https://support-bay-api.azurewebsites.net/observer/";
-
+        
         /// <summary>
         /// Signing Key
         /// </summary>
@@ -57,7 +57,7 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">Site Name</param>
         /// <returns>Stamp</returns>
-        public static async Task<dynamic> GetSite(string siteName)
+        internal static async Task<dynamic> GetSite(string siteName)
         {
             using (var client = new HttpClient())
             {
@@ -66,7 +66,7 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -83,7 +83,7 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">Site Name</param>
         /// <returns>Stamp</returns>
-        public static async Task<dynamic> GetStamp(string siteName)
+        internal static async Task<dynamic> GetStamp(string siteName)
         {
             using (var client = new HttpClient())
             {
@@ -109,16 +109,16 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">SiteName</param>
         /// <returns>Hostnames</returns>
-        public static async Task<dynamic> GetHostnames(string siteName)
+        internal static async Task<dynamic> GetHostnames(string siteName)
         {
             using (var client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromSeconds(60);
                 client.MaxResponseContentBufferSize = int.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), "2CD7B59F-BD66-4ADA-B986-B108C33BE624"));
+                client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames?api-version=2.0");
 
                 if (response.IsSuccessStatusCode)
                 {

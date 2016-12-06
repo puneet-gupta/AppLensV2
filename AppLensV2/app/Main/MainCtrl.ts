@@ -5,10 +5,10 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService) {
-
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService) {
+            this.appserviceLogo = "app/assets/images/Azure-WebApps-Logo.png";
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -35,6 +35,11 @@ module SupportCenter {
             var self = this;
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
+
+                if (self.site.kind === 'functionapp') {
+                    self.appserviceLogo = "app/assets/images/Azure-Functions-Logo.png";
+                }
+
                 self.getRuntimeAvailability();
 
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
@@ -65,6 +70,7 @@ module SupportCenter {
         requestsChartData: any;
         dataLoading: boolean = true;
         containerHeight: string;
+        appserviceLogo: string;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -120,5 +126,42 @@ module SupportCenter {
                 });
             });
         }
+
+        showAppProfile(): void {
+            var position = this.$mdPanel.newPanelPosition()
+                .absolute()
+                .center();
+
+            var config = {
+                attachTo: angular.element(document.body),
+                controllerAs: 'appprofilectrl',
+                controller: AppProfileCtrl,
+                disableParentScroll: true,
+                templateUrl: 'appprofile.html',
+                hasBackdrop: true,
+                panelClass: 'app-profile-dialog',
+                position: position,
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: true
+            };
+
+            this.$mdPanel.open(config);
+                
+        }
+    }
+
+    export class AppProfileCtrl {
+
+        constructor(private SiteService: ISiteService) {
+            var self = this;
+            this.SiteService.promise.then(function (data: any) {
+                self.site = self.SiteService.site;
+            });
+        }
+
+        site: Site;
     }
 }

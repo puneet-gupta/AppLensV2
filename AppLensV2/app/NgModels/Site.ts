@@ -9,8 +9,17 @@ module SupportCenter {
             public subscriptionId: string,
             public resourceGroup: string,
             public hostNames: string[],
-            public stampName: string
+            public stampName: string,
+            public kind: string
         ) {
         }
+
+        sku: string;
+        stack: string;
+        isLocalCacheEnabled: string;
+        numberOfContinousWebJobs: number;
+        numberOfTriggeredWebJobs: number;
+        numberOfSlots: number;
+        isLinux: boolean;
     }
 }

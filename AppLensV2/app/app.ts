@@ -9,6 +9,7 @@ module SupportCenter {
         .controller("MainCtrl", MainCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
+        .controller("AppProfileCtrl", AppProfileCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
             $mdIconProvider: angular.material.IIconProvider,

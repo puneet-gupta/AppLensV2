@@ -117,6 +117,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\assets\app.css" />
+    <Content Include="app\assets\images\Azure-Functions-Logo.png" />
+    <Content Include="app\assets\images\Azure-WebApps-Logo.png" />
     <Content Include="app\assets\images\sia.png" />
     <Content Include="app\assets\svg\menu.svg" />
     <Content Include="app\assets\svg\search.svg" />
