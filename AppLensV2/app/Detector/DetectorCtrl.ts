@@ -43,6 +43,9 @@ module SupportCenter {
                     self.chartOptions.chart.height =
                         self.chartOptions.chart.height + (self.chartData.length / 8) * 20;
                     self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
+                    if (self.detectorName === 'cpuanalysis' || self.detectorName === 'memoryanalysis') {
+                        self.chartOptions.chart.yAxis.axisLabel = 'Percent';
+                    }
                     self.dataLoading = false;
                 });
 
