@@ -57,8 +57,8 @@ module SupportCenter {
         }
 
         public detectorResponse: DetectorResponse;
-        private detectorName: string;
         private site: Site;
+        detectorName: string;
         chartOptions: any;
         chartData: any;
         dataLoading: Boolean = true;

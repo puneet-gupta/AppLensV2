@@ -14,6 +14,7 @@ module SupportCenter {
         additionaldata: any;
         metricsets: DiagnosticMetricSet[];
         selectedworker: string;
+        detectorsource: string;
     }
 
     export class DetectorViewCtrl {
@@ -46,7 +47,8 @@ module SupportCenter {
             solution: '=',
             additionaldata: '=',
             metricsets: '=',
-            selectedworker: '='
+            selectedworker: '=',
+            detectorsource: '='
         };
     }
 }

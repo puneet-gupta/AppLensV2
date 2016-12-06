@@ -8,6 +8,7 @@ module SupportCenter {
         metricsets: DiagnosticMetricSet[];
         chartoptions: any;
         chartdata: any;
+        detectorsource: string;
     }
 
     export interface IDetailedDetectorCtrl  {
@@ -24,6 +25,7 @@ module SupportCenter {
         public selectedworker: string;
         public selectedWorker: string;
         public selectedProcesses: string[];
+        public detectorsource: string;
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
             var self = this;
@@ -39,7 +41,7 @@ module SupportCenter {
 
             this.selectedProcesses = this.allMetrics.processList;
 
-            this.detailedchartoptions = this.helper.GetChartOptions('cpuanalysisdetailed');
+            this.detailedchartoptions = this.helper.GetChartOptions(this.detectorsource + 'detailed');
             this.detailedchartoptions.chart.height = this.detailedchartoptions.chart.height * 2;
             this.updateGraphData();
         }
@@ -66,7 +68,8 @@ module SupportCenter {
         public scope: { [boundProperty: string]: string } = {
             loading: '=',
             metricsets: '=',
-            selectedworker: '='
+            selectedworker: '=',
+            detectorsource: '='
         };
     }
 }

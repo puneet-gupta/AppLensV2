@@ -51,6 +51,9 @@ module SupportCenter {
                 case 'cpuanalysisdetailed':
                     options.chart.type = 'lineChart';
                     break;
+                case 'memoryanalysisdetailed':
+                    options.chart.type = 'stackedAreaChart';
+                    break;
             }
             return options;
         }
@@ -68,7 +71,7 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if (detectorName === 'cpuanalysis' && metric.Name !== "PercentTotalProcessorTime") {
+                if ((detectorName === 'cpuanalysis' && metric.Name !== "PercentTotalProcessorTime") || (detectorName === 'memoryanalysis' && metric.Name !== 'PercentOverallMemory')) {
                     continue;
                 }
 
@@ -93,7 +96,7 @@ module SupportCenter {
                     if (!angular.isDefined(workerChartData[workerName])) {
 
                         workerChartData[workerName] = {
-                            key: workerName === Constants.aggregatedWorkerName ? metric.Name: metric.Name + ' - ' + workerName,
+                            key: workerName === Constants.aggregatedWorkerName ? metric.Name: workerName,
                             worker: workerName,
                             isActive: true,
                             values: [],
@@ -165,6 +168,10 @@ module SupportCenter {
             var allDetailedChartData: DetailedGraphData = new DetailedGraphData();
 
             for (let metric of metrics) {
+                if (metric.Name === 'PercentOverallMemory') {
+                    continue;
+                }
+
                 var startTime = new Date(metric.StartTime);
                 var endTime = new Date(metric.EndTime);
 
