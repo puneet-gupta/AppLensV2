@@ -9,6 +9,7 @@ module SupportCenter {
         .controller("MainCtrl", MainCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
+        .controller("AppProfileCtrl", AppProfileCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
@@ -69,6 +70,18 @@ module SupportCenter {
                 .replace("MediumDedicatedWebWorkerRole_IN", "MDW")
                 .replace("LargeDedicatedWebWorkerRole_IN", "LDW")
                 .replace("WebWorkerRole_IN_", "W").replace(" - aggregated", "");
+        };
+    });
+
+    app.filter('correlatedcolor', function () {
+        return function (input) {
+
+            if (input == 1)
+                return "#ff7043";
+            if (input == 0)
+                return "#ffc400";
+
+            return "#ffffff";
         };
     });
 }

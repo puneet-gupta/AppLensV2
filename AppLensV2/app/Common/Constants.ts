@@ -20,6 +20,7 @@ module SupportCenter {
         private static appAnalysis: string = UriPaths.baseAPIPath + "/appAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = UriPaths.baseAPIPath + "/detectors";
         private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
+        private static siteDiagnosticProperties: string = UriPaths.baseAPIPath + "/properties";
 
         public static SiteDetailsPath(siteName: string): string {
             return UriPaths.siteDetails.replace("{siteName}", siteName);
@@ -41,6 +42,10 @@ module SupportCenter {
 
         public static ListDetectorsPath(site: Site): string {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, site, '', '', '');
+        }
+
+        public static SiteDiagnosticPropertiesPath(site: Site): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.siteDiagnosticProperties, site, '', '', '');
         }
 
         public static DetectorResourcePath(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
