@@ -9,11 +9,11 @@ module SupportCenter {
             public subscriptionId: string,
             public resourceGroup: string,
             public hostNames: string[],
-            public stampName: string,
-            public kind: string
+            public stampName: string
         ) {
         }
 
+        kind: string
         sku: string;
         stack: string;
         isLocalCacheEnabled: string;

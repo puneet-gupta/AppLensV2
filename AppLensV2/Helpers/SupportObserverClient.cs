@@ -66,7 +66,7 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -118,7 +118,7 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames?api-version=2.0");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames");
 
                 if (response.IsSuccessStatusCode)
                 {
