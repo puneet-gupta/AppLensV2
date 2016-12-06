@@ -12,5 +12,14 @@ module SupportCenter {
             public stampName: string
         ) {
         }
+
+        kind: string
+        sku: string;
+        stack: string;
+        isLocalCacheEnabled: string;
+        numberOfContinousWebJobs: number;
+        numberOfTriggeredWebJobs: number;
+        numberOfSlots: number;
+        isLinux: boolean;
     }
 }

@@ -5,10 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService) {
-
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService) {
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -35,6 +34,7 @@ module SupportCenter {
             var self = this;
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
+                
                 self.getRuntimeAvailability();
 
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
@@ -138,5 +138,58 @@ module SupportCenter {
                 });
             });
         }
+
+        showAppProfile(): void {
+            var position = this.$mdPanel.newPanelPosition()
+                .absolute()
+                .center();
+
+            var config = {
+                attachTo: angular.element(document.body),
+                controllerAs: 'appprofilectrl',
+                controller: AppProfileCtrl,
+                disableParentScroll: true,
+                templateUrl: 'appprofile.html',
+                hasBackdrop: true,
+                panelClass: 'app-profile-dialog',
+                position: position,
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: true
+            };
+
+            this.$mdPanel.open(config);
+                
+        }
+    }
+
+    export class AppProfileCtrl {
+
+        constructor(private SiteService: ISiteService) {
+            var self = this;
+            this.logo = "app/assets/images/Azure-WebApps-Logo.png";
+            this.properties = [];
+            this.SiteService.promise.then(function (data: any) {
+                self.site = self.SiteService.site;
+                if (self.site.kind === 'functionapp') {
+                    self.logo = "app/assets/images/Azure-Functions-Logo.png";
+                }
+
+                self.properties.push(new NameValuePair("Subscription Id", self.site.subscriptionId));
+                self.properties.push(new NameValuePair("Stamp Name", self.site.stampName));
+                self.properties.push(new NameValuePair("Hostnames", self.site.hostNames.join()));
+                self.properties.push(new NameValuePair("App Stack", self.site.stack));
+                self.properties.push(new NameValuePair("SKU", self.site.sku));
+                self.properties.push(new NameValuePair("Is Linux?", self.site.isLinux.toString()));
+                self.properties.push(new NameValuePair("Number Of Continuous WebJobs", self.site.numberOfContinousWebJobs.toString()));
+                self.properties.push(new NameValuePair("Number of Triggered WebJobs", self.site.numberOfTriggeredWebJobs.toString()));
+            });
+        }
+
+        site: Site;
+        logo: string;
+        properties: NameValuePair[]
     }
 }

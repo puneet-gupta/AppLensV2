@@ -1,10 +1,24 @@
 ﻿<md-sidenav style="width:260px" flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
 
-    <md-toolbar style="height:200px">
-        <h1>{{::main.site.name}}</h1>
-    </md-toolbar>
+
+    <div style="height:150px;width:100%;background-color:teal;color:white">
+        <div layout="column">
+            <div layout="row" flex="60" layout-align="center center" style="padding:5px;padding-top:10px">
+                <img ng-if="main.site.kind !== 'functionapp'" src="app/assets/images/Azure-WebApps-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
+                <img ng-if="main.site.kind === 'functionapp'" src="app/assets/images/Azure-Functions-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
+            </div>
+            <div layout="row" flex="20" layout-align="center center" style="font-size:17px;font-weight:400">
+                {{::main.site.name}}
+            </div>
+            <div layout="row" flex="20" layout-align="center center">
+                <md-button style="color:#e2e2e2;text-decoration:underline;font-size:11px"  ng-click="main.showAppProfile($event)">View Details</md-button>
+            </div>
+        </div>
+    </div>
 
     <md-content>
+
+        <md-divider></md-divider>
         <md-list>
 
             <md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'sia'}" ng-click="main.setSelectedItem('sia')">
@@ -123,4 +137,34 @@
 
     </md-content>
 </div>
+
+<script type="text/ng-template" id="appprofile.html">
+    <md-content style="border-radius:5px">
+
+        <md-list flex>
+            <md-list-item class="md-3-line">
+
+                <img ng-src="{{appprofilectrl.logo}}" class="md-avatar" alt="type of app">
+                <div class="md-list-item-text">
+                    <h3 style="font-weight:600;font-variant:small-caps;font-size:20px">{{::appprofilectrl.site.name}}</h3>
+                    <h4>{{::appprofilectrl.site.kind}}</h4>
+                    <p><a href="https://wawsobserver.azurewebsites.net/sites/{{appprofilectrl.site.name}}" target="_blank" style="font-size:13px;color:teal">Observer Link</a></p>
+                </div>
+
+            </md-list-item>
+            <md-divider></md-divider>
+
+            <md-list-item ng-repeat="item in appprofilectrl.properties">
+                <div class="md-list-item-text" layout="column">
+                    <p style="margin-bottom:0;color:teal">{{::item.Name}}</p>
+                    <h3 style="font-weight:400;margin-top:5px;font-size:17px">{{ ::item.Value }}</h3>
+                </div>
+            </md-list-item>
+
+        </md-list>
+
+        
+
+    </md-content>
+</script>
 

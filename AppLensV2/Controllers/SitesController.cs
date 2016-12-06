@@ -51,7 +51,7 @@ namespace AppLensV2
                 HostNames = hostNameResponse
             });
         }
-
+        
         [HttpGet]
         [Route("api/detectors/{detectorName}/files/{fileName}")]
         public async Task<IHttpActionResult> GetDetectorFiles(string detectorName, string fileName)
