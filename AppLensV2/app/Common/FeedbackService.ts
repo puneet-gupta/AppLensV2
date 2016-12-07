@@ -20,7 +20,7 @@ module SupportCenter {
                 var startTime = 'startTime={date}'.replace('{date}', new Date(new Date().setHours(new Date().getHours() - 24)).toISOString());
                 currentUrl += (currentUrl.indexOf('?') < 0 ? '?' : '&') + startTime;
             }
-            return currentUrl
+            return currentUrl;
         }
 
         sendGeneralFeedback(): void {
