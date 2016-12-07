@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService) {
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -41,6 +41,7 @@ module SupportCenter {
                     self.detectors = data;
                     self.detectorListLoaded = true;
 
+                    self.showFeedbackToast();
                     self.DetectorsService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (siaResponse: SiaResponse) {
                         //do stuff here with siaResponse
                         _.each(siaResponse.NonCorrelatedDetectors, function (item: any) {
@@ -107,6 +108,20 @@ module SupportCenter {
             if (sidenav.isOpen()) {
                 sidenav.close();
             }
+        }
+
+        sendFeedback(): void {
+            this.FeedbackService.sendGeneralFeedback();
+        }
+
+        showFeedbackToast(): void {
+            this.$mdToast.show(
+                this.$mdToast.simple()
+                    .textContent('Click the button above to provide feedback!')
+                    .position('top right')
+                    .hideDelay(5000)
+                    .parent('#wrapper')
+            );
         }
 
         private getRuntimeAvailability(): void {

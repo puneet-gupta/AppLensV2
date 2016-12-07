@@ -6,6 +6,7 @@ module SupportCenter {
     var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown"])
         .service("DetectorsService", DetectorsService)
         .service("SiteService", SiteService)
+        .service("FeedbackService", FeedbackService)
         .controller("MainCtrl", MainCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)

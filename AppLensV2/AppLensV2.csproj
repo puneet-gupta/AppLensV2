@@ -171,6 +171,7 @@
     <TypeScriptCompile Include="app\app.ts" />
     <TypeScriptCompile Include="app\Common\Constants.ts" />
     <TypeScriptCompile Include="app\Common\DetectorsService.ts" />
+    <TypeScriptCompile Include="app\Common\FeedbackService.ts" />
     <TypeScriptCompile Include="app\Common\IStateParams.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
     <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
