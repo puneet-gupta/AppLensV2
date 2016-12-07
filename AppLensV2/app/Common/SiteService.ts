@@ -37,11 +37,11 @@ module SupportCenter {
 
                         if (angular.isDefined(data.Properties)) {
 
-                            self.site.stack = data.Properties.Stack;
+                            self.site.stack = data.Properties.AppStack;
                             self.site.kind = data.Properties.Kind === 'app' || data.Properties.Kind === null ? 'webapp' : data.Properties.Kind;
                             self.site.isLinux = data.Properties.IsLinux;
                             self.site.numberOfSlots = data.Properties.NumberOfSlots;
-                            self.site.numberOfContinousWebJobs = data.Properties.ContinousWebJobsCount;
+                            self.site.numberOfContinousWebJobs = data.Properties.ContinuousWebJobsCount;
                             self.site.numberOfTriggeredWebJobs = data.Properties.TriggeredWebJobsCount;
                             self.site.sku = data.Properties.Sku;
                         }
