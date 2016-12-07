@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService) {
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -107,6 +107,10 @@ module SupportCenter {
             if (sidenav.isOpen()) {
                 sidenav.close();
             }
+        }
+
+        sendFeedback(): void {
+            this.FeedbackService.sendGeneralFeedback();
         }
 
         private getRuntimeAvailability(): void {
