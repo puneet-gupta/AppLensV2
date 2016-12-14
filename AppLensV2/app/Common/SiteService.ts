@@ -16,15 +16,7 @@ module SupportCenter {
             var self = this;
             this.promise = this.$http.get("/api/sites/" + siteName).success(function (data: any) {
 
-                var hostNameList: string[] = [];
-                for (let hostname of data.HostNames) {
-                    if (hostname.SiteType === 0)    // non scm hostname
-                    {
-                        hostNameList.push(hostname.Name)
-                    }
-                }
-
-                self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, "internal_rg", hostNameList, data.Stamp.Name);
+                self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, "internal_rg", data.HostNames, data.Stamp.Name);
                 
                 self.$http({
                     method: "GET",
