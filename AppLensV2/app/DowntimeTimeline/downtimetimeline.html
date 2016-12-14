@@ -2,6 +2,6 @@
     <div flex layout="row" style="padding:0px 20px 0px 60px;height:auto;" ng-if="!downtimetimeline.loading">
         <div layout="column" style="width:{{period.percent}}%;height:{{downtimetimeline.height}};border-bottom: solid 1px;border-top: solid 1px;border-color:#e1e1e1" 
              ng-class="{'timeline-downtime': period.downtime && period.index !== downtimetimeline.selectedDowntime.index, 'timeline-downtime-selected': period.downtime && period.index === downtimetimeline.selectedDowntime.index || period.index === -2, 'timeline-uptime': !period.downtime}" 
-             ng-repeat="period in downtimetimeline.allTimePeriods" ng-click="downtimetimeline.selectDowntime(period.index)"></div>
+             ng-repeat="period in ::downtimetimeline.allTimePeriods" ng-click="downtimetimeline.selectDowntime(period.index)"></div>
     </div>
 </div>

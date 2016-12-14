@@ -13,11 +13,11 @@ module SupportCenter {
     export class SiaService implements ISiaService {
         private siaPromise: ng.IPromise<any>;
 
-        public static $inject: string[] = ["DetectorsService", "SiteService", "$stateParams", "$window", "$http"];
+        public static $inject: string[] = ["SiteService", "$stateParams", "$window", "$http"];
         public siaResponse: SiaResponse;
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private DetectorsService: IDetectorsService, private SiteService: ISiteService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
+        constructor(private SiteService: ISiteService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
             this.selectedAbnormalTimePeriod = {};
         }
 
