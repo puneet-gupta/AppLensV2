@@ -5,6 +5,7 @@ module SupportCenter {
 
     var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown"])
         .service("DetectorsService", DetectorsService)
+        .service("SiaService", SiaService)
         .service("SiteService", SiteService)
         .service("FeedbackService", FeedbackService)
         .controller("MainCtrl", MainCtrl)
@@ -13,6 +14,7 @@ module SupportCenter {
         .controller("AppProfileCtrl", AppProfileCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
+        .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
             $mdIconProvider: angular.material.IIconProvider,
             $locationProvider: angular.ILocationProvider,

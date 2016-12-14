@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class SiaCtrl {
 
-        public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "$window"];
+        public static $inject: string[] = ["DetectorsService", "SiaService", "$stateParams", "SiteService", "$window"];
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService) {
+        constructor(private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService) {
 
             var self = this;
             this.DetectorData = {};
@@ -28,12 +28,19 @@ module SupportCenter {
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
 
-                self.DetectorsService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: SiaResponse) {
-                    self.SiaResponse = data;
-                    self.isLoading = false;
+                self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: SiaResponse) {
+                    self.SiaResponse = SiaService.siaResponse;
+                    self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
                     self.PrepareDetectorViewParams(self.SiaResponse.StartTime, self.SiaResponse.EndTime);
+                    self.isLoading = false;
                 });
             });
+        }
+
+        public selectDowntime(index: number): void {
+            if (index >= 0) {
+                this.SiaService.selectDowntime(index);
+            }
         }
 
         private PrepareDetectorViewParams(startTime: string, endTime: string): void {
@@ -88,5 +95,6 @@ module SupportCenter {
         private site: Site;
         public DetectorData: ICache<DetectorViewParams>;
         public isLoading: boolean;
+        public selectedAbnormalTimePeriod: any;
     }
 }

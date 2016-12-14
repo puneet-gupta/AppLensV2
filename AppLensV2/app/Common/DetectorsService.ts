@@ -6,7 +6,6 @@ module SupportCenter {
     export interface IDetectorsService {
         getDetectors(site: Site): ng.IPromise<DetectorDefinition[]>;
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
     }
@@ -18,7 +17,6 @@ module SupportCenter {
     export class DetectorsService implements IDetectorsService {
 
         private detectorsResponseCache: ICache<DetectorResponse>;
-        private siaResponseCache: ICache<SiaResponse>;
         private detectorsWikiCache: ICache<string>;
         private detectorsSolutionCache: ICache<string>;
         private detectorsListCache: ICache<DetectorDefinition[]>;
@@ -27,7 +25,6 @@ module SupportCenter {
 
         constructor(private $q: ng.IQService, private $http: ng.IHttpService) {
             this.detectorsResponseCache = {};
-            this.siaResponseCache = {};
             this.detectorsWikiCache = {};
             this.detectorsSolutionCache = {};
             this.detectorsListCache = {};
@@ -115,38 +112,6 @@ module SupportCenter {
                         deferred.reject("Properties not present in api response");
                     }
 
-                })
-                .error((data: any) => {
-                    deferred.reject(data);
-                });
-
-            return deferred.promise;
-        }
-
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<SiaResponse> {
-
-            var deferred = this.$q.defer<SiaResponse>();
-
-            if (angular.isDefined(this.siaResponseCache["sia"])) {
-                deferred.resolve(this.siaResponseCache["sia"]);
-                return deferred.promise;
-            }
-
-            this.$http({
-                method: "GET",
-                url: UriPaths.DiagnosticsPassThroughAPIPath(),
-                headers: {
-                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(site, startTime, endTime, timeGrain)
-                }
-            })
-                .success((data: any) => {
-
-                    var response = new SiaResponse('', '', [], [], []);
-                    if (angular.isDefined(data.Properties)) {
-                        response = data.Properties;
-                        this.siaResponseCache["sia"] = response;
-                        deferred.resolve(response);
-                    }
                 })
                 .error((data: any) => {
                     deferred.reject(data);
