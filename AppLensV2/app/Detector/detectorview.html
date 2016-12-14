@@ -18,6 +18,7 @@
                         Metrics
                     </md-tab-label>
                     <md-tab-body>
+                        <downtime-timeline singleabnormaltimeperiod="detectorviewctrl.abnormaltimeperiod" height="'10px'" ng-if="detectorviewctrl.abnormaltimeperiod !== undefined"></downtime-timeline>
                         <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
                                ng-if="detectorviewctrl.info.Name != 'instanceallocations'"></nvd3>
                         <detailed-detector-view loading="detectorviewctrl.loading" metricsets="detectorviewctrl.metricsets" selectedworker="detectorviewctrl.selectedworker" detectorsource="detectorviewctrl.detectorsource"

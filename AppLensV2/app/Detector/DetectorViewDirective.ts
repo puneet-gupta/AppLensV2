@@ -15,6 +15,7 @@ module SupportCenter {
         metricsets: DiagnosticMetricSet[];
         selectedworker: string;
         detectorsource: string;
+        abnormaltimeperiod: AbnormalTimePeriod;
     }
 
     export class DetectorViewCtrl {
@@ -48,7 +49,8 @@ module SupportCenter {
             additionaldata: '=',
             metricsets: '=',
             selectedworker: '=',
-            detectorsource: '='
+            detectorsource: '=',
+            abnormaltimeperiod: '=',
         };
     }
 }

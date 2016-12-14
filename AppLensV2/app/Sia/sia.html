@@ -2,30 +2,43 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
 </div>
 
-<div ng-if="!sia.isLoading" style="margin-left:15px;">
-    <div ng-if="::sia.SiaResponse.AbnormalTimePeriods.length > 0">
-        <h2 class="md-title" style="margin-bottom:0;text-decoration:underline">Application Downtime Periods</h2>
-        <h3 class="md-subhead" style="margin-top:5px">(With Correlated Events)</h3>
-    </div>
-    
+<div ng-if="!sia.isLoading" style="margin-left:15px;">    
     <div ng-if="::sia.SiaResponse.AbnormalTimePeriods.length === 0">
         <h2 class="md-title" style="margin-bottom:0;text-decoration:underline">No Application Downtime Periods found.</h2>
     </div>
-
 </div>
 
-<md-list style="width:100%;" ng-repeat="timePeriod in ::sia.SiaResponse.AbnormalTimePeriods | orderBy:'StartTime':true">
+<md-list style="width:100%;" ng-if="!sia.isLoading">
 
     <md-divider></md-divider>
-
-    <md-subheader class="md-sticky" style="background-color:lightgrey;color:black;" ng-click="timePeriod.Visible = !timePeriod.Visible">
-        <ng-md-icon icon="expand_more" style="fill: rgb(100, 100, 100)" size="23" ng-if="timePeriod.Visible"></ng-md-icon>
-        <ng-md-icon icon="expand_less" style="fill: rgb(100, 100, 100)" size="23" ng-if="!timePeriod.Visible"></ng-md-icon> 
-        <!--<ng-md-icon icon="query_builder" style="fill: rgb(100, 100, 100)" size="23"></ng-md-icon> -->
-        Start Time : {{:: timePeriod.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{:: timePeriod.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
-    </md-subheader>
-    <div ng-if="timePeriod.Visible">
-        <div ng-if="::timePeriod.Events.length === 0">
+    <div flex class="md-sticky time-period-nav" layout="row" ng-if="sia.SiaResponse.AbnormalTimePeriods.length > 0">
+        <div flex="20" ng-if="sia.selectedAbnormalTimePeriod.index <= 0"></div>
+        <div flex="20" class="time-period-nav-direction" ng-click="sia.selectDowntime(sia.selectedAbnormalTimePeriod.index - 1)" ng-if="sia.selectedAbnormalTimePeriod.index > 0 ">
+            <div flex layout="row">
+                <md-button class="md-icon-button" ng-click="" aria-label="">
+                    <ng-md-icon icon="chevron_left" style="fill:rgba(255,255,255,0.87)"></ng-md-icon>
+                </md-button>
+                <div flex></div>
+            </div>
+         </div>
+        <div flex></div>
+        <h1>
+            Start Time : {{ sia.selectedAbnormalTimePeriod.data.StartTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC), End Time : {{ sia.selectedAbnormalTimePeriod.data.EndTime | date: 'EEE MMM-dd, hh:mm a': 'UTC'}} (UTC)
+        </h1>
+        <div flex></div>
+        <div flex="20" ng-if="sia.selectedAbnormalTimePeriod.index + 1 >= sia.SiaResponse.AbnormalTimePeriods.length"></div>
+        <div flex="20" class="time-period-nav-direction" ng-click="sia.selectDowntime(sia.selectedAbnormalTimePeriod.index + 1)" ng-if="sia.selectedAbnormalTimePeriod.index + 1 < sia.SiaResponse.AbnormalTimePeriods.length">
+            <div flex layout="row">
+                <div flex></div>
+                <md-button class="md-icon-button" aria-label="" ng-click="">
+                    <ng-md-icon icon="chevron_right" style="fill:rgba(255,255,255,0.87)"></ng-md-icon>
+                </md-button>
+            </div>
+        </div>
+        
+    </div>
+    <div >
+        <div ng-if="sia.selectedAbnormalTimePeriod.data.Events.length === 0">
             <md-list-item layout="row" style="padding:0">
 
                 <div class="discussion-timeline"></div>
@@ -48,7 +61,7 @@
             </md-list-item>
         </div>
 
-        <div ng-repeat="event in ::timePeriod.Events">
+        <div ng-repeat="event in sia.selectedAbnormalTimePeriod.data.Events">
 
             <md-list-item layout="row" style="padding:0">
 
@@ -120,7 +133,8 @@
                                        solution="::sia.DetectorData[event.Source].solution"
                                        metricsets="::sia.DetectorData[event.Source].metricsets"
                                        selectedworker="::event.Instance"
-                                       detectorsource="::event.Source">
+                                       detectorsource="::event.Source"
+                                       abnormaltimeperiod="::sia.selectedAbnormalTimePeriod.data">
                         </detector-view>
 
                     </div>

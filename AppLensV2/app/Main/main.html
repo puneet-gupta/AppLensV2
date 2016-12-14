@@ -97,6 +97,7 @@
 
                 <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
                     <div flex>
+                        <downtime-timeline height="'20px'"></downtime-timeline>
                         <nvd3 options="::main.availabilityChartOptions" data="::main.avaiabilityChartData"></nvd3>
                     </div>
                 </md-card-content>
