@@ -41,7 +41,6 @@ module SupportCenter {
                     self.detectors = data;
                     self.detectorListLoaded = true;
 
-                    self.showFeedbackToast();
                     self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: any) {
                         //do stuff here with siaResponse
                         var siaResponse = self.SiaService.siaResponse;
@@ -113,16 +112,6 @@ module SupportCenter {
 
         sendFeedback(): void {
             this.FeedbackService.sendGeneralFeedback();
-        }
-
-        showFeedbackToast(): void {
-            this.$mdToast.show(
-                this.$mdToast.simple()
-                    .textContent('Click the button above to provide feedback!')
-                    .position('top right')
-                    .hideDelay(5000)
-                    .parent('#wrapper')
-            );
         }
 
         private getRuntimeAvailability(): void {
