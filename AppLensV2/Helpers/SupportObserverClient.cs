@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using AppLensV2.Helpers;
+using Newtonsoft.Json;
 
 namespace AppLensV2
 {
@@ -67,6 +68,35 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
                 var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var res = await response.Content.ReadAsAsync<dynamic>();
+                    return res;
+                }
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get resource group for site
+        /// </summary>
+        /// <param name="subscription">Site Subscription</param>
+        /// <param name="webspace">Site WebSpace</param>
+        /// <returns>Stamp</returns>
+        internal static async Task<dynamic> GetResourceGroup(string subscription, string webspace)
+        {
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(60);
+                client.MaxResponseContentBufferSize = Int32.MaxValue;
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "subscriptionid", subscription }, { "webspacename", webspace } });
+                client.DefaultRequestHeaders.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+               
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "subscriptionid/" + subscription + "/webspacename/" + webspace + "/resourcegroupname?api-version=2");
 
                 if (response.IsSuccessStatusCode)
                 {

@@ -49,6 +49,10 @@ module SupportCenter {
                 case 'workeravailability':
                 case 'memoryanalysis':
                 case 'cpuanalysisdetailed':
+                case 'exceptioncount':
+                case 'garbagecollectiongen2':
+                case 'handlecount':
+                case 'threadcount':
                     options.chart.type = 'lineChart';
                     break;
                 case 'memoryanalysisdetailed':

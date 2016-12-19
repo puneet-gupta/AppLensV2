@@ -43,6 +43,9 @@ namespace AppLensV2
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
 
+            var resourceGroup = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.First.SubscriptionName, (string)siteDetailsResponse.First.WebSpaceName);
+            siteDetailsResponse.First.ResourceGroupName = resourceGroup;
+
             return Ok(new
             {
                 SiteName = siteName,
