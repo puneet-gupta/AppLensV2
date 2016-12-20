@@ -183,6 +183,7 @@ module SupportCenter {
                 }
 
                 self.properties.push(new NameValuePair("Subscription Id", self.site.subscriptionId));
+                self.properties.push(new NameValuePair("Resource Group", self.site.resourceGroup));
                 self.properties.push(new NameValuePair("Stamp Name", self.site.stampName));
                 self.properties.push(new NameValuePair("Hostnames", self.site.hostNames.join()));
                 self.properties.push(new NameValuePair("App Stack", self.site.stack));

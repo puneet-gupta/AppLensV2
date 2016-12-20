@@ -16,7 +16,7 @@ module SupportCenter {
             var self = this;
             this.promise = this.$http.get("/api/sites/" + siteName).success(function (data: any) {
 
-                self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, "internal_rg", data.HostNames, data.Stamp.Name);
+                self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
                 
                 self.$http({
                     method: "GET",
