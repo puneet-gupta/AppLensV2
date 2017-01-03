@@ -22,13 +22,14 @@ namespace AppLensV2
             }
 
             var result = await GeoRegionClient.GetResource(apiRoute);
-
-            if (result == null)
+            
+            if(result.StatusCode == HttpStatusCode.OK)
             {
-                return Ok();
+                return Ok(result.Content);
             }
 
-            return Ok(result);
+            string content = Convert.ToString(result.Content);
+            return ResponseMessage(Request.CreateErrorResponse(result.StatusCode, content));
         }
 
         [HttpGet]
