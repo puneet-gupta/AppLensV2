@@ -85,7 +85,7 @@ namespace AppLensV2
         /// <param name="subscription">Site Subscription</param>
         /// <param name="webspace">Site WebSpace</param>
         /// <returns>Stamp</returns>
-        internal static async Task<dynamic> GetResourceGroup(string subscription, string webspace)
+        internal static async Task<dynamic> GetResourceGroup(string site)
         {
             using (var client = new HttpClient())
             {
@@ -93,10 +93,10 @@ namespace AppLensV2
                 client.MaxResponseContentBufferSize = Int32.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "subscriptionid", subscription }, { "webspacename", webspace } });
+                var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", site } });
                 client.DefaultRequestHeaders.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
                
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "subscriptionid/" + subscription + "/webspacename/" + webspace + "/resourcegroupname?api-version=2");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + site + "/resourcegroupname?api-version=2");
 
                 if (response.IsSuccessStatusCode)
                 {
