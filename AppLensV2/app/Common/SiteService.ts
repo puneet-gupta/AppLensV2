@@ -6,6 +6,7 @@ module SupportCenter {
     export interface ISiteService {
         promise: ng.IPromise<any>;
         site: Site;
+        sites: Array<Site>;
     }
 
     export class SiteService implements ISiteService {
@@ -17,6 +18,11 @@ module SupportCenter {
             this.promise = this.$http.get("/api/sites/" + siteName).success(function (data: any) {
 
                 self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
+
+                self.sites = new Array<Site>();
+                for (let siteDetail of data.Details) {
+                    self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName));
+                }
                 
                 self.$http({
                     method: "GET",
@@ -43,5 +49,6 @@ module SupportCenter {
         
         public promise: ng.IPromise<any>;
         public site: Site;
+        public sites: Site[];
     }
 }

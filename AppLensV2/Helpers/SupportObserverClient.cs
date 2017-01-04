@@ -19,10 +19,25 @@ namespace AppLensV2
     /// </summary>
     public sealed class SupportObserverClient
     {
+
         /// <summary>
         /// Support API Endpoint
         /// </summary>
-        private const string SupportObserverApiEndpoint = "https://support-bay-api.azurewebsites.net/observer/";
+        private static string SupportObserverApiEndpoint {
+            get
+            {
+                var targetSupportApiTestSlot = bool.Parse(ConfigurationManager.AppSettings["TargetSupportApiTestSlot"]);
+
+                //Add condition for Debugger.IsAttached so that we never mistakenly target Support Api test slot in production
+                if (Debugger.IsAttached && targetSupportApiTestSlot)
+                {
+                    return "https://support-bay-api-test.azurewebsites.net/observer/";
+                }else
+                {
+                    return "https://support-bay-api.azurewebsites.net/observer/";
+                }
+            }
+        }
         
         /// <summary>
         /// Signing Key
@@ -67,7 +82,7 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite");
+                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0");
 
                 if (response.IsSuccessStatusCode)
                 {

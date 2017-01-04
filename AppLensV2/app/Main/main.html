@@ -172,3 +172,20 @@
     </md-content>
 </script>
 
+<script type="text/ng-template" id="multiplesites.html">
+    <md-content style="border-radius:5px">
+        <md-list flex>
+            <md-list-item class="md-3-line">
+                <img ng-src="{{multiplesitesctrl.logo}}" class="md-avatar" alt="type of app">
+                <div class="md-list-item-text">
+                    <h3 style="font-weight:600;font-variant:small-caps;font-size:20px">Please select site:</h3>
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item class="md-3-line" ng-repeat="site in multiplesitesctrl.sites" ng-click="multiplesitesctrl.chooseSite(site.name)">
+                {{site.name}}
+            </md-list-item>
+        </md-list>
+    </md-content>
+</script>
+

@@ -34,6 +34,12 @@ module SupportCenter {
             var self = this;
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
+
+                var sitesSameHostName = self.SiteService.sites;
+
+                if (sitesSameHostName.length > 1) {
+                    self.showChooseSite();
+                }
                 
                 self.getRuntimeAvailability();
 
@@ -167,6 +173,30 @@ module SupportCenter {
 
             this.$mdPanel.open(config);
                 
+        }
+
+        showChooseSite(): void {
+            var position = this.$mdPanel.newPanelPosition()
+                .absolute()
+                .center();
+
+            var config = {
+                attachTo: angular.element(document.body),
+                controllerAs: 'multiplesitesctrl',
+                controller: MultipleSitesCtrl,
+                disableParentScroll: true,
+                templateUrl: 'multiplesites.html',
+                hasBackdrop: true,
+                panelClass: 'multiple-sites-dialog',
+                position: position,
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: true
+            };
+
+            this.$mdPanel.open(config);
         }
     }
 
