@@ -35,10 +35,10 @@ module SupportCenter {
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
 
-                var sitesSameHostName = self.SiteService.sites;
+                var sitesWithSameHostname = self.SiteService.sites;
 
-                if (sitesSameHostName.length > 1) {
-                    self.showChooseSite();
+                if (sitesWithSameHostname.length > 1) {
+                    self.showSitesDialog();
                 }
                 
                 self.getRuntimeAvailability();
@@ -175,7 +175,7 @@ module SupportCenter {
                 
         }
 
-        showChooseSite(): void {
+        showSitesDialog(): void {
             var position = this.$mdPanel.newPanelPosition()
                 .absolute()
                 .center();

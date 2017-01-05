@@ -26,7 +26,8 @@ namespace AppLensV2
         private static string SupportObserverApiEndpoint {
             get
             {
-                var targetSupportApiTestSlot = bool.Parse(ConfigurationManager.AppSettings["TargetSupportApiTestSlot"]);
+                bool targetSupportApiTestSlot;
+                bool.TryParse(ConfigurationManager.AppSettings["TargetSupportApiTestSlot"], out targetSupportApiTestSlot);
 
                 //Add condition for Debugger.IsAttached so that we never mistakenly target Support Api test slot in production
                 if (Debugger.IsAttached && targetSupportApiTestSlot)
