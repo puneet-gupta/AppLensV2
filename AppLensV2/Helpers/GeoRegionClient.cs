@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,7 +12,7 @@ namespace AppLensV2
 {
     public sealed class GeoRegionClient
     {
-        private const string GeoRegionEndpoint = "https://hawfor1georegionsvc.cloudapp.net:1743/";
+        private const string GeoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
         //"https://shgupgr1.cloudapp.net:1743/";
 
         public static async Task<dynamic> GetResource(string apiRoute)
@@ -54,11 +55,17 @@ namespace AppLensV2
 
             try
             {
-                //D8D2125683F7169186DEE9469F0070F1C4302311
-                //1241D6C92881FF9BB075BF3C01B19CE41B383C9D
+                string thumbprint;
+                if (Debugger.IsAttached)
+                {
+                    thumbprint = "9180D9D132E1D9FD697C2D882CF65559ECF01C79";
+                }else
+                {
+                    thumbprint = "1241D6C92881FF9BB075BF3C01B19CE41B383C9D";
+                }
                 X509Certificate2Collection certCollection = certStore.Certificates.Find(
                                        X509FindType.FindByThumbprint,
-                                       "9180D9D132E1D9FD697C2D882CF65559ECF01C79",
+                                       thumbprint,
                                        false);
                 // Get the first cert with the thumbprint
                 if (certCollection.Count > 0)
