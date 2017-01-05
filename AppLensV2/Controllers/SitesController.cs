@@ -12,7 +12,7 @@ namespace AppLensV2
     {
         [HttpGet]
         [Route("api/diagnostics")]
-        public async Task<IHttpActionResult> GetDiagnosticResult()
+        public async Task<HttpResponseMessage> GetDiagnosticResult()
         {
             IEnumerable<string> temp = null;
             string apiRoute = null;
@@ -21,15 +21,8 @@ namespace AppLensV2
                 apiRoute = temp.FirstOrDefault().ToString();
             }
 
-            var result = await GeoRegionClient.GetResource(apiRoute);
-            
-            if(result.StatusCode == HttpStatusCode.OK)
-            {
-                return Ok(result.Content);
-            }
-
-            string content = Convert.ToString(result.Content);
-            return ResponseMessage(Request.CreateErrorResponse(result.StatusCode, content));
+            var response =  await GeoRegionClient.GetResource(apiRoute);
+            return response;
         }
 
         [HttpGet]

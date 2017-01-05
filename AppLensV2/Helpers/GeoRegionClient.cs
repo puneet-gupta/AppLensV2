@@ -10,27 +10,18 @@ using System.Web;
 
 namespace AppLensV2
 {
-    public class GeoRegionResponse
-    {
-        public HttpStatusCode StatusCode;
-
-        public dynamic Content;
-    }
-
     public sealed class GeoRegionClient
     {
         private const string GeoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
         //"https://shgupgr1.cloudapp.net:1743/";
 
-        public static async Task<GeoRegionResponse> GetResource(string apiRoute)
+        public static async Task<HttpResponseMessage> GetResource(string apiRoute)
         {
             if (apiRoute == null)
             {
                 throw new ArgumentNullException("apiRoute");
             }
-
-            var output = new GeoRegionResponse();
-
+            
             WebRequestHandler handler = new WebRequestHandler();
             X509Certificate2 certificate = GetMyX509Certificate();
             handler.ClientCertificates.Add(certificate);
@@ -46,10 +37,7 @@ namespace AppLensV2
 
                 var response = await client.GetAsync(GeoRegionEndpoint + apiRoute);
 
-                output.StatusCode = response.StatusCode;
-                output.Content = await response.Content.ReadAsAsync<dynamic>();
-
-                return output;
+                return response;
             }
         }
 

@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class DetectorCtrl {
 
-        public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "$window"];
+        public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "$window", "ErrorHandlerService"];
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService) {
+        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
@@ -47,6 +47,9 @@ module SupportCenter {
                         self.chartOptions.chart.yAxis.axisLabel = 'Percent';
                     }
                     self.dataLoading = false;
+                }, function (err) {
+                    self.dataLoading = false;
+                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
                 });
 
                 self.DetectorsService.getDetectorWiki(self.detectorName).then(function (wikiResponse) {

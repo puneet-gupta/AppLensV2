@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class SiaCtrl {
 
-        public static $inject: string[] = ["DetectorsService", "SiaService", "$stateParams", "SiteService", "$window"];
+        public static $inject: string[] = ["DetectorsService", "SiaService", "$stateParams", "SiteService", "$window", "ErrorHandlerService"];
 
-        constructor(private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService) {
+        constructor(private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.DetectorData = {};
@@ -33,6 +33,9 @@ module SupportCenter {
                     self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
                     self.PrepareDetectorViewParams(self.SiaResponse.StartTime, self.SiaResponse.EndTime);
                     self.isLoading = false;
+                }, function (err) {
+                    self.isLoading = false;
+                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
                 });
             });
         }
