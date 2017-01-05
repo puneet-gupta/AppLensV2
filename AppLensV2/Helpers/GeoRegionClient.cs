@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
@@ -14,13 +15,13 @@ namespace AppLensV2
         private const string GeoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
         //"https://shgupgr1.cloudapp.net:1743/";
 
-        public static async Task<dynamic> GetResource(string apiRoute)
+        public static async Task<HttpResponseMessage> GetResource(string apiRoute)
         {
             if (apiRoute == null)
             {
                 throw new ArgumentNullException("apiRoute");
             }
-
+            
             WebRequestHandler handler = new WebRequestHandler();
             X509Certificate2 certificate = GetMyX509Certificate();
             handler.ClientCertificates.Add(certificate);
@@ -35,13 +36,8 @@ namespace AppLensV2
                 client.DefaultRequestHeaders.Add("internal-applens", "true");
 
                 var response = await client.GetAsync(GeoRegionEndpoint + apiRoute);
-                
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadAsAsync<dynamic>();
-                }
 
-                return response.StatusCode;
+                return response;
             }
         }
 

@@ -62,7 +62,7 @@ module SupportCenter {
                                     item.Properties.DisplayName,
                                     item.Properties.Description,
                                     item.Properties.Rank,
-                                    item.Properties.IsEnabled,-1);
+                                    item.Properties.IsEnabled, -1);
 
                                 detectors.push(detector);
                             }
@@ -72,12 +72,11 @@ module SupportCenter {
                         deferred.resolve(detectors);
                     }
                     else {
-                        deferred.reject("Value not present in detectors api response");
+                        deferred.reject(new ErrorModel(0, "Value field not present in Get Detectors Api response"));
                     }
-
                 })
-                .error((data: any) => {
-                    deferred.reject(data);
+                .error((err: any) => {
+                    deferred.reject(ErrorModelBuilder.Build(err));
                 });
 
             return deferred.promise;
@@ -109,12 +108,12 @@ module SupportCenter {
                         this.detectorsResponseCache[detectorName] = response;
                     }
                     else {
-                        deferred.reject("Properties not present in api response");
+                        deferred.reject(new ErrorModel(0, "Properties field not present in Get Detector Data Api response"));
                     }
 
                 })
-                .error((data: any) => {
-                    deferred.reject(data);
+                .error((err: any) => {
+                    deferred.reject(ErrorModelBuilder.Build(err));
                 });
 
             return deferred.promise;
@@ -161,11 +160,11 @@ module SupportCenter {
                         deferred.resolve(data);
                     }
                     else {
-                        deferred.reject(data);
+                        deferred.reject(new ErrorModel(0, ''));
                     }
                 })
-                .error((data: any) => {
-                    deferred.reject(data);
+                .error((err: any) => {
+                    deferred.reject(ErrorModelBuilder.Build(err));
                 });
 
             return deferred.promise;

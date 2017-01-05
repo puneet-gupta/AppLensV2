@@ -11,9 +11,17 @@ using System.Threading.Tasks;
 using System.Web;
 using AppLensV2.Helpers;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace AppLensV2
 {
+    public class ObserverResponse
+    {
+        public HttpStatusCode StatusCode;
+
+        public dynamic Content;
+    }
+
     /// <summary>
     /// Client for Support Observer API communication
     /// </summary>
@@ -28,6 +36,31 @@ namespace AppLensV2
         /// Signing Key
         /// </summary>
         private static string hashKey;
+
+        /// <summary>
+        /// http client
+        /// </summary>
+        private static readonly Lazy<HttpClient> _client = new Lazy<HttpClient>(() =>
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.Timeout = TimeSpan.FromSeconds(30);
+
+                return client;
+            }
+        );
+
+        /// <summary>
+        /// http client
+        /// </summary>
+        private static HttpClient _httpClient
+        {
+            get
+            {
+                return _client.Value;
+            }
+        }
 
         /// <summary>
         /// Signing Key
@@ -58,54 +91,41 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">Site Name</param>
         /// <returns>Stamp</returns>
-        internal static async Task<dynamic> GetSite(string siteName)
+        internal static async Task<ObserverResponse> GetSite(string siteName)
         {
-            using (var client = new HttpClient())
+            var request = new HttpRequestMessage()
             {
-                client.Timeout = TimeSpan.FromSeconds(60);
-                client.MaxResponseContentBufferSize = Int32.MaxValue;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite"),
+                Method = HttpMethod.Get
+            };
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite");
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
+            request.Headers.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
+            var response = await _httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var res = await response.Content.ReadAsAsync<dynamic>();
-                    return res;
-                }
-
-                return null;
-            }
+            ObserverResponse res = await CreateObserverResponse(response, "GetAdminSite");
+            return res;
         }
 
         /// <summary>
         /// Get resource group for site
         /// </summary>
-        /// <param name="subscription">Site Subscription</param>
-        /// <param name="webspace">Site WebSpace</param>
-        /// <returns>Stamp</returns>
+        /// <param name="site">Site</param>
+        /// <returns>Resource Group</returns>
         internal static async Task<dynamic> GetResourceGroup(string site)
         {
-            using (var client = new HttpClient())
+            var request = new HttpRequestMessage()
             {
-                client.Timeout = TimeSpan.FromSeconds(60);
-                client.MaxResponseContentBufferSize = Int32.MaxValue;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + site + "/resourcegroupname?api-version=2"),
+                Method = HttpMethod.Get
+            };
+          
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", site } });
+            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            var response = await _httpClient.SendAsync(request);
 
-                var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", site } });
-                client.DefaultRequestHeaders.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
-               
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + site + "/resourcegroupname?api-version=2");
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var res = await response.Content.ReadAsAsync<dynamic>();
-                    return res;
-                }
-
-                return null;
-            }
+            ObserverResponse res = await CreateObserverResponse(response, "GetResourceGroup(2.0)");
+            return res;
         }
 
         /// <summary>
@@ -113,25 +133,20 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">Site Name</param>
         /// <returns>Stamp</returns>
-        internal static async Task<dynamic> GetStamp(string siteName)
+        internal static async Task<ObserverResponse> GetStamp(string siteName)
         {
-            using (var client = new HttpClient())
+            var request = new HttpRequestMessage()
             {
-                client.Timeout = TimeSpan.FromSeconds(60);
-                client.MaxResponseContentBufferSize = Int32.MaxValue;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/stamp"),
+                Method = HttpMethod.Get
+            };
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/stamp");
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
+            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            var response = await _httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var res = await response.Content.ReadAsAsync<dynamic>();
-                    return res;
-                }
-
-                return null;
-            }
+            ObserverResponse res = await CreateObserverResponse(response, "GetStamp");
+            return res;
         }
 
         /// <summary>
@@ -139,25 +154,20 @@ namespace AppLensV2
         /// </summary>
         /// <param name="siteName">SiteName</param>
         /// <returns>Hostnames</returns>
-        internal static async Task<dynamic> GetHostnames(string siteName)
+        internal static async Task<ObserverResponse> GetHostnames(string siteName)
         {
-            using (var client = new HttpClient())
+            var request = new HttpRequestMessage()
             {
-                client.Timeout = TimeSpan.FromSeconds(60);
-                client.MaxResponseContentBufferSize = int.MaxValue;
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames?api-version=2.0"),
+                Method = HttpMethod.Get
+            };
 
-                var response = await client.GetAsync(SupportObserverApiEndpoint + "sites/" + siteName + "/hostnames?api-version=2.0");
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
+            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            var response = await _httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var res = await response.Content.ReadAsAsync<dynamic>();
-                    return res;
-                }
-
-                return null;
-            }
+            ObserverResponse res = await CreateObserverResponse(response, "GetHostnames(2.0)");
+            return res;
         }
 
         /// <summary>
@@ -175,6 +185,34 @@ namespace AppLensV2
                 byte[] hashBytes = hmacSha1.ComputeHash(Encoding.UTF8.GetBytes(data));
                 return Convert.ToBase64String(hashBytes);
             }
+        }
+
+        private static async Task<ObserverResponse> CreateObserverResponse(HttpResponseMessage response, string apiName = "")
+        {
+            var observerResponse = new ObserverResponse();
+
+            if (response == null)
+            {
+                observerResponse.StatusCode = HttpStatusCode.InternalServerError;
+                observerResponse.Content = "Unable to fetch data from Observer API : " + apiName;
+            }
+
+            observerResponse.StatusCode = response.StatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                observerResponse.Content = await response.Content.ReadAsAsync<dynamic>();
+            }
+            else if(response.StatusCode == HttpStatusCode.NotFound)
+            {
+                observerResponse.Content = (string)"Resource Not Found. API : " + apiName;
+            }
+            else
+            {
+                observerResponse.Content = (string)"Unable to fetch data from Observer API : " + apiName;
+            }
+
+            return observerResponse;
         }
     }
 }

@@ -10,35 +10,39 @@ module SupportCenter {
 
     export class SiteService implements ISiteService {
 
-        static $inject = ['$http', '$stateParams'];
-        constructor(private $http: ng.IHttpService, private $stateParams: IStateParams) {
+        static $inject = ['$http', '$stateParams', 'ErrorHandlerService'];
+        constructor(private $http: ng.IHttpService, private $stateParams: IStateParams, private ErrorHandlerService: IErrorHandlerService) {
             let siteName = $stateParams.siteName;
             var self = this;
-            this.promise = this.$http.get("/api/sites/" + siteName).success(function (data: any) {
+            this.promise = this.$http.get("/api/sites/" + siteName)
+                .success(function (data: any) {
 
-                self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
-                
-                self.$http({
-                    method: "GET",
-                    url: UriPaths.DiagnosticsPassThroughAPIPath(),
-                    headers: {
-                        'GeoRegionApiRoute': UriPaths.SiteDiagnosticPropertiesPath(self.site)
-                    }
-                })
-                    .success((data: any) => {
+                    self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
 
-                        if (angular.isDefined(data.Properties)) {
-
-                            self.site.stack = data.Properties.AppStack;
-                            self.site.kind = data.Properties.Kind === 'app' || data.Properties.Kind === null ? 'webapp' : data.Properties.Kind;
-                            self.site.isLinux = data.Properties.IsLinux;
-                            self.site.numberOfSlots = data.Properties.NumberOfSlots;
-                            self.site.numberOfContinousWebJobs = data.Properties.ContinuousWebJobsCount;
-                            self.site.numberOfTriggeredWebJobs = data.Properties.TriggeredWebJobsCount;
-                            self.site.sku = data.Properties.Sku;
+                    self.$http({
+                        method: "GET",
+                        url: UriPaths.DiagnosticsPassThroughAPIPath(),
+                        headers: {
+                            'GeoRegionApiRoute': UriPaths.SiteDiagnosticPropertiesPath(self.site)
                         }
-                    });
-            });
+                    })
+                        .success((data: any) => {
+
+                            if (angular.isDefined(data.Properties)) {
+
+                                self.site.stack = data.Properties.AppStack;
+                                self.site.kind = data.Properties.Kind === 'app' || data.Properties.Kind === null ? 'webapp' : data.Properties.Kind;
+                                self.site.isLinux = data.Properties.IsLinux;
+                                self.site.numberOfSlots = data.Properties.NumberOfSlots;
+                                self.site.numberOfContinousWebJobs = data.Properties.ContinuousWebJobsCount;
+                                self.site.numberOfTriggeredWebJobs = data.Properties.TriggeredWebJobsCount;
+                                self.site.sku = data.Properties.Sku;
+                            }
+                        });
+                })
+                .error(function (err: any) {
+                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+                });
         }
         
         public promise: ng.IPromise<any>;
