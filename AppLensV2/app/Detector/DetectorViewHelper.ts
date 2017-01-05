@@ -53,6 +53,7 @@ module SupportCenter {
                 case 'garbagecollectiongen2':
                 case 'handlecount':
                 case 'threadcount':
+                case 'appdomainsunloaded':
                     options.chart.type = 'lineChart';
                     break;
                 case 'memoryanalysisdetailed':

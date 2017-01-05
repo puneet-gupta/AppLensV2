@@ -52,7 +52,7 @@ namespace AppLensV2
                 return ResponseMessage(Request.CreateErrorResponse(stampResponse.StatusCode, (string)stampResponse.Content));
             }
             
-            var resourceGroupResponse = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SubscriptionName, (string)siteDetailsResponse.Content.First.WebSpaceName);
+            var resourceGroupResponse =  await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
 
             if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
             {

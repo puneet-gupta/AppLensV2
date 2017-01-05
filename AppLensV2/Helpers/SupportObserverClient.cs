@@ -110,18 +110,17 @@ namespace AppLensV2
         /// <summary>
         /// Get resource group for site
         /// </summary>
-        /// <param name="subscription">Site Subscription</param>
-        /// <param name="webspace">Site WebSpace</param>
-        /// <returns>Stamp</returns>
-        internal static async Task<ObserverResponse> GetResourceGroup(string subscription, string webspace)
+        /// <param name="site">Site</param>
+        /// <returns>Resource Group</returns>
+        internal static async Task<dynamic> GetResourceGroup(string site)
         {
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(SupportObserverApiEndpoint + "subscriptionid/" + subscription + "/webspacename/" + webspace + "/resourcegroupname?api-version=2"),
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + site + "/resourcegroupname?api-version=2"),
                 Method = HttpMethod.Get
             };
-
-            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "subscriptionid", subscription }, { "webspacename", webspace } });
+          
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", site } });
             request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
             var response = await _httpClient.SendAsync(request);
 
