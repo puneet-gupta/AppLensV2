@@ -12,7 +12,7 @@ namespace AppLensV2
     {
         [HttpGet]
         [Route("api/diagnostics")]
-        public async Task<IHttpActionResult> GetDiagnosticResult()
+        public async Task<HttpResponseMessage> GetDiagnosticResult()
         {
             IEnumerable<string> temp = null;
             string apiRoute = null;
@@ -21,14 +21,8 @@ namespace AppLensV2
                 apiRoute = temp.FirstOrDefault().ToString();
             }
 
-            var result = await GeoRegionClient.GetResource(apiRoute);
-
-            if (result == null)
-            {
-                return Ok();
-            }
-
-            return Ok(result);
+            var response =  await GeoRegionClient.GetResource(apiRoute);
+            return response;
         }
 
         [HttpGet]
@@ -43,15 +37,36 @@ namespace AppLensV2
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
 
-            var resourceGroup = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.First.SiteName);
-            siteDetailsResponse.First.ResourceGroupName = resourceGroup;
+            if (siteDetailsResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
+            }
+
+            if (hostNameResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
+            }
+
+            if (stampResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(stampResponse.StatusCode, (string)stampResponse.Content));
+            }
+            
+            var resourceGroupResponse =  await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
+
+            if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
+            }
+
+            siteDetailsResponse.Content.First.ResourceGroupName = resourceGroupResponse.Content;
 
             return Ok(new
             {
                 SiteName = siteName,
-                Details = siteDetailsResponse,
-                Stamp = stampResponse,
-                HostNames = hostNameResponse
+                Details = siteDetailsResponse.Content,
+                Stamp = stampResponse.Content,
+                HostNames = hostNameResponse.Content
             });
         }
         
