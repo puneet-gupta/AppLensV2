@@ -37,6 +37,9 @@ module SupportCenter {
                     self.isLoading = false;
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
                 });
+            }, function (err) {
+                // Error in calling Site Details
+                self.isLoading = false;
             });
         }
 

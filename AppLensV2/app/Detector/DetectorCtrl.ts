@@ -59,6 +59,10 @@ module SupportCenter {
                 self.DetectorsService.getDetectorSolution(self.detectorName).then(function (solutionResponse) {
                     self.solutionContent = solutionResponse;
                 });
+            }, function (err) {
+
+                // Error in calling Site Details
+                self.dataLoading = false;
             });
         }
 

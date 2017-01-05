@@ -64,7 +64,12 @@ module SupportCenter {
                 }, function (err) {
                     self.detectorListLoaded = true;
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-                });
+                    });
+            }, function (err) {
+                // Error in calling Site Details
+
+                self.detectorListLoaded = true;
+                self.dataLoading = false;
             });
 
             // if no child route is defined, then set default child route to sia

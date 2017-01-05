@@ -37,15 +37,36 @@ namespace AppLensV2
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
 
-            var resourceGroup = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.First.SubscriptionName, (string)siteDetailsResponse.First.WebSpaceName);
-            siteDetailsResponse.First.ResourceGroupName = resourceGroup;
+            if (siteDetailsResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
+            }
+
+            if (hostNameResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
+            }
+
+            if (stampResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(stampResponse.StatusCode, (string)stampResponse.Content));
+            }
+            
+            var resourceGroupResponse = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SubscriptionName, (string)siteDetailsResponse.Content.First.WebSpaceName);
+
+            if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
+            }
+
+            siteDetailsResponse.Content.First.ResourceGroupName = resourceGroupResponse.Content;
 
             return Ok(new
             {
                 SiteName = siteName,
-                Details = siteDetailsResponse,
-                Stamp = stampResponse,
-                HostNames = hostNameResponse
+                Details = siteDetailsResponse.Content,
+                Stamp = stampResponse.Content,
+                HostNames = hostNameResponse.Content
             });
         }
         
