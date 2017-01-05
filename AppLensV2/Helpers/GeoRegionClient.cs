@@ -31,7 +31,8 @@ namespace AppLensV2
 
             using (var client = new HttpClient(handler))
             {
-                client.Timeout = TimeSpan.FromSeconds(60);
+                // For now, setting timeout as 5 minutes until we address API perf issues on Diagnostic Role
+                client.Timeout = TimeSpan.FromSeconds(5 * 60);
                 client.MaxResponseContentBufferSize = Int32.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("internal-applens", "true");
