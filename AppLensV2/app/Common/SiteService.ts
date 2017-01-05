@@ -20,6 +20,11 @@ module SupportCenter {
 
                     self.site = new Site(data.Details[0].SiteName, data.Details[0].SubscriptionName, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
 
+                    self.sites = new Array<Site>();
+                    for (let siteDetail of data.Details) {
+                        self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName));
+                    }
+
                     self.$http({
                         method: "GET",
                         url: UriPaths.DiagnosticsPassThroughAPIPath(),

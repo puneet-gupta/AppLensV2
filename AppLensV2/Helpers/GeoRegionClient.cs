@@ -13,8 +13,23 @@ namespace AppLensV2
 {
     public sealed class GeoRegionClient
     {
-        private const string GeoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
-        //"https://shgupgr1.cloudapp.net:1743/";
+        
+        public static string GeoRegionEndpoint
+        {
+            get
+            {
+                string geoRegionEndpoint;
+                if (Debugger.IsAttached)
+                {
+                    geoRegionEndpoint = "https://hawfor1georegionsvc.cloudapp.net:1743/";
+                }else
+                {
+                    geoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
+                }
+
+                return geoRegionEndpoint;
+            }
+        }           
 
         public static async Task<HttpResponseMessage> GetResource(string apiRoute)
         {
