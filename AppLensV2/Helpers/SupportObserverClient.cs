@@ -27,10 +27,26 @@ namespace AppLensV2
     /// </summary>
     public sealed class SupportObserverClient
     {
+
         /// <summary>
         /// Support API Endpoint
         /// </summary>
-        private const string SupportObserverApiEndpoint = "https://support-bay-api.azurewebsites.net/observer/";
+        private static string SupportObserverApiEndpoint {
+            get
+            {
+                bool targetSupportApiTestSlot;
+                bool.TryParse(ConfigurationManager.AppSettings["TargetSupportApiTestSlot"], out targetSupportApiTestSlot);
+
+                //Add condition for Debugger.IsAttached so that we never mistakenly target Support Api test slot in production
+                if (Debugger.IsAttached && targetSupportApiTestSlot)
+                {
+                    return "https://support-bay-api-test.azurewebsites.net/observer/";
+                }else
+                {
+                    return "https://support-bay-api.azurewebsites.net/observer/";
+                }
+            }
+        }
         
         /// <summary>
         /// Signing Key
@@ -95,7 +111,7 @@ namespace AppLensV2
         {
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsite"),
+                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0"),
                 Method = HttpMethod.Get
             };
 

@@ -6,6 +6,7 @@ module SupportCenter {
     export interface ISiteService {
         promise: ng.IPromise<any>;
         site: Site;
+        sites: Array<Site>;
     }
 
     export class SiteService implements ISiteService {
@@ -47,5 +48,6 @@ module SupportCenter {
         
         public promise: ng.IPromise<any>;
         public site: Site;
+        public sites: Site[];
     }
 }
