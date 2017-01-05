@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService) {
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -63,9 +63,19 @@ module SupportCenter {
                                     detector.Correlated = 1;
                             });
                         });
+                    }, function (err) {
+                        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
                     });
 
-                });
+                }, function (err) {
+                    self.detectorListLoaded = true;
+                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+                    });
+            }, function (err) {
+                // Error in calling Site Details
+
+                self.detectorListLoaded = true;
+                self.dataLoading = false;
             });
 
             // if no child route is defined, then set default child route to sia
@@ -147,6 +157,9 @@ module SupportCenter {
                     }
 
                 });
+            }, function (err) {
+                self.dataLoading = false;
+                self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
             });
         }
 
