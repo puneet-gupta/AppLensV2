@@ -220,6 +220,10 @@ module SupportCenter {
                     var workerChartData = [];
                     var nextElementToAdd = workerData.pop();
 
+                    while (new Date(nextElementToAdd.Timestamp).getTime() < roundedStartTime.getTime()) {
+                        nextElementToAdd = workerData.pop();
+                    }
+
                     for (var d = new Date(roundedStartTime.getTime()); d < roundedEndTime; d.setTime(d.getTime() + coeff)) {
 
                         let xDate = new Date(d.getTime());
