@@ -77,11 +77,12 @@ namespace AppLensV2
         {
             int feedbackOption = jsonBody.Value<int>("feedbackOption");
             string additionalNotes = jsonBody.Value<string>("additionalNotes");
-
+            string url = jsonBody.Value<string>("url");
             var properties = new Dictionary<string, string>();
             properties.Add("CaseId", caseId);
             properties.Add("FeedbackOption", feedbackOption.ToString());
             properties.Add("AdditionalNotes", additionalNotes);
+            properties.Add("url", url);
 
             switch (feedbackOption)
             {
@@ -105,6 +106,28 @@ namespace AppLensV2
         {
             var result = await GithubClient.GetFileContent(detectorName, fileName);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("api/detectors/{detectorName}/feedback")]
+        public void DetectorFeedback(string detectorName, [FromBody]JToken jsonBody)
+        {
+            int feedbackOption = jsonBody.Value<int>("feedbackOption");
+            string url = jsonBody.Value<string>("url");
+            var properties = new Dictionary<string, string>();
+            properties.Add("url", url);
+
+            string metricName = string.Format("DETECTOR_{0}", detectorName.ToUpper());
+
+            switch (feedbackOption)
+            {
+                case 0:
+                    ApplicationInsightsClient.Instance.TrackMetric(string.Format("{0}_SUCCESS", metricName), 1, properties);
+                    break;
+                case 1:
+                    ApplicationInsightsClient.Instance.TrackMetric(string.Format("{0}_FAILURE", metricName), 1, properties);
+                    break;
+            }
         }
     }
 }

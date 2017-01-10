@@ -6,13 +6,17 @@ module SupportCenter {
     export interface IFeedbackService {
         sendGeneralFeedback(): void;
         sendCaseFeedback(caseNumber: string, feedbackOption: number, additionalNotes: string): ng.IPromise<boolean>;
+        sendDetectorFeedback(detectorName: string, feedbackOption: number): ng.IPromise<boolean>;
+        detectorsFeedbackList: ICache<number>;
     }
 
     export class FeedbackService implements IFeedbackService {
         static $inject = ['$q', '$http', '$stateParams', '$window'];
 
-        constructor(private $q: ng.IQService, private $http: ng.IHttpService, private $stateParams: IStateParams, private $window: ng.IWindowService) {
+        public detectorsFeedbackList: ICache<number>;
 
+        constructor(private $q: ng.IQService, private $http: ng.IHttpService, private $stateParams: IStateParams, private $window: ng.IWindowService) {
+            this.detectorsFeedbackList = {};
         }
 
         private getCurrentUrlFillMissingData(): string {
@@ -45,7 +49,30 @@ module SupportCenter {
                 },
                 data: {
                     'feedbackOption': feedbackOption,
-                    'additionalNotes': additionalNotes
+                    'additionalNotes': additionalNotes,
+                    'url': this.getCurrentUrlFillMissingData()
+                }
+            }).then(function (data) {
+                deferred.resolve(true);
+            }, function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
+        }
+
+        sendDetectorFeedback(detectorName: string, feedbackOption: number): ng.IPromise<boolean> {
+
+            var deferred = this.$q.defer<boolean>();
+            this.$http({
+                method: "POST",
+                url: UriPaths.DetectorFeedbackPath(detectorName),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'feedbackOption': feedbackOption,
+                    'url': this.getCurrentUrlFillMissingData()
                 }
             }).then(function (data) {
                 deferred.resolve(true);
