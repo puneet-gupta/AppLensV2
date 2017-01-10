@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService) {
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -40,7 +40,7 @@ module SupportCenter {
                 if (sitesWithSameHostname.length > 1) {
                     self.showSitesDialog();
                 }
-                
+
                 self.getRuntimeAvailability();
 
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
@@ -70,7 +70,7 @@ module SupportCenter {
                 }, function (err) {
                     self.detectorListLoaded = true;
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-                    });
+                });
             }, function (err) {
                 // Error in calling Site Details
 
@@ -89,7 +89,7 @@ module SupportCenter {
                 this.selectedItem = this.$state.params['detectorName'];
             }
         }
-        
+
         detectors: DetectorDefinition[];
         detectorListLoaded: boolean = false;
         selectedItem: string;
@@ -136,7 +136,7 @@ module SupportCenter {
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
             this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
-                
+
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
                 self.dataLoading = false;
                 var iterator = 0;
@@ -185,7 +185,7 @@ module SupportCenter {
             };
 
             this.$mdPanel.open(config);
-                
+
         }
 
         showSitesDialog(): void {
@@ -210,6 +210,30 @@ module SupportCenter {
             };
 
             this.$mdPanel.open(config);
+        }
+
+        showCaseFeedbackForm(ev): void {
+
+            let self = this;
+
+            this.$mdDialog.show({
+                controllerAs: 'casefeedbackctrl',
+                controller: CaseFeedbackCtrl,
+                templateUrl: 'supportcasefeedback.html',
+                parent: angular.element(document.body),
+                hasBackdrop: true,
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                disableParentScroll: true,
+                escapeToClose: true,
+                focusOnOpen: false
+            })
+                .then(function (answer) {
+                    if (angular.isDefined(answer) && answer === true) {
+                        self.$mdToast.showSimple("Feedback submitted successfully.Thank you !!");
+                    }
+                }, function () {
+                });
         }
     }
 
@@ -240,5 +264,38 @@ module SupportCenter {
         site: Site;
         logo: string;
         properties: NameValuePair[]
+    }
+
+    export class CaseFeedbackCtrl {
+
+        public static $inject: string[] = ["$mdDialog", "FeedbackService"];
+
+        constructor(private $mdDialog: angular.material.IDialogService, private FeedbackService: IFeedbackService) {
+            this.feedbackOption = 0;
+        }
+
+        submitFeedback(): void {
+
+            if (!angular.isDefined(this.caseNumber) || this.caseNumber === '') {
+                return;
+            }
+
+            if (!angular.isDefined(this.additionalNotes)) {
+                this.additionalNotes = '';
+            }
+
+            var self = this;
+            this.FeedbackService.sendCaseFeedback(this.caseNumber, this.feedbackOption, this.additionalNotes)
+                .then(function (answer) {
+                    self.$mdDialog.hide(true);
+                }, function (err) {
+                    self.$mdDialog.hide(false);
+                });
+        }
+
+        caseNumber: string;
+        feedbackOption: number;
+        additionalNotes: string;
+
     }
 }

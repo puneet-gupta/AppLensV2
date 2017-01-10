@@ -5,6 +5,7 @@ module SupportCenter {
 
     export interface IFeedbackService {
         sendGeneralFeedback(): void;
+        sendCaseFeedback(caseNumber: string, feedbackOption: number, additionalNotes: string): ng.IPromise<boolean>;
     }
 
     export class FeedbackService implements IFeedbackService {
@@ -26,10 +27,33 @@ module SupportCenter {
         sendGeneralFeedback(): void {
             var subject = encodeURIComponent('Applensv2 Feedback');
             var body = encodeURIComponent('Current site: ' + this.getCurrentUrlFillMissingData() + '\n'
-                                        + 'Please provide feedback here:');
+                + 'Please provide feedback here:');
             var link: string = 'mailto:praveenhb@microsoft.com?subject={subject}&body={body}';
             var link = link.replace('{subject}', subject).replace('{body}', body);
             window.location.href = link;
+        }
+
+        sendCaseFeedback(caseId: string, feedbackOption: number, additionalNotes: string): ng.IPromise<boolean> {
+
+            var deferred = this.$q.defer<boolean>();
+
+            this.$http({
+                method: "POST",
+                url: UriPaths.CaseFeedbackPath(caseId),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: {
+                    'feedbackOption': feedbackOption,
+                    'additionalNotes': additionalNotes
+                }
+            }).then(function (data) {
+                deferred.resolve(true);
+            }, function (err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
         }
     }
 }
