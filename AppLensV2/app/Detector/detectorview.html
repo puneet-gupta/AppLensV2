@@ -1,7 +1,26 @@
 ﻿<md-card>
     <div flex>
         <md-toolbar style="min-height:40px;background-color:#F4F4F4;color:rgb(0,150,136);z-index:0">
-            <h5 style="margin:auto 10px auto;font-weight:500">{{::detectorviewctrl.info.DisplayName}}</h5>
+            <div class="md-toolbar-tools">
+                <h5 style="margin:auto 10px auto;font-weight:500">{{::detectorviewctrl.info.DisplayName}}</h5>
+                <span style="display:none" id="name">{{::detectorviewctrl.info.Name}}</span>
+                <span flex></span>
+
+                <md-button class="md-icon-button" aria-label="thumbs up" ng-click="detectorviewctrl.sendDetectorFeedback(detectorviewctrl.info.Name, 0)">
+                    <ng-md-icon icon="thumb_up" ng-style="{'fill': detectorviewctrl.detectorFeedbackOption == 0 ? 'rgb(19, 183, 138)' : 'rgb(155, 155, 155)'}"></ng-md-icon>
+                    <md-tooltip md-direction="top">
+                        This detector helped.
+                    </md-tooltip>
+                </md-button>
+
+                <md-button class="md-icon-button" aria-label="thumbs down" ng-click="detectorviewctrl.sendDetectorFeedback(detectorviewctrl.info.Name, 1)">
+                    <ng-md-icon icon="thumb_down" ng-style="{'fill': detectorviewctrl.detectorFeedbackOption == 1 ? 'rgb(255, 82, 82)' : 'rgb(155, 155, 155)'}"></ng-md-icon>
+                    <md-tooltip md-direction="top">
+                        This detector didn't help.
+                    </md-tooltip>
+                </md-button>
+
+            </div>
         </md-toolbar>
         <div layout-padding>
 

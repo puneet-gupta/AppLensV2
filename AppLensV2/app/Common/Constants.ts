@@ -22,6 +22,10 @@ module SupportCenter {
         private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = UriPaths.baseAPIPath + "/properties";
 
+        // Uri Paths for feedback APIs
+        private static caseFeedback: string = "/api/cases/{caseId}/feedback";
+        private static detectorFeedback: string = "/api/detectors/{detectorName}/feedback";
+
         public static SiteDetailsPath(siteName: string): string {
             return UriPaths.siteDetails.replace("{siteName}", siteName);
         }
@@ -34,6 +38,16 @@ module SupportCenter {
             return UriPaths.detectorsDocumentAPIPath
                 .replace("{detectorName}", detectorName)
                 .replace("{fileName}", fileName);
+        }
+
+        public static CaseFeedbackPath(caseId: string): string {
+            return UriPaths.caseFeedback
+                .replace("{caseId}", caseId);
+        }
+
+        public static DetectorFeedbackPath(detectorName: string): string {
+            return UriPaths.detectorFeedback
+                .replace("{detectorName}", detectorName);
         }
 
         public static AppAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {

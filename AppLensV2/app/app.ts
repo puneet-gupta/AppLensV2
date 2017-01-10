@@ -13,6 +13,7 @@ module SupportCenter {
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
+        .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])

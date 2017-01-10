@@ -19,11 +19,38 @@ module SupportCenter {
     }
 
     export class DetectorViewCtrl {
-        public static $inject: string[] = ["DetectorsService", "$stateParams", "$window"];
+        public static $inject: string[] = ["DetectorsService", "$stateParams", "$window", "FeedbackService", "$mdToast", "$timeout"];
         public showDetailedView: boolean = false;
+        public detectorFeedbackOption: number = -1;
+        private nameElement: any;
+        private detectorName: string;
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
-            
+        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private $timeout: ng.ITimeoutService) {
+            this.nameElement = document.getElementById('name');
+            let self = this;
+
+            this.$timeout(function () {
+                self.detectorName = self.nameElement.innerText;
+
+                if (angular.isDefined(FeedbackService.detectorsFeedbackList[self.detectorName])) {
+                    self.detectorFeedbackOption = FeedbackService.detectorsFeedbackList[self.detectorName];
+                }
+            }, 1000);
+        }
+
+        sendDetectorFeedback(detectorName: string, feedbackOption: number) {
+
+            if (this.detectorFeedbackOption === -1) {
+                this.detectorFeedbackOption = feedbackOption;
+                let self = this;
+                this.FeedbackService.sendDetectorFeedback(detectorName, feedbackOption).then(function (answer) {
+                    if (angular.isDefined(answer) && answer === true) {
+                        self.$mdToast.showSimple("Feedback submitted successfully.Thank you !!");
+                        self.FeedbackService.detectorsFeedbackList[detectorName] = feedbackOption;
+                    }
+                }, function () {
+                });
+            }
         }
     }
 
