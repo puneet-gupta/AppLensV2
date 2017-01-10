@@ -63,7 +63,6 @@ module SupportCenter {
         public controllerAs: string = 'detectorviewctrl';
         public controller = DetectorViewCtrl;
         public link = function (scope: IDetectorViewScope) {
-            console.log(scope);
         }
 
         public scope: { [boundProperty: string]: string } = {
