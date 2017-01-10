@@ -220,6 +220,10 @@ module SupportCenter {
                     var workerChartData = [];
                     var nextElementToAdd = workerData.pop();
 
+                    if (!angular.isDefined(nextElementToAdd)) {
+                        continue;
+                    }
+
                     while (new Date(nextElementToAdd.Timestamp).getTime() < roundedStartTime.getTime()) {
                         nextElementToAdd = workerData.pop();
                     }
