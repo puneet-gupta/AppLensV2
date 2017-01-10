@@ -21,7 +21,7 @@ module SupportCenter {
                     self.sites = new Array<Site>();
 
                     for (let siteDetail of data.Details) {
-                        self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName));
+                        self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName, siteDetail.InternalStampName));
                     }
 
                     //if the array is empty then the observer call will fail before it gets to this line with a 404 SiteNotFound

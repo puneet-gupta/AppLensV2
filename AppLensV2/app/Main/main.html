@@ -186,7 +186,8 @@
             <md-list-item class="md-2-line" ng-repeat="site in multiplesitesctrl.sites">
                 <div class="md-list-item-text" layout="column">
                     <h2 style="margin-bottom: 0 !important">{{::site.name}}</h2>
-                    <h3>{{::site.stampName}}</h3>
+                    <h3>Stamp: {{::site.stampName}}</h3>
+                    <h3 ng-hide="{{site.stampName == site.internalStampName}}">InternalStamp: {{::site.internalStampName}}</h3>
                 </div>
                 <md-button class="md-secondary">
                     <a ng-click="multiplesitesctrl.chooseSite(site.name)">Go</a>
