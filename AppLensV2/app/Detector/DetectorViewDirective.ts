@@ -35,7 +35,7 @@ module SupportCenter {
                 if (angular.isDefined(FeedbackService.detectorsFeedbackList[self.detectorName])) {
                     self.detectorFeedbackOption = FeedbackService.detectorsFeedbackList[self.detectorName];
                 }
-            }, 1000);
+            }, 3000);
         }
 
         sendDetectorFeedback(detectorName: string, feedbackOption: number) {
