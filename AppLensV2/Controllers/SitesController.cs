@@ -30,9 +30,11 @@ namespace AppLensV2
         [Route("api/sites/{siteName}")]
         public async Task<IHttpActionResult> GetSite(string siteName)
         {
+            var stampTask = SupportObserverClient.GetStamp(siteName);
             var hostnamesTask = SupportObserverClient.GetHostnames(siteName);
             var siteDetailsTask = SupportObserverClient.GetSite(siteName);
 
+            var stampResponse = await stampTask;
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
 
@@ -44,6 +46,11 @@ namespace AppLensV2
             if (hostNameResponse.StatusCode != HttpStatusCode.OK)
             {
                 return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
+            }
+
+            if (stampResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(stampResponse.StatusCode, (string)stampResponse.Content));
             }
             
             var resourceGroupResponse =  await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
@@ -59,6 +66,7 @@ namespace AppLensV2
             {
                 SiteName = siteName,
                 Details = siteDetailsResponse.Content,
+                Stamp = stampResponse.Content,
                 HostNames = hostNameResponse.Content
             });
         }
