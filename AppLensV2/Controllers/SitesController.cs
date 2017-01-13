@@ -27,11 +27,23 @@ namespace AppLensV2
         }
 
         [HttpGet]
+        [Route("api/stamps/{stamp}/sites/{siteName}")]
+        public async Task<IHttpActionResult> GetSite(string stamp, string siteName)
+        {
+            return await GetSiteInternal(stamp, siteName);
+        }
+
+        [HttpGet]
         [Route("api/sites/{siteName}")]
         public async Task<IHttpActionResult> GetSite(string siteName)
         {
+            return await GetSiteInternal(null, siteName);
+        }
+
+        private async Task<IHttpActionResult> GetSiteInternal(string stamp, string siteName)
+        {
             var hostnamesTask = SupportObserverClient.GetHostnames(siteName);
-            var siteDetailsTask = SupportObserverClient.GetSite(siteName);
+            var siteDetailsTask = stamp == null ? SupportObserverClient.GetSite(siteName) : SupportObserverClient.GetSite(stamp, siteName);
 
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
@@ -45,8 +57,8 @@ namespace AppLensV2
             {
                 return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
             }
-            
-            var resourceGroupResponse =  await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
+
+            var resourceGroupResponse = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
 
             if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
             {

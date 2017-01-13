@@ -10,13 +10,13 @@
             });
         }
 
-        chooseSite(sitename: string): void {
+        chooseSite(site: Site): void {
             let locationService = this.$window.location;
             var appLensUrl = locationService.href;
             var oldValue = this.$stateParams.siteName;
-            var newValue = sitename;
+            var newValue = site.name;
             appLensUrl = appLensUrl.replace(oldValue, newValue);
-            if (this.sites[0].name != sitename) {
+            if (this.sites[0].name != site.name) {
                 this.$window.open(appLensUrl);
             } else {
                 locationService.replace(appLensUrl);

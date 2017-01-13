@@ -13,9 +13,9 @@ module SupportCenter {
 
         static $inject = ['$http', '$stateParams', 'ErrorHandlerService'];
         constructor(private $http: ng.IHttpService, private $stateParams: IStateParams, private ErrorHandlerService: IErrorHandlerService) {
-            let siteName = $stateParams.siteName;
             var self = this;
-            this.promise = this.$http.get("/api/sites/" + siteName)
+
+            this.promise = this.$http.get(UriPaths.SiteDetailsPath(this.$stateParams))
                 .success(function (data: any) {
 
                     self.sites = new Array<Site>();

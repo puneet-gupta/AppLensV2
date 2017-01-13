@@ -45,6 +45,12 @@ module SupportCenter {
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
+                .state('home2', {
+                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
+                    templateUrl: 'app/Main/main.html',
+                    controller: 'MainCtrl',
+                    controllerAs: 'main'
+                })
                 .state('home.sia', {
                     url: '/appanalysis',
                     views: {
@@ -55,7 +61,27 @@ module SupportCenter {
                         }
                     }
                 })
+                .state('home2.sia', {
+                    url: '/appanalysis',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
                 .state('home.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('home2.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

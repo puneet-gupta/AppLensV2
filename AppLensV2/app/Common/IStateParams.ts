@@ -4,6 +4,7 @@ module SupportCenter {
     "use strict";
 
     export interface IStateParams extends angular.ui.IStateParamsService {
+        stamp: string;
         siteName: string;
         startTime: string;
         endTime: string;

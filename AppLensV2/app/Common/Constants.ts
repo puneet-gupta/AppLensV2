@@ -11,6 +11,7 @@ module SupportCenter {
     export class UriPaths {
 
         private static siteDetails: string = "/api/sites/{siteName}";
+        private static siteDetailsWithStamp: string = "/api/stamps/{stamp}/sites/{siteName}";
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
         private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
@@ -26,8 +27,12 @@ module SupportCenter {
         private static caseFeedback: string = "/api/cases/{caseId}/feedback";
         private static detectorFeedback: string = "/api/detectors/{detectorName}/feedback";
 
-        public static SiteDetailsPath(siteName: string): string {
-            return UriPaths.siteDetails.replace("{siteName}", siteName);
+        public static SiteDetailsPath(params: IStateParams): string {
+            if (angular.isDefined(params.stamp)) {
+                return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
+            } else {
+                return UriPaths.siteDetails.replace("{siteName}", params.siteName);
+            }
         }
 
         public static DiagnosticsPassThroughAPIPath(): string {
