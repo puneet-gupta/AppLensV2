@@ -15,8 +15,9 @@
             var appLensUrl = locationService.href;
             var oldValue = this.$stateParams.siteName;
             var newValue = site.name;
-            appLensUrl = appLensUrl.replace(oldValue, newValue);
-            if (this.sites[0].name != site.name) {
+            appLensUrl = locationService.origin + "/stamps/" + site.internalStampName + locationService.pathname.replace(oldValue, newValue) +
+                locationService.search;
+            if (this.sites[0].name != site.name && this.sites[0].internalStampName != site.internalStampName) {
                 this.$window.open(appLensUrl);
             } else {
                 locationService.replace(appLensUrl);

@@ -78,7 +78,7 @@ module SupportCenter {
                 .replace("{sub}", site.subscriptionId)
                 .replace("{rg}", site.resourceGroup)
                 .replace("{site}", site.name)
-                .replace("{stamp}", site.stampName)
+                .replace("{stamp}", site.internalStampName)
                 .replace("{start}", startTime)
                 .replace("{end}", endTime)
                 .replace("{grain}", timeGrain);
