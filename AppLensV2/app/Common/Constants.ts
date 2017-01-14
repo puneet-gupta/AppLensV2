@@ -28,7 +28,7 @@ module SupportCenter {
         private static detectorFeedback: string = "/api/detectors/{detectorName}/feedback";
 
         public static SiteDetailsPath(params: IStateParams): string {
-            if (angular.isDefined(params.stamp)) {
+            if (angular.isDefined(params.stamp) && params.stamp !== '') {
                 return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
             } else {
                 return UriPaths.siteDetails.replace("{siteName}", params.siteName);

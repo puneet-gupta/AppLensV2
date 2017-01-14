@@ -58,15 +58,6 @@ namespace AppLensV2
                 return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
             }
 
-            var resourceGroupResponse = await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
-
-            if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
-            {
-                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
-            }
-
-            siteDetailsResponse.Content.First.ResourceGroupName = resourceGroupResponse.Content;
-
             return Ok(new
             {
                 SiteName = siteName,
