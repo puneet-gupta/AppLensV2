@@ -106,17 +106,31 @@ namespace AppLensV2
         /// Get site details for siteName
         /// </summary>
         /// <param name="siteName">Site Name</param>
-        /// <returns>Stamp</returns>
         internal static async Task<ObserverResponse> GetSite(string siteName)
+        {
+            return await GetSiteInternal(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0", string.Format("{{\"site\":\"{0}\"}}", siteName));
+        }
+
+        /// <summary>
+        /// Get site details for siteName
+        /// </summary>
+        /// <param name="stamp">Stamp</param>
+        /// <param name="siteName">Site Name</param>
+        internal static async Task<ObserverResponse> GetSite(string stamp, string siteName)
+        {
+            return await GetSiteInternal(SupportObserverApiEndpoint + "stamps/" + stamp + "/sites/" + siteName + "/adminsites?api-version=2.0",
+                string.Format("{{\"stamp\":\"{0}\",\"site\":\"{1}\"}}", stamp, siteName));
+        }
+
+        private static async Task<ObserverResponse> GetSiteInternal(string endpoint, string hashInput)
         {
             var request = new HttpRequestMessage()
             {
-                RequestUri = new Uri(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0"),
+                RequestUri = new Uri(endpoint),
                 Method = HttpMethod.Get
             };
-
-            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
-            request.Headers.Add("client-hash", SignData(string.Format("{{\"site\":\"{0}\"}}", siteName), SimpleHashAuthenticationHashKey));
+            
+            request.Headers.Add("client-hash", SignData(hashInput, SimpleHashAuthenticationHashKey));
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetAdminSite");

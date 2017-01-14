@@ -13,17 +13,19 @@ module SupportCenter {
 
         static $inject = ['$http', '$stateParams', 'ErrorHandlerService'];
         constructor(private $http: ng.IHttpService, private $stateParams: IStateParams, private ErrorHandlerService: IErrorHandlerService) {
-            let siteName = $stateParams.siteName;
             var self = this;
-            this.promise = this.$http.get("/api/sites/" + siteName)
+
+            this.promise = this.$http.get(UriPaths.SiteDetailsPath(this.$stateParams))
                 .success(function (data: any) {
 
-                    self.site = new Site(data.Details[0].SiteName, data.Details[0].Subscription, data.Details[0].ResourceGroupName, data.HostNames, data.Stamp.Name);
-
                     self.sites = new Array<Site>();
+
                     for (let siteDetail of data.Details) {
-                        self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName));
+                        self.sites.push(new Site(siteDetail.SiteName, siteDetail.Subscription, siteDetail.ResourceGroupName, data.HostNames, siteDetail.StampName, siteDetail.InternalStampName));
                     }
+
+                    //if the array is empty then the observer call will fail before it gets to this line with a 404 SiteNotFound
+                    self.site = self.sites[0];
 
                     self.$http({
                         method: "GET",

@@ -10,13 +10,14 @@
             });
         }
 
-        chooseSite(sitename: string): void {
+        chooseSite(site: Site): void {
             let locationService = this.$window.location;
             var appLensUrl = locationService.href;
             var oldValue = this.$stateParams.siteName;
-            var newValue = sitename;
-            appLensUrl = appLensUrl.replace(oldValue, newValue);
-            if (this.sites[0].name != sitename) {
+            var newValue = site.name;
+            appLensUrl = locationService.origin + "/stamps/" + site.internalStampName + locationService.pathname.replace(oldValue, newValue) +
+                locationService.search;
+            if (this.sites[0].name !== site.name && this.sites[0].internalStampName !== site.internalStampName) {
                 this.$window.open(appLensUrl);
             } else {
                 locationService.replace(appLensUrl);

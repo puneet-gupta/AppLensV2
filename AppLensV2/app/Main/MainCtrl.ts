@@ -79,13 +79,12 @@ module SupportCenter {
             });
 
             // if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === 'home') {
+            if (this.$state.current.name.indexOf('home') >= 0) {
                 this.setSelectedItem('sia');
             }
-
-            if (this.$state.current.name === 'home.sia') {
+            if (this.$state.current.name.indexOf('.sia') >= 0) {
                 this.selectedItem = "sia";
-            } else if (this.$state.current.name === 'home.detector') {
+            } else if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
         }
@@ -108,15 +107,22 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             if (name === 'sia') {
                 this.selectedItem = "sia";
-
-                if (this.$state.current.name !== 'home.sia') {
+                if (this.$state.current.name.indexOf('home2') >= 0) {
+                    this.$state.go('home2.sia');
+                } else {
                     this.$state.go('home.sia');
                 }
             }
             else {
                 this.selectedItem = name;
-                if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
-                    this.$state.go('home.detector', { detectorName: name });
+                if (this.$state.current.name.indexOf('home2') >= 0) {
+                    if ((this.$state.current.name !== 'home2.detector') || (this.$state.current.name === 'home2.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('home2.detector', { detectorName: name });
+                    }
+                } else {
+                    if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('home.detector', { detectorName: name });
+                    }
                 }
             }
 
@@ -251,7 +257,7 @@ module SupportCenter {
 
                 self.properties.push(new NameValuePair("Subscription Id", self.site.subscriptionId));
                 self.properties.push(new NameValuePair("Resource Group", self.site.resourceGroup));
-                self.properties.push(new NameValuePair("Stamp Name", self.site.stampName));
+                self.properties.push(new NameValuePair("Stamp Name", self.site.internalStampName));
                 self.properties.push(new NameValuePair("Hostnames", self.site.hostNames.join()));
                 self.properties.push(new NameValuePair("App Stack", self.site.stack));
                 self.properties.push(new NameValuePair("SKU", self.site.sku));
