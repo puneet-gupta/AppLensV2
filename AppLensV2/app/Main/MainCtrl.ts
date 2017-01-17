@@ -79,7 +79,7 @@ module SupportCenter {
             });
 
             // if no child route is defined, then set default child route to sia
-            if (this.$state.current.name.indexOf('home') >= 0) {
+            if (this.$state.current.name === 'home' || this.$state.current.name === 'home2') {
                 this.setSelectedItem('sia');
             }
             if (this.$state.current.name.indexOf('.sia') >= 0) {
