@@ -38,6 +38,12 @@ module SupportCenter {
                 .icon('warning', './app/assets/svg/warning.svg', 30);
 
             $stateProvider
+                .state('default', {
+                    url: '/',
+                    templateUrl: 'app/Home/home.html',
+                    controller: 'HomeCtrl',
+                    controllerAs: 'home'
+                })
                 .state('home', {
                     url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
                     templateUrl: 'app/Main/main.html',
