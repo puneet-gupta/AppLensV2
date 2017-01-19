@@ -26,6 +26,8 @@ namespace AppLensV2.Helpers
                         break;
 
                     var path = match.Groups[1].Value.Trim();
+                    path = Environment.ExpandEnvironmentVariables(path);
+
                     if (!File.Exists(path))
                     {
                         throw new FileNotFoundException("Specified path not found", path);
@@ -36,7 +38,7 @@ namespace AppLensV2.Helpers
 
                 return input;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
