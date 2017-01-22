@@ -1,20 +1,25 @@
-﻿    <div class="container-fluid form" style="margin: -100px 0px 0px -150px; left: 50%; top: 50%; width: 300px; position: absolute;">
-        <p class="name">AppLens V2 Site Search</p>
-        <form class="form-horizontal">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group col-lg-4">
-                        <div class="input-group md-input-container">
-                            <input type="text" placeholder="Site Name" class="form-control " id="siteName" />
-                        </div>
-                    </div>
-                </div>
+﻿
+    <div layout="column" flex>
+        <md-toolbar layout="column" class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h1 class="md-display-3">
+                    App Lens
+                </h1>
+                <h3 class="md-subhead">(2.0)</h3>
+                <span flex></span>
+                <img src="app/assets/images/Azure-WebApps-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
             </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <button ng-click="sendToMain(siteName.text)">Search</button>
-                </div>
-            </div>
-        </form>
+        </md-toolbar>
+
+        <md-content layout="column" flex id="wrapper">
+            <form name="siteSearch" data-ng-submit="home.sendToMain()">
+                <md-input-container>
+                    <label>Site:</label>
+                    <input ng-model="siteName" required>
+                </md-input-container>
+                <md-button type="submit">Search</md-button>
+            </form>
+        </md-content>
     </div>
+
 

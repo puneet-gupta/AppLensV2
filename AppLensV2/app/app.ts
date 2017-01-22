@@ -9,6 +9,7 @@ module SupportCenter {
         .service("SiteService", SiteService)
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
+        .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
@@ -38,7 +39,7 @@ module SupportCenter {
                 .icon('warning', './app/assets/svg/warning.svg', 30);
 
             $stateProvider
-                .state('default', {
+                .state('homePage', {
                     url: '/',
                     templateUrl: 'app/Home/home.html',
                     controller: 'HomeCtrl',
