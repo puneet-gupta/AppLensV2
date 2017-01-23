@@ -1,0 +1,25 @@
+﻿
+    <div layout="column" flex>
+        <md-toolbar layout="column" class="md-hue-2">
+            <div class="md-toolbar-tools">
+                <h1 class="md-display-3">
+                    App Lens
+                </h1>
+                <h3 class="md-subhead">(2.0)</h3>
+                <span flex></span>
+                <img src="app/assets/images/Azure-WebApps-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
+            </div>
+        </md-toolbar>
+
+        <md-content layout="column" flex id="wrapper">
+            <form name="siteSearch" data-ng-submit="home.sendToMain()">
+                <md-input-container>
+                    <label>Site:</label>
+                    <input ng-model="home.siteName" required>
+                </md-input-container>
+                <md-button type="submit">Search</md-button>
+            </form>
+        </md-content>
+    </div>
+
+
