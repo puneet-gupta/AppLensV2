@@ -25,7 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
-    <ApplicationInsightsResourceId>/subscriptions/4f42d231-1050-4386-b5ca-54cc38d11edf/resourcegroups/AppLensV2/providers/microsoft.insights/components/AppLensV2</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/0d3ae56c-deaf-4982-b514-33d016d4a683/resourcegroups/AppLensV2/providers/microsoft.insights/components/AppLensV2</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
