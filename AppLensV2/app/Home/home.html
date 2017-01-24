@@ -16,19 +16,23 @@
                 <form name="siteSearch" data-ng-submit="home.sendToMain()" layout="column">
                     <md-input-container>
                         <label>Site:</label>
-                        <input ng-model="home.siteName" required>
+                        <input id="siteName" ng-model="home.siteName" required>
                     </md-input-container>
                     <md-input-container>
                         <label>Start Time</label>
-                        <adm-dtp ng-model='home.startTime' options="{format:'YYYY/MM/DD hh:mm',calType:'gregorian'}" >
-                            <input type="text" ng-model="home.startTime" dtp-input />
-                        </adm-dtp>
+                        <input mdc-datetime-picker 
+                               format="YYYY-MM-DD HH:mm"
+                               id="startTime" 
+                               type="text" 
+                               ng-model="home.startTime" />
                     </md-input-container>
                     <md-input-container>
                         <label>End Time</label>
-                        <adm-dtp ng-model='home.endTime' options="{format:'YYYY/MM/DD hh:mm',calType:'gregorian'}" >
-                            <input type="text" ng-model="home.endTime" dtp-input/>
-                        </adm-dtp>
+                        <input mdc-datetime-picker 
+                               format="YYYY-MM-DD HH:mm"
+                               id="endTime" 
+                               type="text" 
+                               ng-model="home.endTime" />
                     </md-input-container>
                     <md-button class="md-primary md-raised" type="submit">Search</md-button>
                 </form>

@@ -14,10 +14,10 @@ module SupportCenter {
             this.$stateParams.siteName = this.siteName;
             if (angular.isDefined(this.startTime))
             {
-                this.$stateParams.startTime = this.startTime
+                this.$stateParams.startTime = this.startTime;
             };
             if (angular.isDefined(this.endTime)) {
-                this.$stateParams.startTime = this.endTime
+                this.$stateParams.endTime = this.endTime;
             };     
             this.$state.go('home', this.$stateParams);
         }
