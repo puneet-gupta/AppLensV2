@@ -7,20 +7,27 @@ module SupportCenter {
         public static $inject: string[] = ["$stateParams", "$state"];
         constructor(private $stateParams: IStateParams, private $state: angular.ui.IStateService) {
         }
+
         siteName: string;
-        startTime: string;
-        endTime: string;
+        endTime: Date = new Date();
+        startTime: Date = new Date(this.endTime.getFullYear(), this.endTime.getMonth(), this.endTime.getDate() - 1, this.endTime.getHours(), this.endTime.getMinutes(), this.endTime.getSeconds(), this.endTime.getMilliseconds());
+            
+        startTimeStr: string = this.startTime.toISOString();
+        endTimeStr: string = this.endTime.toISOString();
+        
         sendToMain() {
             this.$stateParams.siteName = this.siteName;
             if (angular.isDefined(this.startTime))
             {
-                this.$stateParams.startTime = this.startTime;
+                this.$stateParams.startTime = this.startTimeStr;
             };
             if (angular.isDefined(this.endTime)) {
-                this.$stateParams.endTime = this.endTime;
+                this.$stateParams.endTime = this.endTimeStr;
             };     
             this.$state.go('home', this.$stateParams);
         }
+
+
  
     }
 }

@@ -11,8 +11,8 @@
             </div>
         </md-toolbar>
 
-        <md-content layout="row" flex id="wrapper">
-            <div class="layout-fill layout-margin layout-padding ng-scope layout-row" style="min-height: 224px;" layout="row" layout-fill="" layout-padding="" layout-margin="">
+        <md-content layout="row" flex>
+            <div flex="33" layout-margin>
                 <form name="siteSearch" data-ng-submit="home.sendToMain()" layout="column">
                     <md-input-container>
                         <label>Site:</label>
@@ -20,19 +20,15 @@
                     </md-input-container>
                     <md-input-container>
                         <label>Start Time</label>
-                        <input mdc-datetime-picker 
-                               format="YYYY-MM-DD HH:mm"
-                               id="startTime" 
-                               type="text" 
-                               ng-model="home.startTime" />
+                        <input id="startTime"
+                               type="datetime"
+                               ng-model="home.startTimeStr" />
                     </md-input-container>
                     <md-input-container>
                         <label>End Time</label>
-                        <input mdc-datetime-picker 
-                               format="YYYY-MM-DD HH:mm"
-                               id="endTime" 
-                               type="text" 
-                               ng-model="home.endTime" />
+                        <input id="endTime"
+                               type="datetime"
+                               ng-model="home.endTimeStr" />
                     </md-input-container>
                     <md-button class="md-primary md-raised" type="submit">Search</md-button>
                 </form>
