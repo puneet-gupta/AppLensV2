@@ -11,6 +11,7 @@ module SupportCenter {
     export class UriPaths {
 
         private static siteDetails: string = "/api/sites/{siteName}";
+        private static siteDetailsWithStamp: string = "/api/stamps/{stamp}/sites/{siteName}";
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
         private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
@@ -22,8 +23,16 @@ module SupportCenter {
         private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = UriPaths.baseAPIPath + "/properties";
 
-        public static SiteDetailsPath(siteName: string): string {
-            return UriPaths.siteDetails.replace("{siteName}", siteName);
+        // Uri Paths for feedback APIs
+        private static caseFeedback: string = "/api/cases/{caseId}/feedback";
+        private static detectorFeedback: string = "/api/detectors/{detectorName}/feedback";
+
+        public static SiteDetailsPath(params: IStateParams): string {
+            if (angular.isDefined(params.stamp) && params.stamp !== '') {
+                return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
+            } else {
+                return UriPaths.siteDetails.replace("{siteName}", params.siteName);
+            }
         }
 
         public static DiagnosticsPassThroughAPIPath(): string {
@@ -34,6 +43,16 @@ module SupportCenter {
             return UriPaths.detectorsDocumentAPIPath
                 .replace("{detectorName}", detectorName)
                 .replace("{fileName}", fileName);
+        }
+
+        public static CaseFeedbackPath(caseId: string): string {
+            return UriPaths.caseFeedback
+                .replace("{caseId}", caseId);
+        }
+
+        public static DetectorFeedbackPath(detectorName: string): string {
+            return UriPaths.detectorFeedback
+                .replace("{detectorName}", detectorName);
         }
 
         public static AppAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
@@ -59,7 +78,7 @@ module SupportCenter {
                 .replace("{sub}", site.subscriptionId)
                 .replace("{rg}", site.resourceGroup)
                 .replace("{site}", site.name)
-                .replace("{stamp}", site.stampName)
+                .replace("{stamp}", site.internalStampName)
                 .replace("{start}", startTime)
                 .replace("{end}", endTime)
                 .replace("{grain}", timeGrain);

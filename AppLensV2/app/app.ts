@@ -3,7 +3,11 @@
 module SupportCenter {
     "use strict";
 
-    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown","ngMaterialDatePicker"])
+<<<<<<< HEAD
+    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown"])
+=======
+    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown", "jlareau.bowser"])
+>>>>>>> upstream/master
         .service("DetectorsService", DetectorsService)
         .service("SiaService", SiaService)
         .service("SiteService", SiteService)
@@ -14,6 +18,7 @@ module SupportCenter {
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
+        .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])
@@ -51,6 +56,12 @@ module SupportCenter {
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
+                .state('home2', {
+                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
+                    templateUrl: 'app/Main/main.html',
+                    controller: 'MainCtrl',
+                    controllerAs: 'main'
+                })
                 .state('home.sia', {
                     url: '/appanalysis',
                     views: {
@@ -61,7 +72,27 @@ module SupportCenter {
                         }
                     }
                 })
+                .state('home2.sia', {
+                    url: '/appanalysis',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
                 .state('home.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('home2.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

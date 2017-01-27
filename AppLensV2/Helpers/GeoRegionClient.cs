@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -8,12 +9,14 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Web;
+using AppLensV2.Helpers;
 
 namespace AppLensV2
 {
     public sealed class GeoRegionClient
     {
-        
+        private static string _authCertThumbprint;
+
         public static string GeoRegionEndpoint
         {
             get
@@ -29,7 +32,28 @@ namespace AppLensV2
 
                 return geoRegionEndpoint;
             }
-        }           
+        }
+        
+        public static string AuthCertThumbprint
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_authCertThumbprint))
+                {
+                    if (Debugger.IsAttached)
+                    {
+                        _authCertThumbprint =
+                            ConfigHelper.Evaluate(ConfigurationManager.AppSettings["GeoRegionAuthCertThumbprint"]);
+                    }
+                    else
+                    {
+                        _authCertThumbprint = Environment.GetEnvironmentVariable("APPSETTING_GeoRegionAuthCertThumbprint");
+                    }
+                }
+
+                return _authCertThumbprint;
+            }
+        }    
 
         public static async Task<HttpResponseMessage> GetResource(string apiRoute)
         {
@@ -67,17 +91,9 @@ namespace AppLensV2
 
             try
             {
-                string thumbprint;
-                if (Debugger.IsAttached)
-                {
-                    thumbprint = "9180D9D132E1D9FD697C2D882CF65559ECF01C79";
-                }else
-                {
-                    thumbprint = "1241D6C92881FF9BB075BF3C01B19CE41B383C9D";
-                }
                 X509Certificate2Collection certCollection = certStore.Certificates.Find(
                                        X509FindType.FindByThumbprint,
-                                       thumbprint,
+                                       AuthCertThumbprint,
                                        false);
                 // Get the first cert with the thumbprint
                 if (certCollection.Count > 0)

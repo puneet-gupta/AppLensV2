@@ -1,6 +1,5 @@
 ﻿<md-sidenav style="width:260px" flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
 
-
     <div style="height:150px;width:100%;background-color:teal;color:white">
         <div layout="column">
             <div layout="row" flex="60" layout-align="center center" style="padding:5px;padding-top:10px">
@@ -81,9 +80,36 @@
             </h1>
             <h3 class="md-subhead">(2.0)</h3>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Feedback" ng-click="main.sendFeedback()">
-                <ng-md-icon icon="feedback" style="fill:rgba(255,255,255,0.87)" size="30"></ng-md-icon>
-            </md-button>
+
+            <md-menu md-offset="0 -7">
+                <md-button aria-label="Feedback menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                    <ng-md-icon icon="feedback" style="fill:rgba(255,255,255,0.87)" size="30"></ng-md-icon>
+                </md-button>
+                <md-menu-content>
+
+                    <md-menu-item>
+                        <md-button aria-label="Feedback" ng-click="main.showCaseFeedbackForm()">
+                            <ng-md-icon icon="receipt" style="fill:teal"></ng-md-icon>
+                            Support Case Feedback
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="Feedback" href="https://github.com/ShekharGupta1988/AppLensV2/issues/new" target="_blank">
+                            <ng-md-icon icon="github-circle" style="fill:teal"></ng-md-icon>
+                            Open New Issue
+                        </md-button>
+                    </md-menu-item>
+
+                    <md-menu-item>
+                        <md-button aria-label="Feedback" ng-click="main.sendFeedback()">
+                            <ng-md-icon icon="mail" style="fill:teal"></ng-md-icon>
+                            Send General Feedback(Email)
+                        </md-button>
+                    </md-menu-item>
+
+                </md-menu-content>
+            </md-menu>
         </div>
     </md-toolbar>
 
@@ -166,9 +192,6 @@
             </md-list-item>
 
         </md-list>
-
-        
-
     </md-content>
 </script>
 
@@ -186,13 +209,49 @@
             <md-list-item class="md-2-line" ng-repeat="site in multiplesitesctrl.sites">
                 <div class="md-list-item-text" layout="column">
                     <h2 style="margin-bottom: 0 !important">{{::site.name}}</h2>
-                    <h3>{{::site.stampName}}</h3>
+                    <h3>Stamp Name: {{::site.stampName}}</h3>
+                    <h3 ng-hide="{{site.stampName === site.internalStampName}}">Internal Stamp Name: {{::site.internalStampName}}</h3>
                 </div>
                 <md-button class="md-secondary">
-                    <a ng-click="multiplesitesctrl.chooseSite(site.name)">Go</a>
+                    <a ng-click="multiplesitesctrl.chooseSite(site)">Go</a>
                 </md-button>
             </md-list-item>
         </md-list>
     </md-content>
+</script>
+
+<script type="text/ng-template" id="supportcasefeedback.html">
+
+    <md-dialog>
+
+        <md-dialog-content>
+
+            <div flex layout="column" layout-padding>
+                <br />
+                <md-input-container class="md-block" style="margin-right:30px;margin-bottom:0">
+                    <label>Support Case Number</label>
+                    <input type="text" required md-asterisk ng-model="casefeedbackctrl.caseNumber" autofocus>
+
+                </md-input-container>
+
+                <md-radio-group ng-model="casefeedbackctrl.feedbackOption" style="font-size:16px;">
+
+                    <md-radio-button value="0" class="md-primary">Solved the case completely.</md-radio-button>
+                    <md-radio-button value="1">Pointed to right direction, but it didn't help completely.</md-radio-button>
+                    <md-radio-button value="2">Didn't help at all.</md-radio-button>
+
+                </md-radio-group>
+                
+                <md-input-container class="md-icon-float md-block">
+                    <label>Additional Notes</label>
+                    <textarea ng-model="casefeedbackctrl.additionalNotes" md-maxlength="200" rows="5" md-select-on-focus style="font-size:16px;"></textarea>
+                </md-input-container>
+
+                <md-button class="md-primary" ng-click="casefeedbackctrl.submitFeedback()">Submit Feedback</md-button>
+            </div>
+
+        </md-dialog-content>
+    </md-dialog>
+    
 </script>
 

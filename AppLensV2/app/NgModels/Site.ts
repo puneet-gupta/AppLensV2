@@ -9,7 +9,8 @@ module SupportCenter {
             public subscriptionId: string,
             public resourceGroup: string,
             public hostNames: string[],
-            public stampName: string
+            public stampName: string,
+            public internalStampName: string
         ) {
         }
 

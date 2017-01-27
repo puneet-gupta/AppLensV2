@@ -22,11 +22,11 @@
     "underscore": "^1.8.3",
     "angular-material-icons": "^0.7.1",
     "ng-letter-avatar": "ngletteravatar#^4.0.4",
-    "angular-markdown-directive": "^0.3.1",
-    "angular-material-datetimepicker": "1.4.0",
-    "moment": "2.17.1"
+    "angular-markdown-directive": "^0.3.1"
   },
   "resolutions": {
-    "angular-material": "^1.1.1"
+    "angular-material": "^1.1.1",
+    "angular-bowser": "^0.0.4"
+
   }
 }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Newtonsoft.Json.Linq;
 
 namespace AppLensV2
 {
@@ -26,14 +27,24 @@ namespace AppLensV2
         }
 
         [HttpGet]
+        [Route("api/stamps/{stamp}/sites/{siteName}")]
+        public async Task<IHttpActionResult> GetSite(string stamp, string siteName)
+        {
+            return await GetSiteInternal(stamp, siteName);
+        }
+
+        [HttpGet]
         [Route("api/sites/{siteName}")]
         public async Task<IHttpActionResult> GetSite(string siteName)
         {
-            var stampTask = SupportObserverClient.GetStamp(siteName);
-            var hostnamesTask = SupportObserverClient.GetHostnames(siteName);
-            var siteDetailsTask = SupportObserverClient.GetSite(siteName);
+            return await GetSiteInternal(null, siteName);
+        }
 
-            var stampResponse = await stampTask;
+        private async Task<IHttpActionResult> GetSiteInternal(string stamp, string siteName)
+        {
+            var hostnamesTask = SupportObserverClient.GetHostnames(siteName);
+            var siteDetailsTask = stamp == null ? SupportObserverClient.GetSite(siteName) : SupportObserverClient.GetSite(stamp, siteName);
+
             var hostNameResponse = await hostnamesTask;
             var siteDetailsResponse = await siteDetailsTask;
 
@@ -47,35 +58,71 @@ namespace AppLensV2
                 return ResponseMessage(Request.CreateErrorResponse(hostNameResponse.StatusCode, (string)hostNameResponse.Content));
             }
 
-            if (stampResponse.StatusCode != HttpStatusCode.OK)
-            {
-                return ResponseMessage(Request.CreateErrorResponse(stampResponse.StatusCode, (string)stampResponse.Content));
-            }
-            
-            var resourceGroupResponse =  await SupportObserverClient.GetResourceGroup((string)siteDetailsResponse.Content.First.SiteName);
-
-            if (resourceGroupResponse.StatusCode != HttpStatusCode.OK)
-            {
-                return ResponseMessage(Request.CreateErrorResponse(siteDetailsResponse.StatusCode, (string)siteDetailsResponse.Content));
-            }
-
-            siteDetailsResponse.Content.First.ResourceGroupName = resourceGroupResponse.Content;
-
             return Ok(new
             {
                 SiteName = siteName,
                 Details = siteDetailsResponse.Content,
-                Stamp = stampResponse.Content,
                 HostNames = hostNameResponse.Content
             });
         }
-        
+
+        [HttpPost]
+        [Route("api/cases/{caseId}/feedback")]
+        public void CaseFeedback(string caseId, [FromBody]JToken jsonBody)
+        {
+            int feedbackOption = jsonBody.Value<int>("feedbackOption");
+            string additionalNotes = jsonBody.Value<string>("additionalNotes");
+            string url = jsonBody.Value<string>("url");
+            var properties = new Dictionary<string, string>();
+            properties.Add("CaseId", caseId);
+            properties.Add("FeedbackOption", feedbackOption.ToString());
+            properties.Add("AdditionalNotes", additionalNotes);
+            properties.Add("url", url);
+
+            switch (feedbackOption)
+            {
+                case 0:
+                    ApplicationInsightsClient.Instance.TrackMetric("APPLENS_RESULT_SUCCESS", 1);
+                    break;
+                case 1:
+                    ApplicationInsightsClient.Instance.TrackMetric("APPLENS_RESULT_PARTIALSUCCESS", 1);
+                    break;
+                case 2:
+                    ApplicationInsightsClient.Instance.TrackMetric("APPLENS_RESULT_FAILED", 1);
+                    break;
+            }
+
+            ApplicationInsightsClient.Instance.TrackTrace(string.Format("CASE_FEEDBACK:{0}, FeedbackOption:{1}", caseId, feedbackOption), properties);
+        }
+
         [HttpGet]
         [Route("api/detectors/{detectorName}/files/{fileName}")]
         public async Task<IHttpActionResult> GetDetectorFiles(string detectorName, string fileName)
         {
             var result = await GithubClient.GetFileContent(detectorName, fileName);
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("api/detectors/{detectorName}/feedback")]
+        public void DetectorFeedback(string detectorName, [FromBody]JToken jsonBody)
+        {
+            int feedbackOption = jsonBody.Value<int>("feedbackOption");
+            string url = jsonBody.Value<string>("url");
+            var properties = new Dictionary<string, string>();
+            properties.Add("url", url);
+
+            string metricName = string.Format("DETECTOR_{0}", detectorName.ToUpper());
+
+            switch (feedbackOption)
+            {
+                case 0:
+                    ApplicationInsightsClient.Instance.TrackMetric(string.Format("{0}_SUCCESS", metricName), 1, properties);
+                    break;
+                case 1:
+                    ApplicationInsightsClient.Instance.TrackMetric(string.Format("{0}_FAILURE", metricName), 1, properties);
+                    break;
+            }
         }
     }
 }

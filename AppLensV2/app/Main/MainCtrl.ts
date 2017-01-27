@@ -5,9 +5,17 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+
+            if (bowser.msie || bowser.msedge || bowser.firefox) {
+
+                ErrorHandlerService.showError({
+                    Message: "Yikes... We have some outstanding browser specific issues which we are fixing. For Better experience, you can use Chrome browser for now"
+                });
+            }
+
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
@@ -40,7 +48,7 @@ module SupportCenter {
                 if (sitesWithSameHostname.length > 1) {
                     self.showSitesDialog();
                 }
-                
+
                 self.getRuntimeAvailability();
 
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
@@ -70,7 +78,7 @@ module SupportCenter {
                 }, function (err) {
                     self.detectorListLoaded = true;
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-                    });
+                });
             }, function (err) {
                 // Error in calling Site Details
 
@@ -79,17 +87,16 @@ module SupportCenter {
             });
 
             // if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === 'home') {
+            if (this.$state.current.name === 'home' || this.$state.current.name === 'home2') {
                 this.setSelectedItem('sia');
             }
-
-            if (this.$state.current.name === 'home.sia') {
+            if (this.$state.current.name.indexOf('.sia') >= 0) {
                 this.selectedItem = "sia";
-            } else if (this.$state.current.name === 'home.detector') {
+            } else if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
         }
-        
+
         detectors: DetectorDefinition[];
         detectorListLoaded: boolean = false;
         selectedItem: string;
@@ -108,15 +115,22 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             if (name === 'sia') {
                 this.selectedItem = "sia";
-
-                if (this.$state.current.name !== 'home.sia') {
+                if (this.$state.current.name.indexOf('home2') >= 0) {
+                    this.$state.go('home2.sia');
+                } else {
                     this.$state.go('home.sia');
                 }
             }
             else {
                 this.selectedItem = name;
-                if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
-                    this.$state.go('home.detector', { detectorName: name });
+                if (this.$state.current.name.indexOf('home2') >= 0) {
+                    if ((this.$state.current.name !== 'home2.detector') || (this.$state.current.name === 'home2.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('home2.detector', { detectorName: name });
+                    }
+                } else {
+                    if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('home.detector', { detectorName: name });
+                    }
                 }
             }
 
@@ -136,7 +150,7 @@ module SupportCenter {
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
             this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
-                
+
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
                 self.dataLoading = false;
                 var iterator = 0;
@@ -185,7 +199,7 @@ module SupportCenter {
             };
 
             this.$mdPanel.open(config);
-                
+
         }
 
         showSitesDialog(): void {
@@ -211,6 +225,30 @@ module SupportCenter {
 
             this.$mdPanel.open(config);
         }
+
+        showCaseFeedbackForm(ev): void {
+
+            let self = this;
+
+            this.$mdDialog.show({
+                controllerAs: 'casefeedbackctrl',
+                controller: CaseFeedbackCtrl,
+                templateUrl: 'supportcasefeedback.html',
+                parent: angular.element(document.body),
+                hasBackdrop: true,
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                disableParentScroll: true,
+                escapeToClose: true,
+                focusOnOpen: false
+            })
+                .then(function (answer) {
+                    if (angular.isDefined(answer) && answer === true) {
+                        self.$mdToast.showSimple("Feedback submitted successfully.Thank you !!");
+                    }
+                }, function () {
+                });
+        }
     }
 
     export class AppProfileCtrl {
@@ -227,7 +265,7 @@ module SupportCenter {
 
                 self.properties.push(new NameValuePair("Subscription Id", self.site.subscriptionId));
                 self.properties.push(new NameValuePair("Resource Group", self.site.resourceGroup));
-                self.properties.push(new NameValuePair("Stamp Name", self.site.stampName));
+                self.properties.push(new NameValuePair("Stamp Name", self.site.internalStampName));
                 self.properties.push(new NameValuePair("Hostnames", self.site.hostNames.join()));
                 self.properties.push(new NameValuePair("App Stack", self.site.stack));
                 self.properties.push(new NameValuePair("SKU", self.site.sku));
@@ -240,5 +278,38 @@ module SupportCenter {
         site: Site;
         logo: string;
         properties: NameValuePair[]
+    }
+
+    export class CaseFeedbackCtrl {
+
+        public static $inject: string[] = ["$mdDialog", "FeedbackService"];
+
+        constructor(private $mdDialog: angular.material.IDialogService, private FeedbackService: IFeedbackService) {
+            this.feedbackOption = 0;
+        }
+
+        submitFeedback(): void {
+
+            if (!angular.isDefined(this.caseNumber) || this.caseNumber === '') {
+                return;
+            }
+
+            if (!angular.isDefined(this.additionalNotes)) {
+                this.additionalNotes = '';
+            }
+
+            var self = this;
+            this.FeedbackService.sendCaseFeedback(this.caseNumber, this.feedbackOption, this.additionalNotes)
+                .then(function (answer) {
+                    self.$mdDialog.hide(true);
+                }, function (err) {
+                    self.$mdDialog.hide(false);
+                });
+        }
+
+        caseNumber: string;
+        feedbackOption: number;
+        additionalNotes: string;
+
     }
 }
