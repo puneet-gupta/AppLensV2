@@ -9,8 +9,9 @@ module SupportCenter {
         }
 
         siteName: string;
-        endTime: Date = new Date();
-        startTime: Date = new Date(this.endTime.getFullYear(), this.endTime.getMonth(), this.endTime.getDate() - 1, this.endTime.getHours(), this.endTime.getMinutes(), this.endTime.getSeconds(), this.endTime.getMilliseconds());
+        endTimeOrig: Date = new Date();
+        endTime: Date = new Date(this.endTimeOrig.getFullYear(), this.endTimeOrig.getMonth(), this.endTimeOrig.getDate(), this.endTimeOrig.getHours(), this.endTimeOrig.getMinutes());
+        startTime: Date = new Date(this.endTime.getFullYear(), this.endTime.getMonth(), this.endTime.getDate() - 1, this.endTime.getHours(), this.endTime.getMinutes());
             
         startTimeStr: string = this.startTime.toISOString();
         endTimeStr: string = this.endTime.toISOString();
