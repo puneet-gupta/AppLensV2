@@ -21,7 +21,7 @@ module SupportCenter {
                         left: 60
                     },
                     color: this.defaultColors,
-                    useInteractiveGuideline: true,
+                    useInteractiveGuideline: false,
                     transitionDuration: 350,
                     showLegend: true,
                     stacked: true,
@@ -33,7 +33,7 @@ module SupportCenter {
                         showMaxMin: false,
                         axisLabel: 'Time (UTC)',
                         staggerLabels: true,
-                        tickFormat: function (d) { return d3.time.format('%a %I %M %p')(new Date(d)); }
+                        tickFormat: function (d) { return d3.time.format('%m/%d %H:%M')(new Date(d)); }
                     },
                     yAxis: {
                         axisLabel: '',
@@ -54,10 +54,17 @@ module SupportCenter {
                 case 'handlecount':
                 case 'threadcount':
                 case 'appdomainsunloaded':
+                case 'sitelatency':
+                case 'frontendlatency':
+                case 'stampfrontendlatency':
+                case 'workerlatency':
+                case 'datarolelatency':
                     options.chart.type = 'lineChart';
+                    options.chart.useInteractiveGuideline = true;
                     break;
                 case 'memoryanalysisdetailed':
                     options.chart.type = 'stackedAreaChart';
+                    options.chart.useInteractiveGuideline = true;
                     break;
             }
             return options;
