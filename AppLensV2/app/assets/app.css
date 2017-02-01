@@ -318,3 +318,7 @@ md-badge{
 .timeline-uptime {
     background-color: transparent;
 }
+
+table.md-table th.md-column{
+    font-size: 15px !important;
+}

@@ -24,5 +24,6 @@ module SupportCenter {
         wiki: string;
         solution: string;
         metricsets: DiagnosticMetricSet[];
+        additionalData: any;
     }
 }

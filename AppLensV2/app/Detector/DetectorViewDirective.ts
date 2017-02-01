@@ -28,7 +28,6 @@ module SupportCenter {
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private $timeout: ng.ITimeoutService) {
             this.nameElement = document.getElementById('name');
             let self = this;
-
             this.$timeout(function () {
                 self.detectorName = self.nameElement.innerText;
 
