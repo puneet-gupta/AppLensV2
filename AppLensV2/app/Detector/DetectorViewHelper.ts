@@ -128,15 +128,13 @@ module SupportCenter {
                     };
                 }
 
-
+                metric.Values.sort(this.SortDataForGraphing);
 
                 for (let worker in workerChartData) {
 
                     var workerData = _.filter(metric.Values, function (item) {
                         return item.RoleInstance === worker || worker === Constants.aggregatedWorkerName;
                     });
-
-                    workerData.reverse();
 
                     var nextElementToAdd = workerData.pop();
 
@@ -193,18 +191,7 @@ module SupportCenter {
 
                 var defaultValue: number = 0;
 
-                var metricData = metric.Values.sort(function (a, b) {
-
-                    var dateA = new Date(a.Timestamp).getTime();
-                    var dateB = new Date(b.Timestamp).getTime();
-                    if (dateA > dateB) {
-                        return -1;
-                    }
-                    if (dateA < dateB) {
-                        return 1;
-                    }
-                    return 0;
-                });
+                metric.Values.sort(this.SortDataForGraphing);
 
                 // Create instance list
                 if (allDetailedChartData.instanceList === null || allDetailedChartData.instanceList.length < 1) {
@@ -227,7 +214,7 @@ module SupportCenter {
                     var workerChartData = [];
                     var nextElementToAdd = workerData.pop();
 
-                    if (!angular.isDefined(nextElementToAdd)) {
+                    if (!angular.isDefined(nextElementToAdd) || !angular.isDefined(nextElementToAdd.Timestamp)) {
                         continue;
                     }
 
@@ -270,6 +257,18 @@ module SupportCenter {
         private GetTimeSpanInMilliseconds(timeSpan: string) {
             var a = timeSpan.split(':');
             return ((+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2])) * 1000;
+        }
+
+        private SortDataForGraphing(a: DiagnosticMetricSample, b: DiagnosticMetricSample) {
+            var dateA = new Date(a.Timestamp).getTime();
+            var dateB = new Date(b.Timestamp).getTime();
+            if (dateA > dateB) {
+                return -1;
+            }
+            if (dateA < dateB) {
+                return 1;
+            }
+            return 0;
         }
 
         private graphHeight: any = this.$window.innerHeight * 0.2;
