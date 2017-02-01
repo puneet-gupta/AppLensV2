@@ -108,7 +108,7 @@ module SupportCenter {
                     if (!angular.isDefined(workerChartData[workerName])) {
 
                         workerChartData[workerName] = {
-                            key: workerName === Constants.aggregatedWorkerName ? metric.Name: workerName,
+                            key: workerName === Constants.aggregatedWorkerName ? metric.Name : workerName + '(' + metric.Name + ')',
                             worker: workerName,
                             isActive: true,
                             values: [],
