@@ -25,9 +25,10 @@ namespace AppLensV2
                 if (Debugger.IsAttached)
                 {
                     geoRegionEndpoint = "https://hawfor1georegionsvc.cloudapp.net:1743/";
-                }else
+                }
+                else
                 {
-                    geoRegionEndpoint = "https://gr-prod-msftintdm3.cloudapp.net:1743/";
+                    geoRegionEndpoint = Environment.GetEnvironmentVariable("APPSETTING_GeoRegionEndpoint");
                 }
 
                 return geoRegionEndpoint;
