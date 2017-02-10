@@ -3,7 +3,7 @@
 module SupportCenter {
     "use strict";
 
-    export class Site {
+    export class Site extends Resource {
         constructor(
             public name: string,
             public subscriptionId: string,
@@ -12,6 +12,7 @@ module SupportCenter {
             public stampName: string,
             public internalStampName: string
         ) {
+            super(subscriptionId, resourceGroup, name, internalStampName);
         }
 
         kind: string
