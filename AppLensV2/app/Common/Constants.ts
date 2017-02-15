@@ -12,7 +12,7 @@ module SupportCenter {
 
         private static siteDetails: string = "/api/sites/{siteName}";
         private static siteDetailsWithStamp: string = "/api/stamps/{stamp}/sites/{siteName}";
-        private static appServiceEnvironmentDetails: string = "/api/hostingEnvironments/{hostingEnvironment}"
+        private static appServiceEnvironmentDetails: string = "/api/hostingEnvironments/{hostingEnvironmentName}"
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
         private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
