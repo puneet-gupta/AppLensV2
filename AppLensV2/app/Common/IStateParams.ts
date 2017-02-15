@@ -5,6 +5,7 @@ module SupportCenter {
 
     export interface IStateParams extends angular.ui.IStateParamsService {
         stamp: string;
+        hostingEnvironmentName: string;
         siteName: string;
         startTime: string;
         endTime: string;

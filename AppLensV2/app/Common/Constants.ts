@@ -12,6 +12,7 @@ module SupportCenter {
 
         private static siteDetails: string = "/api/sites/{siteName}";
         private static siteDetailsWithStamp: string = "/api/stamps/{stamp}/sites/{siteName}";
+        private static appServiceEnvironmentDetails: string = "/api/hostingEnvironments/{hostingEnvironment}"
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
         private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
@@ -32,6 +33,13 @@ module SupportCenter {
                 return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
             } else {
                 return UriPaths.siteDetails.replace("{siteName}", params.siteName);
+            }
+        }
+
+        // URI path to get details for ASE
+        public static AppServiceEnvironmentDetails(params: IStateParams): string {
+            if (angular.isDefined(params.hostingEnvironmentName) && params.hostingEnvironmentName !== '') {
+                return UriPaths.appServiceEnvironmentDetails.replace("{hostingEnvironment}", params.hostingEnvironmentName);
             }
         }
 
@@ -59,8 +67,8 @@ module SupportCenter {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.appAnalysis, site, startTime, endTime, timeGrain);
         }
 
-        public static ListDetectorsPath(site: Site): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, site, '', '', '');
+        public static ListDetectorsPath(resource: Resource): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, resource, '', '', '');
         }
 
         public static SiteDiagnosticPropertiesPath(site: Site): string {
@@ -72,28 +80,31 @@ module SupportCenter {
                 .replace("{detectorName}", detectorName);
         }
 
-        private static CreateGeoRegionAPIPath(pathFormat: string, site: Site, startTime: string, endTime: string, timeGrain: string): string {
+        private static CreateGeoRegionAPIPath(pathFormat: string, resource: Resource, startTime: string, endTime: string, timeGrain: string): string {
 
             var path = pathFormat
-                .replace("{sub}", site.subscriptionId)
-                .replace("{rg}", site.resourceGroup)
-                .replace("{site}", site.name)
-                .replace("{stamp}", site.internalStampName)
+                .replace("{sub}", resource.subscriptionId)
+                .replace("{rg}", resource.resourceGroup)
+                .replace("{site}", resource.resourceName)
+                .replace("{stamp}", resource.resourceInternalStamp)
+                .replace("{hostingenvironment}", resource.resourceName)
                 .replace("{start}", startTime)
                 .replace("{end}", endTime)
                 .replace("{grain}", timeGrain);
 
-            var hostNamesFilter = '';
+            var site = resource as Site;
+            if (site != null) {
+                var hostNamesFilter = '';
+                for (let hostname of site.hostNames) {
+                    hostNamesFilter += "hostNames=" + hostname;
 
-            for (let hostname of site.hostNames) {
-                hostNamesFilter += "hostNames=" + hostname;
-
-                if (site.hostNames[site.hostNames.length - 1] != hostname) {
-                    hostNamesFilter += "&";
+                    if (site.hostNames[site.hostNames.length - 1] != hostname) {
+                        hostNamesFilter += "&";
+                    }
                 }
-            }
 
-            path = path.replace("{hostnames}", hostNamesFilter);
+                path = path.replace("{hostnames}", hostNamesFilter);
+            }
 
             return path;
         }

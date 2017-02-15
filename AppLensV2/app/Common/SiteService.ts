@@ -3,13 +3,7 @@
 module SupportCenter {
     "use strict";
 
-    export interface ISiteService {
-        promise: ng.IPromise<any>;
-        site: Site;
-        sites: Array<Site>;
-    }
-
-    export class SiteService implements ISiteService {
+    export class SiteService implements IResourceService {
 
         static $inject = ['$http', '$stateParams', 'ErrorHandlerService'];
         constructor(private $http: ng.IHttpService, private $stateParams: IStateParams, private ErrorHandlerService: IErrorHandlerService) {
@@ -55,6 +49,7 @@ module SupportCenter {
         
         public promise: ng.IPromise<any>;
         public site: Site;
+        public hostingEnvironment: HostingEnvironment;
         public sites: Site[];
     }
 }

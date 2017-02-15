@@ -200,6 +200,22 @@ namespace AppLensV2
             return res;
         }
 
+        internal static async Task<ObserverResponse> GetHostingEnvironmentDetails(string hostingEnvironmentName)
+        {
+            var request = new HttpRequestMessage()
+            {
+                RequestUri = new Uri(SupportObserverApiEndpoint + "hostingEnvironments/" + hostingEnvironmentName + "?api-version=2.0"),
+                Method = HttpMethod.Get
+            };
+
+            var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "hostingEnvironment", hostingEnvironmentName } });
+            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            var response = await _httpClient.SendAsync(request);
+
+            ObserverResponse res = await CreateObserverResponse(response, "GetHostingEnvironmentDetails(2.0)");
+            return res;
+        }
+
         /// <summary>
         /// Sign Data
         /// </summary>

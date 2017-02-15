@@ -2,7 +2,7 @@
     export class MultipleSitesCtrl {
         public static $inject: string[] = ["SiteService", "$mdPanel", "$window", "$stateParams"];
 
-        constructor(private SiteService: ISiteService, private $mdPanel: angular.material.IPanelService, private $window: ng.IWindowService, private $stateParams: IStateParams) {
+        constructor(private SiteService: IResourceService, private $mdPanel: angular.material.IPanelService, private $window: ng.IWindowService, private $stateParams: IStateParams) {
             var self = this;
             this.logo = "app/assets/images/Azure-WebApps-Logo.png";
             this.SiteService.promise.then(function (data: any) {

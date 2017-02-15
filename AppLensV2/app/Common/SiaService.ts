@@ -17,7 +17,7 @@ module SupportCenter {
         public siaResponse: SiaResponse;
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: ISiteService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
+        constructor(private SiteService: IResourceService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
             this.selectedAbnormalTimePeriod = {};
         }
 

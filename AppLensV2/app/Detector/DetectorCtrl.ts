@@ -7,7 +7,7 @@ module SupportCenter {
 
         public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "$window", "ErrorHandlerService"];
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
