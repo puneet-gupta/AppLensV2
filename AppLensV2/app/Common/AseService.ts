@@ -18,7 +18,7 @@ module SupportCenter {
 
             this.promise = this.$http.get(UriPaths.AppServiceEnvironmentDetails(this.$stateParams))
                 .success(function (data: any) {
-                    self.hostingEnvironment = new HostingEnvironment(data.Subscription, data.ResourceGroupName, data.StampName, data.InternalStampName);
+                    self.hostingEnvironment = new HostingEnvironment(data.Details.Subscription, data.Details.ResourceGroupName, data.Details.StampName, data.Details.InternalStampName);
                 })
                 .error(function (err: any) {
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
