@@ -4,7 +4,7 @@ module SupportCenter {
     "use strict";
 
     export interface ISiaService {
-        siaResponse: SiaResponse;
+        appAnalysisResponse: SiaResponse;
         selectedAbnormalTimePeriod: any;
         getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<any>;
         selectDowntime(index: number): void;
@@ -14,7 +14,7 @@ module SupportCenter {
         private siaPromise: ng.IPromise<any>;
 
         public static $inject: string[] = ["SiteService", "$stateParams", "$window", "$http"];
-        public siaResponse: SiaResponse;
+        public appAnalysisResponse: SiaResponse;
         public selectedAbnormalTimePeriod: any;
 
         constructor(private SiteService: ISiteService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
@@ -36,11 +36,11 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    this.siaResponse = new SiaResponse('', '', [], [], []);
+                    this.appAnalysisResponse = new SiaResponse('', '', [], [], []);
                     if (angular.isDefined(data.Properties)) {
-                        this.siaResponse = data.Properties;
+                        this.appAnalysisResponse = data.Properties;
                         this.selectedAbnormalTimePeriod.index = 0;
-                        this.selectedAbnormalTimePeriod.data = this.siaResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
                     }
                 })
                 .error((data: any) => {
@@ -51,9 +51,9 @@ module SupportCenter {
         }
 
         public selectDowntime(index: number): void {
-            if (index < this.siaResponse.AbnormalTimePeriods.length && index >= 0) {
+            if (index < this.appAnalysisResponse.AbnormalTimePeriods.length && index >= 0) {
                 this.selectedAbnormalTimePeriod.index = index;
-                this.selectedAbnormalTimePeriod.data = this.siaResponse.AbnormalTimePeriods[index]
+                this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[index]
             }
         }
     }

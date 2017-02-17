@@ -8,6 +8,8 @@ module SupportCenter {
         getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
+
+        detectorsList: DetectorDefinition[];
     }
 
     export interface ICache<T> {
@@ -20,6 +22,7 @@ module SupportCenter {
         private detectorsWikiCache: ICache<string>;
         private detectorsSolutionCache: ICache<string>;
         private detectorsListCache: ICache<DetectorDefinition[]>;
+        public detectorsList: DetectorDefinition[];
 
         static $inject = ['$q', '$http'];
 
@@ -28,6 +31,7 @@ module SupportCenter {
             this.detectorsWikiCache = {};
             this.detectorsSolutionCache = {};
             this.detectorsListCache = {};
+            this.detectorsList = [];
         }
 
         getDetectors(site: Site): ng.IPromise<DetectorDefinition[]> {
@@ -69,7 +73,8 @@ module SupportCenter {
                         });
 
                         self.detectorsListCache["detectorList"] = detectors;
-                        deferred.resolve(detectors);
+                        self.detectorsList = detectors;
+                        deferred.resolve(self.detectorsList);
                     }
                     else {
                         deferred.reject(new ErrorModel(0, "Value field not present in Get Detectors Api response"));

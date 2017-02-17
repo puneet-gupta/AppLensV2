@@ -12,6 +12,7 @@ module SupportCenter {
         .service("ErrorHandlerService", ErrorHandlerService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
+        .controller("SiteCtrl", SiteCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
@@ -47,20 +48,39 @@ module SupportCenter {
                     controller: 'HomeCtrl',
                     controllerAs: 'home'
                 })
-                .state('home', {
+                .state('sites', {
                     url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
-                .state('home2', {
+                .state('stampsites', {
                     url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
-                .state('home.sia', {
+                .state('sites.appanalysis', {
                     url: '/appanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    }
+                })
+                .state('stampsites.appanalysis', {
+                    url: '/appanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    }
+                })
+                .state('sites.appanalysis.sia', {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Sia/sia.html',
@@ -69,8 +89,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home2.sia', {
-                    url: '/appanalysis',
+                .state('stampsites.appanalysis.sia', {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Sia/sia.html',
@@ -79,7 +98,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home.detector', {
+                .state('sites.appanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {
@@ -89,7 +108,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home2.detector', {
+                .state('stampsites.appanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

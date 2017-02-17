@@ -16,27 +16,8 @@ module SupportCenter {
                 });
             }
 
-            this.avaiabilityChartData = [];
-            this.requestsChartData = [];
-            let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-            this.availabilityChartOptions = helper.GetChartOptions('runtimeavailability');
-            this.requestsChartOptions = helper.GetChartOptions('runtimeavailability');
-            this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
-
             if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
                 // TODO: show error or redirect to home page.
-            }
-
-            if (!angular.isDefined(this.$stateParams.startTime)) {
-                this.$stateParams.startTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.endTime)) {
-                this.$stateParams.endTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.timeGrain)) {
-                this.$stateParams.timeGrain = '';
             }
 
             var self = this;
@@ -49,45 +30,19 @@ module SupportCenter {
                     self.showSitesDialog();
                 }
 
-                self.getRuntimeAvailability();
-
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
-                    self.detectors = data;
+                    self.detectors = self.DetectorsService.detectorsList;
                     self.detectorListLoaded = true;
-
-                    self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: any) {
-                        //do stuff here with siaResponse
-                        var siaResponse = self.SiaService.siaResponse;
-                        _.each(siaResponse.NonCorrelatedDetectors, function (item: any) {
-                            _.each(self.detectors, function (detector: any) {
-                                if (item.DisplayName == detector.DisplayName)
-                                    detector.Correlated = 0;
-                            });
-                        });
-
-                        _.each(siaResponse.Payload, function (item: any) {
-                            _.each(self.detectors, function (detector: any) {
-                                if (item.DetectorDefinition.DisplayName == detector.DisplayName)
-                                    detector.Correlated = 1;
-                            });
-                        });
-                    }, function (err) {
-                        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-                    });
-
-                }, function (err) {
-                    self.detectorListLoaded = true;
-                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
                 });
             }, function (err) {
                 // Error in calling Site Details
 
                 self.detectorListLoaded = true;
-                self.dataLoading = false;
             });
 
             // if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === 'home' || this.$state.current.name === 'home2') {
+            if (this.$state.current.name === 'sites' || this.$state.current.name === 'stampsites' ||
+                this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis') {
                 this.setSelectedItem('sia');
             }
             if (this.$state.current.name.indexOf('.sia') >= 0) {
@@ -101,12 +56,12 @@ module SupportCenter {
         detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;
-        availabilityChartOptions: any;
-        avaiabilityChartData: any;
-        requestsChartOptions: any;
-        requestsChartData: any;
-        dataLoading: boolean = true;
-        containerHeight: string;
+        //availabilityChartOptions: any;
+        //avaiabilityChartData: any;
+        //requestsChartOptions: any;
+        //requestsChartData: any;
+        //dataLoading: boolean = true;
+        //containerHeight: string;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -115,21 +70,21 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             if (name === 'sia') {
                 this.selectedItem = "sia";
-                if (this.$state.current.name.indexOf('home2') >= 0) {
-                    this.$state.go('home2.sia');
+                if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    this.$state.go('stampsites.appanalysis.sia');
                 } else {
-                    this.$state.go('home.sia');
+                    this.$state.go('sites.appanalysis.sia');
                 }
             }
             else {
                 this.selectedItem = name;
-                if (this.$state.current.name.indexOf('home2') >= 0) {
-                    if ((this.$state.current.name !== 'home2.detector') || (this.$state.current.name === 'home2.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('home2.detector', { detectorName: name });
+                if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    if ((this.$state.current.name !== 'stampsites.appanalysis.detector') || (this.$state.current.name === 'stampsites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('stampsites.appanalysis.detector', { detectorName: name });
                     }
                 } else {
-                    if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('home.detector', { detectorName: name });
+                    if ((this.$state.current.name !== 'sites.appanalysis.detector') || (this.$state.current.name === 'sites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('sites.appanalysis.detector', { detectorName: name });
                     }
                 }
             }
@@ -144,38 +99,74 @@ module SupportCenter {
             this.FeedbackService.sendGeneralFeedback();
         }
 
-        private getRuntimeAvailability(): void {
+        //private getRuntimeAvailability(): void {
 
-            var self = this;
-            let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
+        //    var self = this;
+        //    let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+        //    this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
 
-                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
-                self.dataLoading = false;
-                var iterator = 0;
-                var requestsIterator = 0;
+        //        let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
+        //        self.dataLoading = false;
+        //        var iterator = 0;
+        //        var requestsIterator = 0;
 
-                _.each(chartDataList, function (item: any) {
-                    var f: string;
-                    if (item.key.toLowerCase().indexOf("availability") !== -1) {
-                        item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
-                        iterator++;
-                        self.avaiabilityChartData.push(item);
-                    }
-                    else {
-                        item.area = true;
-                        item.color = DetectorViewHelper.requestsColors[requestsIterator];
-                        requestsIterator++;
-                        self.requestsChartData.push(item);
-                    }
+        //        _.each(chartDataList, function (item: any) {
+        //            var f: string;
+        //            if (item.key.toLowerCase().indexOf("availability") !== -1) {
+        //                item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
+        //                iterator++;
+        //                //self.avaiabilityChartData.push(item);
+        //            }
+        //            else {
+        //                item.area = true;
+        //                item.color = DetectorViewHelper.requestsColors[requestsIterator];
+        //                requestsIterator++;
+        //                self.requestsChartData.push(item);
+        //            }
 
-                });
-            }, function (err) {
-                self.dataLoading = false;
-                self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-            });
-        }
+        //        });
+        //    }, function (err) {
+        //        self.dataLoading = false;
+        //        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+        //    });
+        //}
+
+        //private getSiteLatency(): void {
+
+        //    var sitelatency = 'sitelatency';
+        //    var self = this;
+        //    let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
+
+        //    this.DetectorsService.getDetectorResponse(this.site, sitelatency, this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+
+        //        let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, sitelatency);
+        //        self.dataLoading = false;
+        //        var iterator = 0;
+        //        var requestsIterator = 0;
+
+        //        _.each(chartDataList, function (item: any) {
+        //            item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
+        //            self.avaiabilityChartData.push(item);
+        //            //var f: string;
+        //            //if (item.key.toLowerCase().indexOf("sitelatency") !== -1) {
+        //            //    item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
+        //            //    iterator++;
+        //            //    self.avaiabilityChartData.push(item);
+        //            //}
+        //            //else {
+        //            //    item.area = true;
+        //            //    item.color = DetectorViewHelper.requestsColors[requestsIterator];
+        //            //    requestsIterator++;
+        //            //    self.requestsChartData.push(item);
+        //            //}
+
+        //        });
+        //    }, function (err) {
+        //        self.dataLoading = false;
+        //        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+        //    });
+        //}
 
         showAppProfile(): void {
             var position = this.$mdPanel.newPanelPosition()

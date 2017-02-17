@@ -25,7 +25,7 @@ module SupportCenter {
             if (angular.isDefined(this.endTime)) {
                 this.$stateParams.endTime = this.endTimeStr;
             };     
-            this.$state.go('home', this.$stateParams);
+            this.$state.go('sites', this.$stateParams);
         }
 
 
