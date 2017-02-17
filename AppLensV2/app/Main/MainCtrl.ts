@@ -56,12 +56,6 @@ module SupportCenter {
         detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;
-        //availabilityChartOptions: any;
-        //avaiabilityChartData: any;
-        //requestsChartOptions: any;
-        //requestsChartData: any;
-        //dataLoading: boolean = true;
-        //containerHeight: string;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -98,75 +92,6 @@ module SupportCenter {
         sendFeedback(): void {
             this.FeedbackService.sendGeneralFeedback();
         }
-
-        //private getRuntimeAvailability(): void {
-
-        //    var self = this;
-        //    let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-
-        //    this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
-
-        //        let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
-        //        self.dataLoading = false;
-        //        var iterator = 0;
-        //        var requestsIterator = 0;
-
-        //        _.each(chartDataList, function (item: any) {
-        //            var f: string;
-        //            if (item.key.toLowerCase().indexOf("availability") !== -1) {
-        //                item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
-        //                iterator++;
-        //                //self.avaiabilityChartData.push(item);
-        //            }
-        //            else {
-        //                item.area = true;
-        //                item.color = DetectorViewHelper.requestsColors[requestsIterator];
-        //                requestsIterator++;
-        //                self.requestsChartData.push(item);
-        //            }
-
-        //        });
-        //    }, function (err) {
-        //        self.dataLoading = false;
-        //        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-        //    });
-        //}
-
-        //private getSiteLatency(): void {
-
-        //    var sitelatency = 'sitelatency';
-        //    var self = this;
-        //    let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-
-        //    this.DetectorsService.getDetectorResponse(this.site, sitelatency, this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
-
-        //        let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, sitelatency);
-        //        self.dataLoading = false;
-        //        var iterator = 0;
-        //        var requestsIterator = 0;
-
-        //        _.each(chartDataList, function (item: any) {
-        //            item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
-        //            self.avaiabilityChartData.push(item);
-        //            //var f: string;
-        //            //if (item.key.toLowerCase().indexOf("sitelatency") !== -1) {
-        //            //    item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
-        //            //    iterator++;
-        //            //    self.avaiabilityChartData.push(item);
-        //            //}
-        //            //else {
-        //            //    item.area = true;
-        //            //    item.color = DetectorViewHelper.requestsColors[requestsIterator];
-        //            //    requestsIterator++;
-        //            //    self.requestsChartData.push(item);
-        //            //}
-
-        //        });
-        //    }, function (err) {
-        //        self.dataLoading = false;
-        //        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-        //    });
-        //}
 
         showAppProfile(): void {
             var position = this.$mdPanel.newPanelPosition()

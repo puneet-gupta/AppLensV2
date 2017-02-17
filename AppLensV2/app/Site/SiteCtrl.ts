@@ -74,7 +74,6 @@ module SupportCenter {
         }
 
         detectors: DetectorDefinition[];
-        selectedItem: string;
         site: Site;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
