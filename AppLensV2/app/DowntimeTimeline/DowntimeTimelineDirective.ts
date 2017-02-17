@@ -38,7 +38,7 @@ module SupportCenter {
                 }
 
                 SiaService.getAppAnalysisResponse(site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data) {
-                    self.SiaResponse = SiaService.siaResponse;
+                    self.SiaResponse = SiaService.appAnalysisResponse;
 
                     var startTime = new Date(self.SiaResponse.StartTime);
                     var endTime = new Date(self.SiaResponse.EndTime);

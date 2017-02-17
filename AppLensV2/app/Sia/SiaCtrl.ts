@@ -29,7 +29,7 @@ module SupportCenter {
                 self.site = self.SiteService.site;
 
                 self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: SiaResponse) {
-                    self.SiaResponse = SiaService.siaResponse;
+                    self.SiaResponse = SiaService.appAnalysisResponse;
                     self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
                     self.PrepareDetectorViewParams(self.SiaResponse.StartTime, self.SiaResponse.EndTime);
                     self.isLoading = false;
