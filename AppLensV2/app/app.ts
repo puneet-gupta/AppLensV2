@@ -80,6 +80,17 @@ module SupportCenter {
                         }
                     }
                 })
+                // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
+                .state('sites.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
                 .state('sites.appanalysis.sia', {
                     views: {
                         'childContent': {

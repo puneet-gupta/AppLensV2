@@ -7,7 +7,7 @@ module SupportCenter {
 
         public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
 
@@ -31,7 +31,6 @@ module SupportCenter {
                 }
 
                 self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
-                    self.detectors = self.DetectorsService.detectorsList;
                     self.detectorListLoaded = true;
                 });
             }, function (err) {
@@ -45,6 +44,9 @@ module SupportCenter {
                 this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis') {
                 this.setSelectedItem('sia');
             }
+            if (this.$state.current.name === 'sites.detector') {
+                this.setSelectedItem(this.$state.params['detectorName']);
+            }
             if (this.$state.current.name.indexOf('.sia') >= 0) {
                 this.selectedItem = "sia";
             } else if (this.$state.current.name.indexOf('.detector') >= 0) {
@@ -52,7 +54,6 @@ module SupportCenter {
             }
         }
 
-        detectors: DetectorDefinition[];
         detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;

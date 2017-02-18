@@ -11,6 +11,7 @@ module SupportCenter {
 
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
+            this.latencyChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
             this.availabilityChartOptions = helper.GetChartOptions('runtimeavailability');
             this.requestsChartOptions = helper.GetChartOptions('runtimeavailability');
@@ -45,15 +46,15 @@ module SupportCenter {
 
                     self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: any) {
                         var siaResponse = self.SiaService.appAnalysisResponse;
-                        _.each(siaResponse.NonCorrelatedDetectors, function (item: any) {
-                            _.each(self.detectors, function (detector: any) {
+                        _.each(siaResponse.NonCorrelatedDetectors, function (item: DetectorDefinition) {
+                            _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
                                 if (item.DisplayName == detector.DisplayName)
                                     detector.Correlated = 0;
                             });
                         });
 
-                        _.each(siaResponse.Payload, function (item: any) {
-                            _.each(self.detectors, function (detector: any) {
+                        _.each(siaResponse.Payload, function (item: AnalysisData) {
+                            _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
                                 if (item.DetectorDefinition.DisplayName == detector.DisplayName)
                                     detector.Correlated = 1;
                             });
