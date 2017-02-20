@@ -50,6 +50,7 @@ module SupportCenter {
         public promise: ng.IPromise<any>;
         public site: Site;
         public hostingEnvironment: HostingEnvironment;
+        public resource: Resource;
         public sites: Site[];
     }
 }

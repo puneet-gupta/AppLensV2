@@ -42,11 +42,11 @@ module SupportCenter {
             var self = this;
 
             this.AseService.promise.then(function (data: any) {
-                self.hostedEnvironment = self.AseService.hostingEnvironment;
+                self.hostingEnvironment = self.AseService.resource;
 
-                //self.getRuntimeAvailability();
+                self.getRuntimeAvailability();
 
-                self.DetectorsService.getDetectors(self.hostedEnvironment).then(function (data: DetectorDefinition[]) {
+                self.DetectorsService.getDetectors(self.hostingEnvironment).then(function (data: DetectorDefinition[]) {
                     self.detectors = data;
                     self.detectorListLoaded = true;
                 }, function (err) {
@@ -60,13 +60,8 @@ module SupportCenter {
                 self.dataLoading = false;
             });
 
-            // if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === 'home3') {
-                this.setSelectedItem('sia');
-            }
-            if (this.$state.current.name.indexOf('.sia') >= 0) {
-                this.selectedItem = "sia";
-            } else if (this.$state.current.name.indexOf('.detector') >= 0) {
+            //if no child route is defined, then set default child route to sia
+            if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
         }
@@ -75,7 +70,7 @@ module SupportCenter {
         detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;
-        hostedEnvironment: HostingEnvironment;
+        hostingEnvironment: HostingEnvironment;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
         requestsChartOptions: any;
@@ -98,13 +93,9 @@ module SupportCenter {
             }
             else {
                 this.selectedItem = name;
-                if (this.$state.current.name.indexOf('home2') >= 0) {
-                    if ((this.$state.current.name !== 'home2.detector') || (this.$state.current.name === 'home2.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('home2.detector', { detectorName: name });
-                    }
-                } else {
-                    if ((this.$state.current.name !== 'home.detector') || (this.$state.current.name === 'home.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('home.detector', { detectorName: name });
+                if (this.$state.current.name.indexOf('home3') >= 0) {
+                    if ((this.$state.current.name !== 'home3.detector') || (this.$state.current.name === 'home3.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('home3.detector', { detectorName: name });
                     }
                 }
             }
@@ -124,7 +115,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'asehealth', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
                 self.dataLoading = false;
@@ -174,6 +165,9 @@ module SupportCenter {
                     }
                 }, function () {
                 });
+        }
+
+        showAppProfile($env): void {
         }
     }
 }

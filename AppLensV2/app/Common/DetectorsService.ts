@@ -6,7 +6,7 @@ module SupportCenter {
     export interface IDetectorsService {
         getDetectors(site: Site): ng.IPromise<DetectorDefinition[]>;
         getDetectors(resource: Resource): ng.IPromise<DetectorDefinition[]>;
-        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
+        getDetectorResponse(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
     }
@@ -83,7 +83,7 @@ module SupportCenter {
             return deferred.promise;
         }
 
-        getDetectorResponse(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse> {
+        getDetectorResponse(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse> {
 
             var deferred = this.$q.defer<DetectorResponse>();
 
@@ -96,7 +96,7 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(site, detectorName, startTime, endTime, timeGrain)
+                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, startTime, endTime, timeGrain)
                 }
             })
                 .success((data: any) => {

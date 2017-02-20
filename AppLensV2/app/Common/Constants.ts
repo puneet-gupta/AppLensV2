@@ -77,8 +77,8 @@ module SupportCenter {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.siteDiagnosticProperties, site, '', '', '');
         }
 
-        public static DetectorResourcePath(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, site, startTime, endTime, timeGrain)
+        public static DetectorResourcePath(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, resource, startTime, endTime, timeGrain)
                 .replace("{detectorName}", detectorName);
         }
 

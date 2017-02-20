@@ -7,6 +7,7 @@ module SupportCenter {
         promise: ng.IPromise<any>;
         site: Site;
         hostingEnvironment: HostingEnvironment;
+        resource: Resource;
         sites: Array<Site>;
     }
 
@@ -18,7 +19,7 @@ module SupportCenter {
 
             this.promise = this.$http.get(UriPaths.AppServiceEnvironmentDetails(this.$stateParams))
                 .success(function (data: any) {
-                    self.hostingEnvironment = new HostingEnvironment(data.Details.Subscription, data.Details.ResourceGroupName, data.Details.StampName, data.Details.InternalStampName);
+                    self.resource = new HostingEnvironment(data.Details.Subscription, data.Details.ResourceGroupName, data.Details.StampName, data.Details.InternalStampName);
                 })
                 .error(function (err: any) {
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
@@ -28,6 +29,7 @@ module SupportCenter {
         public promise: ng.IPromise<any>;
         public site: Site;
         public hostingEnvironment: HostingEnvironment;
+        public resource: Resource;
         public sites: Site[];
     }
 }
