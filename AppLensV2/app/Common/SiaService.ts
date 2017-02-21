@@ -6,22 +6,22 @@ module SupportCenter {
     export interface ISiaService {
         appAnalysisResponse: SiaResponse;
         selectedAbnormalTimePeriod: any;
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<any>;
+        getAppAnalysisResponse(): ng.IPromise<any>;
         selectDowntime(index: number): void;
     }
 
     export class SiaService implements ISiaService {
         private siaPromise: ng.IPromise<any>;
 
-        public static $inject: string[] = ["SiteService", "$stateParams", "$window", "$http"];
+        public static $inject: string[] = ["SiteService", "TimeParamsService", "$http"];
         public appAnalysisResponse: SiaResponse;
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: ISiteService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
+        constructor(private SiteService: ISiteService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService) {
             this.selectedAbnormalTimePeriod = {};
         }
 
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<any> {
+        getAppAnalysisResponse(): ng.IPromise<any> {
 
             if (angular.isDefined(this.siaPromise)) {
                 return this.siaPromise;
@@ -31,7 +31,7 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(site, startTime, endTime, timeGrain)
+                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(this.SiteService.site, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain)
                 }
             })
                 .success((data: any) => {

@@ -8,6 +8,7 @@ module SupportCenter {
         .service("DetectorsService", DetectorsService)
         .service("SiaService", SiaService)
         .service("SiteService", SiteService)
+        .service("TimeParamsService", TimeParamsService)
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .controller("HomeCtrl",HomeCtrl)

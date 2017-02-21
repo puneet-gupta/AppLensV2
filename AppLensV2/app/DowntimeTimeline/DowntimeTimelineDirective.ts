@@ -25,19 +25,7 @@ module SupportCenter {
             this.SiteService.promise.then(function (data: any) {
                 var site = self.SiteService.site;
 
-                if (!angular.isDefined(self.$stateParams.startTime)) {
-                    self.$stateParams.startTime = '';
-                }
-
-                if (!angular.isDefined(self.$stateParams.endTime)) {
-                    self.$stateParams.endTime = '';
-                }
-
-                if (!angular.isDefined(self.$stateParams.timeGrain)) {
-                    self.$stateParams.timeGrain = '';
-                }
-
-                SiaService.getAppAnalysisResponse(site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data) {
+                SiaService.getAppAnalysisResponse().then(function (data) {
                     self.SiaResponse = SiaService.appAnalysisResponse;
 
                     var startTime = new Date(self.SiaResponse.StartTime);

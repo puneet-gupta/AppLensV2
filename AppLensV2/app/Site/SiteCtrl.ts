@@ -22,41 +22,29 @@ module SupportCenter {
                 // TODO: show error or redirect to home page.
             }
 
-            if (!angular.isDefined(this.$stateParams.startTime)) {
-                this.$stateParams.startTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.endTime)) {
-                this.$stateParams.endTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.timeGrain)) {
-                this.$stateParams.timeGrain = '';
-            }
-
             var self = this;
             this.SiteService.promise.then(function (data: any) {
-                self.site = self.SiteService.site;
-
                 self.getRuntimeAvailability();
                 self.getSiteLatency();
 
-                self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
+                self.DetectorsService.getDetectors().then(function (data: DetectorDefinition[]) {
                     self.detectors = self.DetectorsService.detectorsList;
 
-                    self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: any) {
+                    self.SiaService.getAppAnalysisResponse().then(function (data: any) {
                         var siaResponse = self.SiaService.appAnalysisResponse;
                         _.each(siaResponse.NonCorrelatedDetectors, function (item: DetectorDefinition) {
                             _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
-                                if (item.DisplayName == detector.DisplayName)
+                                if (item.DisplayName == detector.DisplayName) {
                                     detector.Correlated = 0;
+                                }
                             });
                         });
 
                         _.each(siaResponse.Payload, function (item: AnalysisData) {
                             _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
-                                if (item.DetectorDefinition.DisplayName == detector.DisplayName)
+                                if (item.DetectorDefinition.DisplayName == detector.DisplayName) {
                                     detector.Correlated = 1;
+                                }
                             });
                         });
                     }, function (err) {
@@ -75,7 +63,6 @@ module SupportCenter {
         }
 
         detectors: DetectorDefinition[];
-        site: Site;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
         requestsChartOptions: any;
@@ -91,12 +78,13 @@ module SupportCenter {
 
         private getRuntimeAvailability(): void {
 
+            var runtimeavailability = 'runtimeavailability';
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(this.site, 'runtimeavailability', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(runtimeavailability).then(function (data: DetectorResponse) {
 
-                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
+                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, runtimeavailability);
                 
                 var iterator = 0;
                 var requestsIterator = 0;
@@ -130,7 +118,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(this.site, sitelatency, this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(sitelatency).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, sitelatency);
                 //self.dataLoading = false;
