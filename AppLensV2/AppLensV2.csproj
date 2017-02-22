@@ -179,6 +179,7 @@
     <TypeScriptCompile Include="app\Common\IStateParams.ts" />
     <TypeScriptCompile Include="app\Common\SiaService.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
+    <TypeScriptCompile Include="app\Common\TimeParamsService.ts" />
     <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorCtrl.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorViewDirective.ts" />
