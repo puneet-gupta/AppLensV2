@@ -16,6 +16,7 @@ module SupportCenter {
         .controller("SiteCtrl", SiteCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
+        .controller("PerfCtrl", PerfCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
@@ -81,6 +82,26 @@ module SupportCenter {
                         }
                     }
                 })
+                .state('sites.perfanalysis', {
+                    url: '/perfanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    }
+                })
+                .state('stampsites.perfanalysis', {
+                    url: '/perfanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    }
+                })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
                 .state('sites.detector', {
                     url: '/detectors/{detectorName}',
@@ -121,6 +142,44 @@ module SupportCenter {
                     }
                 })
                 .state('stampsites.appanalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('sites.perfanalysis.sia', {
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'PerfCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
+                .state('stampsites.perfanalysis.sia', {
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'PerfCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
+                .state('sites.perfanalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('stampsites.perfanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

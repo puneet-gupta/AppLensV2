@@ -195,6 +195,7 @@
     <TypeScriptCompile Include="app\NgModels\SiaResponse.ts" />
     <TypeScriptCompile Include="app\NgModels\Site.ts" />
     <TypeScriptCompile Include="app\references.ts" />
+    <TypeScriptCompile Include="app\Sia\PerfCtrl.ts" />
     <TypeScriptCompile Include="app\Sia\SiaCtrl.ts" />
     <TypeScriptCompile Include="app\Site\SiteCtrl.ts" />
   </ItemGroup>

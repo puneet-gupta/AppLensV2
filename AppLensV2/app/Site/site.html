@@ -4,16 +4,17 @@
         <div layout="column" flex="5"></div>
         <md-card flex="95">
 
-            <div ng-if="site.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
+            <div ng-if="(site.analysisType === 'app' && site.dataLoading) || (site.analysisType === 'perf' && site.perfDataLoading)" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
                 <div layout="column" layout-align="center center">
                     <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                 </div>
             </div>
 
-            <md-card-content ng-if="!site.dataLoading" flex layout-align="space-between" layout="column">
+            <md-card-content ng-if="(site.analysisType === 'app' && !site.dataLoading) || (site.analysisType === 'perf' && !site.perfDataLoading)" flex layout-align="space-between" layout="column">
                 <div flex>
                     <downtime-timeline height="'20px'"></downtime-timeline>
-                    <nvd3 options="::site.availabilityChartOptions" data="::site.avaiabilityChartData"></nvd3>
+                    <nvd3 ng-if="site.analysisType === 'app'" options="::site.availabilityChartOptions" data="::site.avaiabilityChartData"></nvd3>
+                    <nvd3 ng-if="site.analysisType === 'perf'" options="::site.latencyChartOptions" data="::site.latencyChartData"></nvd3>
                 </div>
             </md-card-content>
 

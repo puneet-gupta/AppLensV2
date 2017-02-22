@@ -18,6 +18,8 @@ module SupportCenter {
             this.latencyChartOptions = helper.GetChartOptions('sitelatency');
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
 
+            this.analysisType = this.$state.current.name.indexOf('appAnalysis') > 0 ? 'app': 'perf';
+
             if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
                 // TODO: show error or redirect to home page.
             }
@@ -70,7 +72,9 @@ module SupportCenter {
         latencyChartOptions: any;
         requestsChartData: any;
         dataLoading: boolean = true;
+        perfDataLoading: boolean = true;
         containerHeight: string;
+        analysisType: string;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -121,7 +125,7 @@ module SupportCenter {
             this.DetectorsService.getDetectorResponse(sitelatency).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, sitelatency);
-                //self.dataLoading = false;
+                self.perfDataLoading = false;
                 var iterator = 0;
                 var requestsIterator = 0;
 
@@ -130,7 +134,7 @@ module SupportCenter {
                     self.latencyChartData.push(item);
                 });
             }, function (err) {
-                //self.dataLoading = false;
+                self.perfDataLoading = false;
                 self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
             });
         }

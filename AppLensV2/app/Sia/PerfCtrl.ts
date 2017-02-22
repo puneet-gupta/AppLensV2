@@ -3,7 +3,7 @@
 module SupportCenter {
     "use strict";
 
-    export class SiaCtrl {
+    export class PerfCtrl {
 
         public static $inject: string[] = ["SiaService", "SiteService", "$window", "ErrorHandlerService"];
 
@@ -16,8 +16,8 @@ module SupportCenter {
 
             this.SiteService.promise.then(function (data: any) {
 
-                self.SiaService.getAppAnalysisResponse().then(function (data: SiaResponse) {
-                    self.SiaResponse = SiaService.appAnalysisResponse;
+                self.SiaService.getPerfAnalysisResponse().then(function (data: SiaResponse) {
+                    self.SiaResponse = SiaService.perfAnalysisResponse;
                     self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
                     self.DetectorData = self.SiaService.PrepareDetectorViewParams(self.SiaResponse);
                     self.isLoading = false;
@@ -33,7 +33,7 @@ module SupportCenter {
 
         public selectDowntime(index: number): void {
             if (index >= 0) {
-                this.SiaService.selectAppDowntime(index);
+                this.SiaService.selectPerfDowntime(index);
             }
         }
 

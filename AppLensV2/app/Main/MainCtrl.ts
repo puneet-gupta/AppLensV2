@@ -41,7 +41,8 @@ module SupportCenter {
 
             // if no child route is defined, then set default child route to sia
             if (this.$state.current.name === 'sites' || this.$state.current.name === 'stampsites' ||
-                this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis') {
+                this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis' ||
+                this.$state.current.name === 'sites.perfanalysis' || this.$state.current.name === 'stampsites.perfanalysis') {
                 this.setSelectedItem('sia');
             }
             if (this.$state.current.name === 'sites.detector') {
@@ -66,9 +67,19 @@ module SupportCenter {
             if (name === 'sia') {
                 this.selectedItem = "sia";
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
-                    this.$state.go('stampsites.appanalysis.sia');
+                    if (this.$state.current.name.indexOf('perfanalysis')) {
+                        this.$state.go('stampsites.perfanalysis.sia');
+                    }
+                    else {
+                        this.$state.go('stampsites.appanalysis.sia');
+                    }
                 } else {
-                    this.$state.go('sites.appanalysis.sia');
+                    if (this.$state.current.name.indexOf('perfanalysis') >= 0) {
+                        this.$state.go('sites.perfanalysis.sia');
+                    }
+                    else {
+                        this.$state.go('sites.appanalysis.sia');
+                    }
                 }
             }
             else {
