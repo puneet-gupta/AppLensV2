@@ -25,18 +25,24 @@ module SupportCenter {
             this.SiteService.promise.then(function (data: any) {
                 var site = self.SiteService.site;
 
-                if ($state.current.name.indexOf("perfanalysis")) {
-                    SiaService.getPerfAnalysisResponse().then(function (data) {
-                        self.SiaResponse = SiaService.perfAnalysisResponse;
-                        self.PrepareDowntimes();
-                    });
-                }
-                else {
-                    SiaService.getAppAnalysisResponse().then(function (data) {
-                        self.SiaResponse = SiaService.appAnalysisResponse;
-                        self.PrepareDowntimes();
-                    });
-                }
+                SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
+                    self.SiaResponse = data.Response;
+                    self.selectedDowntime = data.SelectedAbnormalTimePeriod
+                    self.PrepareDowntimes();
+                });
+
+                //if ($state.current.name.indexOf("perfanalysis")) {
+                //    SiaService.getPerfAnalysisResponse().then(function (data) {
+                //        self.SiaResponse = SiaService.perfAnalysisResponse;
+                //        self.PrepareDowntimes();
+                //    });
+                //}
+                //else {
+                //    SiaService.getAppAnalysisResponse().then(function (data) {
+                //        self.SiaResponse = SiaService.appAnalysisResponse;
+                //        self.PrepareDowntimes();
+                //    });
+                //}
             });
         }
 
@@ -91,18 +97,13 @@ module SupportCenter {
                     index: -1
                 });
             }
-            self.selectedDowntime = self.SiaService.selectedAbnormalTimePeriod;
+           // self.selectedDowntime = self.SiaService.selectedAbnormalTimePeriod;
             self.loading = false;
         }
 
         public selectDowntime(index: number): void {
             if (index >= 0) {
-                if (this.$state.current.name.indexOf("perfanalysis")) {
-                    this.SiaService.selectPerfDowntime(index);
-                }
-                else {
-                    this.SiaService.selectAppDowntime(index);
-                }
+                this.SiaService.selectAppDowntime(index);
             }
         }
 

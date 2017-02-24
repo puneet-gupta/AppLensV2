@@ -18,7 +18,7 @@ module SupportCenter {
             this.latencyChartOptions = helper.GetChartOptions('sitelatency');
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
 
-            this.analysisType = this.$state.current.name.indexOf('appAnalysis') > 0 ? 'app': 'perf';
+            this.analysisType = this.$stateParams.analysisType;
 
             if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
                 // TODO: show error or redirect to home page.
@@ -32,8 +32,8 @@ module SupportCenter {
                 self.DetectorsService.getDetectors().then(function (data: DetectorDefinition[]) {
                     self.detectors = self.DetectorsService.detectorsList;
 
-                    self.SiaService.getAppAnalysisResponse().then(function (data: any) {
-                        var siaResponse = self.SiaService.appAnalysisResponse;
+                    self.SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
+                        var siaResponse = data.Response;
                         _.each(siaResponse.NonCorrelatedDetectors, function (item: DetectorDefinition) {
                             _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
                                 if (item.DisplayName == detector.DisplayName) {

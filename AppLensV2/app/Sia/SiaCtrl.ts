@@ -16,9 +16,9 @@ module SupportCenter {
 
             this.SiteService.promise.then(function (data: any) {
 
-                self.SiaService.getAppAnalysisResponse().then(function (data: SiaResponse) {
-                    self.SiaResponse = SiaService.appAnalysisResponse;
-                    self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
+                self.SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
+                    self.SiaResponse = data.Response;
+                    self.selectedAbnormalTimePeriod = data.SelectedAbnormalTimePeriod;
                     self.DetectorData = self.SiaService.PrepareDetectorViewParams(self.SiaResponse);
                     self.isLoading = false;
                 }, function (err) {

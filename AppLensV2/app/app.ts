@@ -16,7 +16,6 @@ module SupportCenter {
         .controller("SiteCtrl", SiteCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
-        .controller("PerfCtrl", PerfCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
@@ -70,6 +69,9 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'appAnalysis'
                     }
                 })
                 .state('stampsites.appanalysis', {
@@ -80,6 +82,9 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'appAnalysis'
                     }
                 })
                 .state('sites.perfanalysis', {
@@ -90,6 +95,9 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'perfAnalysis'
                     }
                 })
                 .state('stampsites.perfanalysis', {
@@ -100,6 +108,9 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'perfAnalysis'
                     }
                 })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
@@ -155,7 +166,7 @@ module SupportCenter {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Sia/sia.html',
-                            controller: 'PerfCtrl',
+                            controller: 'SiaCtrl',
                             controllerAs: 'sia'
                         }
                     }
@@ -164,7 +175,7 @@ module SupportCenter {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Sia/sia.html',
-                            controller: 'PerfCtrl',
+                            controller: 'SiaCtrl',
                             controllerAs: 'sia'
                         }
                     }

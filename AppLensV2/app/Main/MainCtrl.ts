@@ -41,15 +41,17 @@ module SupportCenter {
 
             // if no child route is defined, then set default child route to sia
             if (this.$state.current.name === 'sites' || this.$state.current.name === 'stampsites' ||
-                this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis' ||
-                this.$state.current.name === 'sites.perfanalysis' || this.$state.current.name === 'stampsites.perfanalysis') {
-                this.setSelectedItem('sia');
+                this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis') {
+                this.setSelectedItem('appanalysis');
+            }
+            if (this.$state.current.name === 'sites.perfanalysis' || this.$state.current.name === 'stampsites.perfanalysis') {
+                this.setSelectedItem('perfanalysis');
             }
             if (this.$state.current.name === 'sites.detector') {
                 this.setSelectedItem(this.$state.params['detectorName']);
             }
             if (this.$state.current.name.indexOf('.sia') >= 0) {
-                this.selectedItem = "sia";
+                this.selectedItem = "appanalysis";
             } else if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
@@ -64,33 +66,30 @@ module SupportCenter {
         }
 
         setSelectedItem(name: string): void {
-            if (name === 'sia') {
-                this.selectedItem = "sia";
+            this.selectedItem = name;
+            if (name === 'appanalysis') {
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
-                    if (this.$state.current.name.indexOf('perfanalysis')) {
-                        this.$state.go('stampsites.perfanalysis.sia');
-                    }
-                    else {
-                        this.$state.go('stampsites.appanalysis.sia');
-                    }
+                    this.$state.go('stampsites.appanalysis.sia');
                 } else {
-                    if (this.$state.current.name.indexOf('perfanalysis') >= 0) {
-                        this.$state.go('sites.perfanalysis.sia');
-                    }
-                    else {
-                        this.$state.go('sites.appanalysis.sia');
-                    }
+                    this.$state.go('sites.appanalysis.sia');
+                }
+            }
+            else if (name === 'perfanalysis') {
+                if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    this.$state.go('stampsites.perfanalysis.sia');
+                } else {
+                    this.$state.go('sites.perfanalysis.sia');
                 }
             }
             else {
-                this.selectedItem = name;
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    var parent = this.$state.current.parent;
                     if ((this.$state.current.name !== 'stampsites.appanalysis.detector') || (this.$state.current.name === 'stampsites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('stampsites.appanalysis.detector', { detectorName: name });
+                        this.$state.go(this.$state.current.name.replace('sia','detector'), { detectorName: name });
                     }
                 } else {
                     if ((this.$state.current.name !== 'sites.appanalysis.detector') || (this.$state.current.name === 'sites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('sites.appanalysis.detector', { detectorName: name });
+                        this.$state.go(this.$state.current.name.replace('sia', 'detector'), { detectorName: name });
                     }
                 }
             }

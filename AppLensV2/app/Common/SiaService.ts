@@ -4,14 +4,11 @@ module SupportCenter {
     "use strict";
 
     export interface ISiaService {
-        appAnalysisResponse: SiaResponse;
-        perfAnalysisResponse: SiaResponse;
-        //getTopLevelResponse(): SiaResponse;
         selectedAbnormalTimePeriod: any;
-        getAppAnalysisResponse(): ng.IPromise<any>;
-        getPerfAnalysisResponse(): ng.IPromise<any>;
+        getSiaResponse(): ng.IPromise<IAnalysisResult>;
+        getAppAnalysisResponse(): ng.IPromise<IAnalysisResult>;
+        getPerfAnalysisResponse(): ng.IPromise<IAnalysisResult>;
         selectAppDowntime(index: number): void
-        selectPerfDowntime(index: number): void;
         PrepareDetectorViewParams(siaResponse: SiaResponse): ICache<DetectorViewParams>
     }
 
@@ -19,22 +16,40 @@ module SupportCenter {
         private appAnalysisPromise: ng.IPromise<any>;
         private perfAnalysisPromise: ng.IPromise<any>;
 
-        public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$window"];
-        public appAnalysisResponse: SiaResponse;
-        public perfAnalysisResponse: SiaResponse;
+        private analysisCache: ICache<IAnalysisResult>;
+        private analysisPromiseCache: ICache<ng.IPromise<any>>;
+        private analysisResultCache: ICache<SiaResponse>;
+
+        public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams"];
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: ISiteService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $window: angular.IWindowService) {
+        constructor(private SiteService: ISiteService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams) {
             this.selectedAbnormalTimePeriod = {};
+            this.analysisPromiseCache = {};
+            this.analysisResultCache = {};
+            this.analysisCache = {};
+            this.analysisCache['appAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
+            this.analysisCache['perfAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
+            this.selectedAbnormalTimePeriod.index = 0
         }
 
-        getAppAnalysisResponse(): ng.IPromise<any> {
+        getSiaResponse(): ng.IPromise<IAnalysisResult> {
+            return this.$stateParams.analysisType === 'perfAnalysis' ? this.getPerfAnalysisResponse() : this.getAppAnalysisResponse();
+        }
 
-            if (angular.isDefined(this.appAnalysisPromise)) {
-                return this.appAnalysisPromise;
+        getAppAnalysisResponse(): ng.IPromise<IAnalysisResult> {
+            var self = this;
+            var deferred = this.$q.defer<IAnalysisResult>();
+
+            var analysisType = 'appAnalysis';
+            if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
+                this.analysisCache[analysisType].Promise.then(function (data: any) {
+                    deferred.resolve(self.analysisCache[analysisType])
+                });
+                return deferred.promise;
             }
 
-            this.appAnalysisPromise = this.$http({
+            this.analysisCache[analysisType].Promise = this.$http({
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
@@ -43,27 +58,39 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    this.appAnalysisResponse = new SiaResponse('', '', [], [], []);
+                    
                     if (angular.isDefined(data.Properties)) {
-                        this.appAnalysisResponse = data.Properties;
-                        this.selectedAbnormalTimePeriod.index = this.appAnalysisResponse.AbnormalTimePeriods.length - 1;
-                        this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.analysisCache[analysisType].Response = data.Properties;
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+
+                        deferred.resolve(this.analysisCache[analysisType]);
+                    }
+                    else {
+                        deferred.reject(new ErrorModel(0, "Invalid Data from appanalysis API"));
                     }
                 })
                 .error((data: any) => {
-                    // TODO: Handle Error
+                    deferred.reject(new ErrorModel(0, "Error calling appanalysis API"));
                 });
 
-            return this.appAnalysisPromise;
+            return deferred.promise;
         }
 
-        getPerfAnalysisResponse(): ng.IPromise<any> {
+        getPerfAnalysisResponse(): ng.IPromise<IAnalysisResult> {
+            var self = this;
+            var deferred = this.$q.defer<IAnalysisResult>();
 
-            if (angular.isDefined(this.perfAnalysisPromise)) {
-                return this.perfAnalysisPromise;
+            var analysisType = 'perfAnalysis';
+            if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
+                this.analysisCache[analysisType].Promise.then(function (data: any) {
+                    deferred.resolve(self.analysisCache[analysisType])
+                });
+                return deferred.promise;
             }
 
-            this.perfAnalysisPromise = this.$http({
+            this.analysisCache[analysisType].Promise = this.$http({
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
@@ -72,18 +99,23 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    this.perfAnalysisResponse = new SiaResponse('', '', [], [], []);
                     if (angular.isDefined(data.Properties)) {
-                        this.perfAnalysisResponse = data.Properties;
-                        this.selectedAbnormalTimePeriod.index = 0;// this.perfAnalysisResponse.AbnormalTimePeriods.length - 1;
-                        this.selectedAbnormalTimePeriod.data = this.perfAnalysisResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.analysisCache[analysisType].Response = data.Properties;
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+
+                        deferred.resolve(this.analysisCache[analysisType]);
+                    }
+                    else {
+                        deferred.reject(new ErrorModel(0, "Invalid Data from perfanalysis API"));
                     }
                 })
                 .error((data: any) => {
-                    // TODO: Handle Error
+                    deferred.reject(new ErrorModel(0, "Error in call to perfanalysis API"));
                 });
 
-            return this.perfAnalysisPromise;
+            return deferred.promise;
         }
 
         public PrepareDetectorViewParams(siaResponse: SiaResponse): ICache<DetectorViewParams> {
@@ -138,19 +170,16 @@ module SupportCenter {
         }
 
         public selectAppDowntime(index: number): void {
-            if (index < this.appAnalysisResponse.AbnormalTimePeriods.length && index >= 0) {
+            if (index < this.analysisCache[this.$stateParams.analysisType].Response.AbnormalTimePeriods.length && index >= 0) {
                 this.selectedAbnormalTimePeriod.index = index;
-                this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[index]
-            }
-        }
-
-        public selectPerfDowntime(index: number): void {
-            if (index < this.perfAnalysisResponse.AbnormalTimePeriods.length && index >= 0) {
-                this.selectedAbnormalTimePeriod.index = index;
-                this.selectedAbnormalTimePeriod.data = this.perfAnalysisResponse.AbnormalTimePeriods[index]
+                this.selectedAbnormalTimePeriod.data = this.analysisCache[this.$stateParams.analysisType].Response.AbnormalTimePeriods[index]
             }
         }
     }
 
-
+    export interface IAnalysisResult {
+        Promise: ng.IPromise<IAnalysisResult>;
+        Response: SiaResponse;
+        SelectedAbnormalTimePeriod: any;
+    }
 }
