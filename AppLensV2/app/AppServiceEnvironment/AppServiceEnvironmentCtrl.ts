@@ -117,14 +117,14 @@ module SupportCenter {
 
             this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'asehealth', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
 
-                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'runtimeavailability');
+                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'asehealth');
                 self.dataLoading = false;
                 var iterator = 0;
                 var requestsIterator = 0;
 
                 _.each(chartDataList, function (item: any) {
                     var f: string;
-                    if (item.key.toLowerCase().indexOf("availability") !== -1) {
+                    if (item.key.toLowerCase().indexOf("asehealth") !== -1) {
                         item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
                         iterator++;
                         self.avaiabilityChartData.push(item);

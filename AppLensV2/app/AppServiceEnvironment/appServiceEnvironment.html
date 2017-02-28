@@ -19,7 +19,7 @@
         <md-divider></md-divider>
         <md-list>
 
-            <md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'sia'}" ng-click="main.setSelectedItem('sia')">
+            <md-list-item class="md-2-line" ng-class="{'selected' : ase.selectedItem === 'sia'}" ng-click="ase.setSelectedItem('sia')">
                 <div class="md-list-item-text" layout="column">
                     <h3>Application Analysis</h3>
                 </div>
@@ -71,7 +71,7 @@
 <div layout="column" flex>
     <md-toolbar class="md-hue-2">
         <div class="md-toolbar-tools">
-            <md-button hide-gt-sm class="md-icon-button" ng-click="main.toggleSideNav()" aria-label="Toggle side menu.">
+            <md-button hide-gt-sm class="md-icon-button" ng-click="ase.toggleSideNav()" aria-label="Toggle side menu.">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
             <h1 class="md-display-3">
@@ -118,16 +118,16 @@
             <div layout="column" flex="5"></div>
             <md-card flex="95">
 
-                <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':main.containerHeight}">
+                <div ng-if="ase.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':ase.containerHeight}">
                     <div layout="column" layout-align="center center">
                         <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                     </div>
                 </div>
 
-                <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
+                <md-card-content ng-if="!ase.dataLoading" flex layout-align="space-between" layout="column">
                     <div flex>
                         <downtime-timeline height="'20px'"></downtime-timeline>
-                        <nvd3 options="::main.availabilityChartOptions" data="::main.avaiabilityChartData"></nvd3>
+                        <nvd3 options="::ase.availabilityChartOptions" data="::ase.avaiabilityChartData"></nvd3>
                     </div>
                 </md-card-content>
 
@@ -135,26 +135,6 @@
         </div>
 
         <md-content flex layout="column">
-
-            <div flex="25" layout="row">
-                <div layout="column" flex="5" layout-align="center center"></div>
-                <md-card flex="95">
-
-                    <div ng-if="main.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':main.containerHeight}">
-                        <div layout="column" layout-align="center center">
-                            <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
-                        </div>
-                    </div>
-
-                    <md-card-content ng-if="!main.dataLoading" flex layout-align="space-between" layout="column">
-                        <div flex>
-                            <nvd3 options="::main.requestsChartOptions" data="::main.requestsChartData"></nvd3>
-
-                        </div>
-                    </md-card-content>
-
-                </md-card>
-            </div>
 
             <div flex layout="row">
 
