@@ -1,54 +1,51 @@
-﻿<div layout="column" flex>
+﻿<div flex="25" layout="row" class="md-sticky">
+    <div layout="column" flex="5"></div>
+    <md-card flex="95">
 
-    <div flex="25" layout="row" class="md-sticky">
-        <div layout="column" flex="5"></div>
+        <div ng-if="(site.analysisType === 'appAnalysis' && site.dataLoading) || (site.analysisType === 'perfAnalysis' && site.perfDataLoading)" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
+            <div layout="column" layout-align="center center">
+                <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+            </div>
+        </div>
+
+        <md-card-content ng-if="(site.analysisType === 'appAnalysis' && !site.dataLoading) || (site.analysisType === 'perfAnalysis' && !site.perfDataLoading)" flex layout-align="space-between" layout="column">
+            <div flex>
+                <downtime-timeline height="'20px'"></downtime-timeline>
+                <nvd3 ng-if="site.analysisType === 'appAnalysis'" options="::site.availabilityChartOptions" data="::site.avaiabilityChartData"></nvd3>
+                <nvd3 ng-if="site.analysisType === 'perfAnalysis'" options="::site.latencyChartOptions" data="::site.latencyChartData"></nvd3>
+            </div>
+        </md-card-content>
+
+    </md-card>
+</div>
+
+<md-content flex layout="column">
+
+    <div flex="25" layout="row">
+        <div layout="column" flex="5" layout-align="center center"></div>
         <md-card flex="95">
 
-            <div ng-if="(site.analysisType === 'appAnalysis' && site.dataLoading) || (site.analysisType === 'perfAnalysis' && site.perfDataLoading)" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
+            <div ng-if="site.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
                 <div layout="column" layout-align="center center">
                     <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
                 </div>
             </div>
 
-            <md-card-content ng-if="(site.analysisType === 'appAnalysis' && !site.dataLoading) || (site.analysisType === 'perfAnalysis' && !site.perfDataLoading)" flex layout-align="space-between" layout="column">
+            <md-card-content ng-if="!site.dataLoading" flex layout-align="space-between" layout="column">
                 <div flex>
-                    <downtime-timeline height="'20px'"></downtime-timeline>
-                    <nvd3 ng-if="site.analysisType === 'appAnalysis'" options="::site.availabilityChartOptions" data="::site.avaiabilityChartData"></nvd3>
-                    <nvd3 ng-if="site.analysisType === 'perfAnalysis'" options="::site.latencyChartOptions" data="::site.latencyChartData"></nvd3>
+                    <nvd3 options="::site.requestsChartOptions" data="::site.requestsChartData"></nvd3>
+
                 </div>
             </md-card-content>
 
         </md-card>
     </div>
 
-    <md-content flex layout="column">
+    <div flex layout="row">
 
-        <div flex="25" layout="row">
-            <div layout="column" flex="5" layout-align="center center"></div>
-            <md-card flex="95">
+        <div flex ui-view="childContent"></div>
 
-                <div ng-if="site.dataLoading" layout="row" layout-sm="column" layout-align="space-around" ng-style="::{'height':site.containerHeight}">
-                    <div layout="column" layout-align="center center">
-                        <md-progress-circular md-mode="indeterminate" md-diameter="40"></md-progress-circular>
-                    </div>
-                </div>
+    </div>
 
-                <md-card-content ng-if="!site.dataLoading" flex layout-align="space-between" layout="column">
-                    <div flex>
-                        <nvd3 options="::site.requestsChartOptions" data="::site.requestsChartData"></nvd3>
+</md-content>
 
-                    </div>
-                </md-card-content>
-
-            </md-card>
-        </div>
-
-        <div flex layout="row">
-
-            <div flex ui-view="childContent"></div>
-
-        </div>
-
-    </md-content>
-
-</div>

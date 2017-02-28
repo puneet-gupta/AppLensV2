@@ -24,8 +24,11 @@ module SupportCenter {
         public detectorFeedbackOption: number = -1;
         private nameElement: any;
         private detectorName: string;
+        public api: any;
+        public isLoading: boolean;
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private $timeout: ng.ITimeoutService) {
+            this.isLoading = true;
             this.nameElement = document.getElementById('name');
             let self = this;
             this.$timeout(function () {
@@ -35,6 +38,14 @@ module SupportCenter {
                     self.detectorFeedbackOption = FeedbackService.detectorsFeedbackList[self.detectorName];
                 }
             }, 3000);
+
+            // This is a hack because the chart was loading incorrectly because of some problem with material I believe. 
+            // TODO: revisit this experience. 
+            this.$timeout(function () {
+                self.isLoading = false;
+            }, 1);
+
+            
         }
 
         sendDetectorFeedback(detectorName: string, feedbackOption: number) {

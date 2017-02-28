@@ -30,19 +30,6 @@ module SupportCenter {
                     self.selectedDowntime = data.SelectedAbnormalTimePeriod
                     self.PrepareDowntimes();
                 });
-
-                //if ($state.current.name.indexOf("perfanalysis")) {
-                //    SiaService.getPerfAnalysisResponse().then(function (data) {
-                //        self.SiaResponse = SiaService.perfAnalysisResponse;
-                //        self.PrepareDowntimes();
-                //    });
-                //}
-                //else {
-                //    SiaService.getAppAnalysisResponse().then(function (data) {
-                //        self.SiaResponse = SiaService.appAnalysisResponse;
-                //        self.PrepareDowntimes();
-                //    });
-                //}
             });
         }
 

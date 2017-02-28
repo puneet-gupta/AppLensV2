@@ -4,7 +4,6 @@ module SupportCenter {
     "use strict";
 
     export interface ISiaService {
-        selectedAbnormalTimePeriod: any;
         getSiaResponse(): ng.IPromise<IAnalysisResult>;
         getAppAnalysisResponse(): ng.IPromise<IAnalysisResult>;
         getPerfAnalysisResponse(): ng.IPromise<IAnalysisResult>;
@@ -24,13 +23,11 @@ module SupportCenter {
         public selectedAbnormalTimePeriod: any;
 
         constructor(private SiteService: ISiteService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams) {
-            this.selectedAbnormalTimePeriod = {};
             this.analysisPromiseCache = {};
             this.analysisResultCache = {};
             this.analysisCache = {};
             this.analysisCache['appAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
             this.analysisCache['perfAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
-            this.selectedAbnormalTimePeriod.index = 0
         }
 
         getSiaResponse(): ng.IPromise<IAnalysisResult> {
@@ -63,7 +60,7 @@ module SupportCenter {
                         this.analysisCache[analysisType].Response = data.Properties;
                         this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
                         this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index];
 
                         deferred.resolve(this.analysisCache[analysisType]);
                     }
@@ -103,7 +100,7 @@ module SupportCenter {
                         this.analysisCache[analysisType].Response = data.Properties;
                         this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
                         this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index];
 
                         deferred.resolve(this.analysisCache[analysisType]);
                     }
@@ -171,8 +168,8 @@ module SupportCenter {
 
         public selectAppDowntime(index: number): void {
             if (index < this.analysisCache[this.$stateParams.analysisType].Response.AbnormalTimePeriods.length && index >= 0) {
-                this.selectedAbnormalTimePeriod.index = index;
-                this.selectedAbnormalTimePeriod.data = this.analysisCache[this.$stateParams.analysisType].Response.AbnormalTimePeriods[index]
+                this.analysisCache[this.$stateParams.analysisType].SelectedAbnormalTimePeriod.index = index;
+                this.analysisCache[this.$stateParams.analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[this.$stateParams.analysisType].Response.AbnormalTimePeriods[index]
             }
         }
     }
