@@ -17,10 +17,8 @@ module SupportCenter {
             }
 
             this.avaiabilityChartData = [];
-            this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
             this.availabilityChartOptions = helper.GetChartOptions('runtimeavailability');
-            this.requestsChartOptions = helper.GetChartOptions('runtimeavailability');
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
 
             if (!angular.isDefined(this.$stateParams.stamp) || this.$stateParams.stamp === '') {
@@ -73,8 +71,6 @@ module SupportCenter {
         hostingEnvironment: HostingEnvironment;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
-        requestsChartOptions: any;
-        requestsChartData: any;
         dataLoading: boolean = true;
         containerHeight: string;
 
@@ -129,13 +125,6 @@ module SupportCenter {
                         iterator++;
                         self.avaiabilityChartData.push(item);
                     }
-                    else {
-                        item.area = true;
-                        item.color = DetectorViewHelper.requestsColors[requestsIterator];
-                        requestsIterator++;
-                        self.requestsChartData.push(item);
-                    }
-
                 });
             }, function (err) {
                 self.dataLoading = false;
