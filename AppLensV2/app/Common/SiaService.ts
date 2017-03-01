@@ -4,24 +4,24 @@ module SupportCenter {
     "use strict";
 
     export interface ISiaService {
-        siaResponse: SiaResponse;
+        appAnalysisResponse: SiaResponse;
         selectedAbnormalTimePeriod: any;
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<any>;
+        getAppAnalysisResponse(): ng.IPromise<any>;
         selectDowntime(index: number): void;
     }
 
     export class SiaService implements ISiaService {
         private siaPromise: ng.IPromise<any>;
 
-        public static $inject: string[] = ["SiteService", "$stateParams", "$window", "$http"];
-        public siaResponse: SiaResponse;
+        public static $inject: string[] = ["SiteService", "TimeParamsService", "$http"];
+        public appAnalysisResponse: SiaResponse;
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: IResourceService, private $stateParams: IStateParams, private $window: angular.IWindowService, private $http: ng.IHttpService) {
+        constructor(private SiteService: IResourceService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService) {
             this.selectedAbnormalTimePeriod = {};
         }
 
-        getAppAnalysisResponse(site: Site, startTime: string, endTime: string, timeGrain: string): ng.IPromise<any> {
+        getAppAnalysisResponse(): ng.IPromise<any> {
 
             if (angular.isDefined(this.siaPromise)) {
                 return this.siaPromise;
@@ -31,16 +31,16 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(site, startTime, endTime, timeGrain)
+                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(this.SiteService.site, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain)
                 }
             })
                 .success((data: any) => {
 
-                    this.siaResponse = new SiaResponse('', '', [], [], []);
+                    this.appAnalysisResponse = new SiaResponse('', '', [], [], []);
                     if (angular.isDefined(data.Properties)) {
-                        this.siaResponse = data.Properties;
+                        this.appAnalysisResponse = data.Properties;
                         this.selectedAbnormalTimePeriod.index = 0;
-                        this.selectedAbnormalTimePeriod.data = this.siaResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
+                        this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[this.selectedAbnormalTimePeriod.index];
                     }
                 })
                 .error((data: any) => {
@@ -51,9 +51,9 @@ module SupportCenter {
         }
 
         public selectDowntime(index: number): void {
-            if (index < this.siaResponse.AbnormalTimePeriods.length && index >= 0) {
+            if (index < this.appAnalysisResponse.AbnormalTimePeriods.length && index >= 0) {
                 this.selectedAbnormalTimePeriod.index = index;
-                this.selectedAbnormalTimePeriod.data = this.siaResponse.AbnormalTimePeriods[index]
+                this.selectedAbnormalTimePeriod.data = this.appAnalysisResponse.AbnormalTimePeriods[index]
             }
         }
     }

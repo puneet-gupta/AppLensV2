@@ -5,31 +5,20 @@ module SupportCenter {
 
     export class SiaCtrl {
 
-        public static $inject: string[] = ["DetectorsService", "SiaService", "$stateParams", "SiteService", "$window", "ErrorHandlerService"];
+        public static $inject: string[] = ["DetectorsService", "SiaService", "SiteService", "$window", "ErrorHandlerService"];
 
-        constructor(private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $stateParams: IStateParams, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private DetectorsService: IDetectorsService, private SiaService: ISiaService, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.DetectorData = {};
-            if (!angular.isDefined(this.$stateParams.startTime)) {
-                this.$stateParams.startTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.endTime)) {
-                this.$stateParams.endTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.timeGrain)) {
-                this.$stateParams.timeGrain = '';
-            }
 
             this.isLoading = true;
 
             this.SiteService.promise.then(function (data: any) {
                 self.site = self.SiteService.site;
 
-                self.SiaService.getAppAnalysisResponse(self.site, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: SiaResponse) {
-                    self.SiaResponse = SiaService.siaResponse;
+                self.SiaService.getAppAnalysisResponse().then(function (data: SiaResponse) {
+                    self.SiaResponse = SiaService.appAnalysisResponse;
                     self.selectedAbnormalTimePeriod = SiaService.selectedAbnormalTimePeriod;
                     self.PrepareDetectorViewParams(self.SiaResponse.StartTime, self.SiaResponse.EndTime);
                     self.isLoading = false;

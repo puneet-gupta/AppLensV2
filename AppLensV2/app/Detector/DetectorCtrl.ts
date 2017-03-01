@@ -12,18 +12,6 @@ module SupportCenter {
             var self = this;
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
             
-            if (!angular.isDefined(this.$stateParams.startTime)) {
-                this.$stateParams.startTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.endTime)) {
-                this.$stateParams.endTime = '';
-            }
-
-            if (!angular.isDefined(this.$stateParams.timeGrain)) {
-                this.$stateParams.timeGrain = '';
-            }
-            
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
             this.chartOptions = helper.GetChartOptions(this.detectorName);
 
@@ -45,7 +33,7 @@ module SupportCenter {
                     });
                 });
 
-                self.DetectorsService.getDetectorResponse(self.resource, self.detectorName, self.$stateParams.startTime, self.$stateParams.endTime, self.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+                self.DetectorsService.getDetectorResponse(self.resource, self.detectorName).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
                     self.chartData = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, self.detectorName);
 

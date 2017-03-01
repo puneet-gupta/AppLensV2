@@ -132,6 +132,7 @@
     <Content Include="app\Home\home.html" />
     <Content Include="app\Main\main.html" />
     <Content Include="app\Sia\sia.html" />
+    <Content Include="app\Site\site.html" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
@@ -180,6 +181,7 @@
     <TypeScriptCompile Include="app\Common\SiaService.ts" />
     <TypeScriptCompile Include="app\Common\AseService.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
+    <TypeScriptCompile Include="app\Common\TimeParamsService.ts" />
     <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorCtrl.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorViewDirective.ts" />
@@ -197,6 +199,7 @@
     <TypeScriptCompile Include="app\NgModels\Site.ts" />
     <TypeScriptCompile Include="app\references.ts" />
     <TypeScriptCompile Include="app\Sia\SiaCtrl.ts" />
+    <TypeScriptCompile Include="app\Site\SiteCtrl.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

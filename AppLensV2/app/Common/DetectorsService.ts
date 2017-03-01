@@ -4,11 +4,12 @@ module SupportCenter {
     "use strict";
 
     export interface IDetectorsService {
-        getDetectors(site: Site): ng.IPromise<DetectorDefinition[]>;
         getDetectors(resource: Resource): ng.IPromise<DetectorDefinition[]>;
-        getDetectorResponse(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse>;
+        getDetectorResponse(resource: Resource, detectorName: string): ng.IPromise<DetectorResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
+
+        detectorsList: DetectorDefinition[];
     }
 
     export interface ICache<T> {
@@ -21,14 +22,16 @@ module SupportCenter {
         private detectorsWikiCache: ICache<string>;
         private detectorsSolutionCache: ICache<string>;
         private detectorsListCache: ICache<DetectorDefinition[]>;
+        public detectorsList: DetectorDefinition[];
 
-        static $inject = ['$q', '$http'];
+        static $inject = ['TimeParamsService', '$q', '$http'];
 
-        constructor(private $q: ng.IQService, private $http: ng.IHttpService) {
+        constructor(private TimeParamsService : ITimeParamsService, private $q: ng.IQService, private $http: ng.IHttpService) {
             this.detectorsResponseCache = {};
             this.detectorsWikiCache = {};
             this.detectorsSolutionCache = {};
             this.detectorsListCache = {};
+            this.detectorsList = [];
         }
 
         getDetectors(resource: Resource): ng.IPromise<DetectorDefinition[]> {
@@ -70,7 +73,8 @@ module SupportCenter {
                         });
 
                         self.detectorsListCache["detectorList"] = detectors;
-                        deferred.resolve(detectors);
+                        self.detectorsList = detectors;
+                        deferred.resolve(self.detectorsList);
                     }
                     else {
                         deferred.reject(new ErrorModel(0, "Value field not present in Get Detectors Api response"));
@@ -83,7 +87,8 @@ module SupportCenter {
             return deferred.promise;
         }
 
-        getDetectorResponse(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): ng.IPromise<DetectorResponse> {
+
+        getDetectorResponse(resource: Resource, detectorName: string): ng.IPromise<DetectorResponse> {
 
             var deferred = this.$q.defer<DetectorResponse>();
 
@@ -96,12 +101,12 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, startTime, endTime, timeGrain)
+                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain)
                 }
             })
                 .success((data: any) => {
 
-                    var response = new DetectorResponse(startTime, endTime, [], [], null);
+                    var response = new DetectorResponse(this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, [], [], null);
 
                     if (angular.isDefined(data.Properties)) {
                         response = data.Properties;
