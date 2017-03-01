@@ -11,8 +11,10 @@ module SupportCenter {
         .service("TimeParamsService", TimeParamsService)
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
+        .service("AseService", AseService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
+        .controller("AppServiceEnvironmentCtrl", AppServiceEnvrionmentCtrl)
         .controller("SiteCtrl", SiteCtrl)
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
@@ -60,6 +62,12 @@ module SupportCenter {
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
+                })
+                .state('home3', {
+                    url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}',
+                    templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
+                    controller: 'AppServiceEnvironmentCtrl',
+                    controllerAs: 'ase'
                 })
                 .state('sites.appanalysis', {
                     url: '/appanalysis',
@@ -142,6 +150,16 @@ module SupportCenter {
                         }
                     }
                 })
+                .state('home3.sia', {
+                    url: '/appanalysis',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
                 .state('sites.appanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
@@ -153,6 +171,16 @@ module SupportCenter {
                     }
                 })
                 .state('stampsites.appanalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('home3.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

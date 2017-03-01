@@ -3,7 +3,21 @@
 module SupportCenter {
     "use strict";
 
-    export class Site {
+    export abstract class Resource {
+        subscriptionId: string;
+        resourceGroup: string;
+        resourceName: string;
+        resourceInternalStamp: string;
+
+        constructor(subscriptionId: string, resourceGroup: string, resourceName: string, resourceInternalStamp: string) {
+            this.subscriptionId = subscriptionId;
+            this.resourceGroup = resourceGroup;
+            this.resourceName = resourceName;
+            this.resourceInternalStamp = resourceInternalStamp;
+        }
+    }
+
+    export class Site extends Resource {
         constructor(
             public name: string,
             public subscriptionId: string,
@@ -12,6 +26,7 @@ module SupportCenter {
             public stampName: string,
             public internalStampName: string
         ) {
+            super(subscriptionId, resourceGroup, name, internalStampName);
         }
 
         kind: string
@@ -22,5 +37,16 @@ module SupportCenter {
         numberOfTriggeredWebJobs: number;
         numberOfSlots: number;
         isLinux: boolean;
+    }
+
+    export class HostingEnvironment extends Resource {
+        constructor(
+            subscriptionId: string,
+            resourceGroup: string,
+            hostingEnvironmentName: string,
+            internalStampName: string
+        ) {
+            super(subscriptionId, resourceGroup, hostingEnvironmentName, internalStampName);
+        }
     }
 }

@@ -7,7 +7,7 @@ module SupportCenter {
 
         public static $inject: string[] = ["SiaService", "SiteService", "$window", "ErrorHandlerService"];
 
-        constructor(private SiaService: ISiaService, private SiteService: ISiteService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.DetectorData = {};

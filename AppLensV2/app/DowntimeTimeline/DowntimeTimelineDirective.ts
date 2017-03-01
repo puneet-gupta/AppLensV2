@@ -20,7 +20,7 @@ module SupportCenter {
         public SiaResponse: SiaResponse;
         public selectedDowntime: any;
 
-        constructor(private SiaService: ISiaService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService) {
+        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService) {
             var self = this;
             this.SiteService.promise.then(function (data: any) {
                 var site = self.SiteService.site;

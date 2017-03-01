@@ -59,6 +59,7 @@ module SupportCenter {
                 case 'stampfrontendlatency':
                 case 'workerlatency':
                 case 'datarolelatency':
+                case 'asehealth':
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;

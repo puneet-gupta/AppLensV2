@@ -22,7 +22,7 @@ module SupportCenter {
         public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams"];
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: ISiteService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams) {
+        constructor(private SiteService: IResourceService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams) {
             this.analysisPromiseCache = {};
             this.analysisResultCache = {};
             this.analysisCache = {};

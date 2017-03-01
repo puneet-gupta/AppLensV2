@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\AppServiceEnvironment\appServiceEnvironment.html" />
     <Content Include="app\assets\app.css" />
     <Content Include="app\assets\images\Azure-Functions-Logo.png" />
     <Content Include="app\assets\images\Azure-WebApps-Logo.png" />
@@ -178,6 +179,7 @@
     <TypeScriptCompile Include="app\Common\FeedbackService.ts" />
     <TypeScriptCompile Include="app\Common\IStateParams.ts" />
     <TypeScriptCompile Include="app\Common\SiaService.ts" />
+    <TypeScriptCompile Include="app\Common\AseService.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
     <TypeScriptCompile Include="app\Common\TimeParamsService.ts" />
     <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
@@ -186,6 +188,7 @@
     <TypeScriptCompile Include="app\Detector\DetectorViewHelper.ts" />
     <TypeScriptCompile Include="app\DowntimeTimeline\DowntimeTimelineDirective.ts" />
     <TypeScriptCompile Include="app\Home\HomeCtrl.ts" />
+    <TypeScriptCompile Include="app\AppServiceEnvironment\AppServiceEnvironmentCtrl.ts" />
     <TypeScriptCompile Include="app\Main\MainCtrl.ts" />
     <TypeScriptCompile Include="app\MultipleSitesDialog\MultipleSitesDialogCtrl.ts" />
     <TypeScriptCompile Include="app\NgModels\Detector.ts" />

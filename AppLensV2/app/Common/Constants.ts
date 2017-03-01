@@ -14,17 +14,20 @@ module SupportCenter {
 
         private static siteDetails: string = "/api/sites/{siteName}";
         private static siteDetailsWithStamp: string = "/api/stamps/{stamp}/sites/{siteName}";
+        private static appServiceEnvironmentDetails: string = "/api/hostingEnvironments/{hostingEnvironmentName}"
         private static diagnosticsPassThroughApiPath: string = "/api/diagnostics";
         private static detectorsDocumentAPIPath: string = "/api/detectors/{detectorName}/files/{fileName}";
 
         // Uri Paths of Geo Region Diagnostic Role APIs
-        private static baseAPIPath: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
+        //private static baseAPIPath: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
+        private static baseAPIPathSites: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
+        private static baseAPIPathAse: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/troubleshoot";
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
-        private static appAnalysis: string = UriPaths.baseAPIPath + "/appAnalysis?" + UriPaths.commonQueryString;
-        private static perfAnalysis: string = UriPaths.baseAPIPath + "/perfAnalysis?" + UriPaths.commonQueryString;
-        private static detectors: string = UriPaths.baseAPIPath + "/detectors";
-        private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
-        private static siteDiagnosticProperties: string = UriPaths.baseAPIPath + "/properties";
+        private static appAnalysis: string = "/appAnalysis?" + UriPaths.commonQueryString;
+        private static perfAnalysis: string = "/perfAnalysis?" + UriPaths.commonQueryString;
+        private static detectors: string = "/detectors";
+        private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;
+        private static siteDiagnosticProperties: string = "/properties";
 
         // Uri Paths for feedback APIs
         private static caseFeedback: string = "/api/cases/{caseId}/feedback";
@@ -35,6 +38,13 @@ module SupportCenter {
                 return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
             } else {
                 return UriPaths.siteDetails.replace("{siteName}", params.siteName);
+            }
+        }
+
+        // URI path to get details for ASE
+        public static AppServiceEnvironmentDetails(params: IStateParams): string {
+            if (angular.isDefined(params.hostingEnvironmentName) && params.hostingEnvironmentName !== '') {
+                return UriPaths.appServiceEnvironmentDetails.replace("{hostingEnvironmentName}", params.hostingEnvironmentName);
             }
         }
 
@@ -62,45 +72,53 @@ module SupportCenter {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.appAnalysis, site, startTime, endTime, timeGrain);
         }
 
-        public static PerfAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.perfAnalysis, site, startTime, endTime, timeGrain);
+        public static ListDetectorsPath(resource: Resource): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, resource, '', '', '');
         }
 
-        public static ListDetectorsPath(site: Site): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectors, site, '', '', '');
+        public static PerfAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.perfAnalysis, site, startTime, endTime, timeGrain);
         }
 
         public static SiteDiagnosticPropertiesPath(site: Site): string {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.siteDiagnosticProperties, site, '', '', '');
         }
 
-        public static DetectorResourcePath(site: Site, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, site, startTime, endTime, timeGrain)
+        public static DetectorResourcePath(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, resource, startTime, endTime, timeGrain)
                 .replace("{detectorName}", detectorName);
         }
 
-        private static CreateGeoRegionAPIPath(pathFormat: string, site: Site, startTime: string, endTime: string, timeGrain: string): string {
-
+        private static CreateGeoRegionAPIPath(pathFormat: string, resource: Resource, startTime: string, endTime: string, timeGrain: string): string {
+            if (resource instanceof Site) {
+                pathFormat = UriPaths.baseAPIPathSites + pathFormat;
+            } else {
+                pathFormat = UriPaths.baseAPIPathAse + pathFormat;
+            }
             var path = pathFormat
-                .replace("{sub}", site.subscriptionId)
-                .replace("{rg}", site.resourceGroup)
-                .replace("{site}", site.name)
-                .replace("{stamp}", site.internalStampName)
+                .replace("{sub}", resource.subscriptionId)
+                .replace("{rg}", resource.resourceGroup)
+                .replace("{site}", resource.resourceName)
+                .replace("{stamp}", resource.resourceInternalStamp)
+                .replace("{hostingEnvironmentName}", resource.resourceName)
                 .replace("{start}", startTime)
                 .replace("{end}", endTime)
                 .replace("{grain}", timeGrain);
 
-            var hostNamesFilter = '';
+            //refactor this later
+            if (resource instanceof Site) {
+                var site = resource as Site;
+                var hostNamesFilter = '';
+                for (let hostname of site.hostNames) {
+                    hostNamesFilter += "hostNames=" + hostname;
 
-            for (let hostname of site.hostNames) {
-                hostNamesFilter += "hostNames=" + hostname;
-
-                if (site.hostNames[site.hostNames.length - 1] != hostname) {
-                    hostNamesFilter += "&";
+                    if (site.hostNames[site.hostNames.length - 1] != hostname) {
+                        hostNamesFilter += "&";
+                    }
                 }
-            }
 
-            path = path.replace("{hostnames}", hostNamesFilter);
+                path = path.replace("{hostnames}", hostNamesFilter);
+            }
 
             return path;
         }

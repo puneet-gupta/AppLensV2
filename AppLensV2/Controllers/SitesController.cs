@@ -40,6 +40,20 @@ namespace AppLensV2
             return await GetSiteInternal(null, siteName);
         }
 
+        [HttpGet]
+        [Route("api/hostingEnvironments/{hostingEnvironmentName}")]
+        public async Task<IHttpActionResult> GetHostingEnvironmentDetails(string hostingEnvironmentName)
+        {
+            var hostingEnvironmentDetails = await SupportObserverClient.GetHostingEnvironmentDetails(hostingEnvironmentName);
+
+            if (hostingEnvironmentDetails.StatusCode != HttpStatusCode.OK)
+            {
+                return ResponseMessage(Request.CreateErrorResponse(hostingEnvironmentDetails.StatusCode, (string)hostingEnvironmentDetails.Content));
+            }
+
+            return Ok(new { Details = hostingEnvironmentDetails.Content });
+        }
+
         private async Task<IHttpActionResult> GetSiteInternal(string stamp, string siteName)
         {
             var hostnamesTask = SupportObserverClient.GetHostnames(siteName);

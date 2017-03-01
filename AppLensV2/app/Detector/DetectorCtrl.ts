@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class DetectorCtrl {
 
-        public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "$window", "ErrorHandlerService"];
+        public static $inject: string[] = ["DetectorsService", "$stateParams", "SiteService", "AseService", "$window", "ErrorHandlerService"];
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: ISiteService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private SiteService: IResourceService, private AseService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
 
             var self = this;
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
@@ -15,14 +15,25 @@ module SupportCenter {
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
             this.chartOptions = helper.GetChartOptions(this.detectorName);
 
-            this.SiteService.promise.then(function (data: any) {
-                self.DetectorsService.getDetectors().then(function (data: DetectorDefinition[]) {
+            let resourceService: IResourceService;
+
+            //temporary solution until we can figure out how to inject controllers through app.ts
+            if (this.$stateParams.hostingEnvironmentName !== undefined) {
+                resourceService = AseService;
+            } else {
+                resourceService = SiteService;
+            }
+
+            resourceService.promise.then(function (data: any) {
+                self.resource = resourceService.resource;
+
+                self.DetectorsService.getDetectors(self.resource).then(function (data: DetectorDefinition[]) {
                     self.detectorInfo = _.find(data, function (item: DetectorDefinition) {
                         return item.Name.toLowerCase() === self.detectorName;
                     });
                 });
 
-                self.DetectorsService.getDetectorResponse(self.detectorName).then(function (data: DetectorResponse) {
+                self.DetectorsService.getDetectorResponse(self.resource, self.detectorName).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
                     self.chartData = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, self.detectorName);
 
@@ -53,6 +64,7 @@ module SupportCenter {
         }
 
         public detectorResponse: DetectorResponse;
+        private resource: Resource;
         detectorName: string;
         chartOptions: any;
         chartData: any;
