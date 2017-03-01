@@ -69,6 +69,9 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'appAnalysis'
                     }
                 })
                 .state('stampsites.appanalysis', {
@@ -79,6 +82,35 @@ module SupportCenter {
                             controller: 'SiteCtrl',
                             controllerAs: 'site'
                         }
+                    },
+                    params: {
+                        analysisType: 'appAnalysis'
+                    }
+                })
+                .state('sites.perfanalysis', {
+                    url: '/perfanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    },
+                    params: {
+                        analysisType: 'perfAnalysis'
+                    }
+                })
+                .state('stampsites.perfanalysis', {
+                    url: '/perfanalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/Site/site.html',
+                            controller: 'SiteCtrl',
+                            controllerAs: 'site'
+                        }
+                    },
+                    params: {
+                        analysisType: 'perfAnalysis'
                     }
                 })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
@@ -121,6 +153,44 @@ module SupportCenter {
                     }
                 })
                 .state('stampsites.appanalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('sites.perfanalysis.sia', {
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
+                .state('stampsites.perfanalysis.sia', {
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    }
+                })
+                .state('sites.perfanalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('stampsites.perfanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

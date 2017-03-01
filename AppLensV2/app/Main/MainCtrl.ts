@@ -7,7 +7,7 @@ module SupportCenter {
 
         public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
 
@@ -42,13 +42,16 @@ module SupportCenter {
             // if no child route is defined, then set default child route to sia
             if (this.$state.current.name === 'sites' || this.$state.current.name === 'stampsites' ||
                 this.$state.current.name === 'sites.appanalysis' || this.$state.current.name === 'stampsites.appanalysis') {
-                this.setSelectedItem('sia');
+                this.setSelectedItem('appanalysis');
+            }
+            if (this.$state.current.name === 'sites.perfanalysis' || this.$state.current.name === 'stampsites.perfanalysis') {
+                this.setSelectedItem('perfanalysis');
             }
             if (this.$state.current.name === 'sites.detector') {
                 this.setSelectedItem(this.$state.params['detectorName']);
             }
             if (this.$state.current.name.indexOf('.sia') >= 0) {
-                this.selectedItem = "sia";
+                this.selectedItem = "appanalysis";
             } else if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
@@ -63,23 +66,30 @@ module SupportCenter {
         }
 
         setSelectedItem(name: string): void {
-            if (name === 'sia') {
-                this.selectedItem = "sia";
+            this.selectedItem = name;
+            if (name === 'appanalysis') {
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
                     this.$state.go('stampsites.appanalysis.sia');
                 } else {
                     this.$state.go('sites.appanalysis.sia');
                 }
             }
-            else {
-                this.selectedItem = name;
+            else if (name === 'perfanalysis') {
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    this.$state.go('stampsites.perfanalysis.sia');
+                } else {
+                    this.$state.go('sites.perfanalysis.sia');
+                }
+            }
+            else {
+                if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    var parent = this.$state.current.parent;
                     if ((this.$state.current.name !== 'stampsites.appanalysis.detector') || (this.$state.current.name === 'stampsites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('stampsites.appanalysis.detector', { detectorName: name });
+                        this.$state.go(this.$state.current.name.replace('sia','detector'), { detectorName: name });
                     }
                 } else {
                     if ((this.$state.current.name !== 'sites.appanalysis.detector') || (this.$state.current.name === 'sites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('sites.appanalysis.detector', { detectorName: name });
+                        this.$state.go(this.$state.current.name.replace('sia', 'detector'), { detectorName: name });
                     }
                 }
             }

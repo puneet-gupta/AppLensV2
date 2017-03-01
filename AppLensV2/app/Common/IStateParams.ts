@@ -10,5 +10,6 @@ module SupportCenter {
         endTime: string;
         timeGrain: string;
         detectorName: string;
+        analysisType: string;
     }
 }

@@ -6,6 +6,8 @@ module SupportCenter {
     export class Constants {
         public static geoRegionApiRouteHeaderName: string = "GeoRegionApiRoute";
         public static aggregatedWorkerName: string = "aggregated";
+        public static perfAnalysis: string = "perfAnalysis";
+        public static appAnalysis: string = "appAnalysis";
     }
 
     export class UriPaths {
@@ -19,6 +21,7 @@ module SupportCenter {
         private static baseAPIPath: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
         private static appAnalysis: string = UriPaths.baseAPIPath + "/appAnalysis?" + UriPaths.commonQueryString;
+        private static perfAnalysis: string = UriPaths.baseAPIPath + "/perfAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = UriPaths.baseAPIPath + "/detectors";
         private static detectorResource: string = UriPaths.baseAPIPath + "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = UriPaths.baseAPIPath + "/properties";
@@ -57,6 +60,10 @@ module SupportCenter {
 
         public static AppAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.appAnalysis, site, startTime, endTime, timeGrain);
+        }
+
+        public static PerfAnalysisPath(site: Site, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.perfAnalysis, site, startTime, endTime, timeGrain);
         }
 
         public static ListDetectorsPath(site: Site): string {
