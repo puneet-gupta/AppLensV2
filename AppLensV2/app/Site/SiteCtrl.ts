@@ -7,7 +7,7 @@ module SupportCenter {
 
         public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: ISiteService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
 
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
@@ -26,10 +26,11 @@ module SupportCenter {
 
             var self = this;
             this.SiteService.promise.then(function (data: any) {
+                self.site = self.SiteService.resource;
                 self.getRuntimeAvailability();
                 self.getSiteLatency();
 
-                self.DetectorsService.getDetectors().then(function (data: DetectorDefinition[]) {
+                self.DetectorsService.getDetectors(self.site).then(function (data: DetectorDefinition[]) {
                     self.detectors = self.DetectorsService.detectorsList;
 
                     self.SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
@@ -75,6 +76,7 @@ module SupportCenter {
         perfDataLoading: boolean = true;
         containerHeight: string;
         analysisType: string;
+        site: Resource;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -86,7 +88,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(runtimeavailability).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(self.site, runtimeavailability).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, runtimeavailability);
                 
@@ -122,7 +124,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(sitelatency).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(self.site, sitelatency).then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, sitelatency);
                 self.perfDataLoading = false;

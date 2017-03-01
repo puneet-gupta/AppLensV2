@@ -115,7 +115,7 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'asehealth', this.$stateParams.startTime, this.$stateParams.endTime, this.$stateParams.timeGrain).then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'asehealth').then(function (data: DetectorResponse) {
 
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'asehealth');
                 self.dataLoading = false;

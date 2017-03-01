@@ -23,11 +23,11 @@ module SupportCenter {
         private static baseAPIPathSites: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
         private static baseAPIPathAse: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/troubleshoot";
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
-        private static appAnalysis: string = UriPaths.baseAPIPathSites + "/appAnalysis?" + UriPaths.commonQueryString;
-        private static perfAnalysis: string = UriPaths.baseAPIPathSites + "/perfAnalysis?" + UriPaths.commonQueryString;
+        private static appAnalysis: string = "/appAnalysis?" + UriPaths.commonQueryString;
+        private static perfAnalysis: string = "/perfAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = "/detectors";
         private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;
-        private static siteDiagnosticProperties: string = UriPaths.baseAPIPathSites + "/properties";
+        private static siteDiagnosticProperties: string = "/properties";
 
         // Uri Paths for feedback APIs
         private static caseFeedback: string = "/api/cases/{caseId}/feedback";
