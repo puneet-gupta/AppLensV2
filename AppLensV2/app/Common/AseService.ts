@@ -17,13 +17,15 @@ module SupportCenter {
         constructor(private $http: ng.IHttpService, private $stateParams: IStateParams, private ErrorHandlerService: IErrorHandlerService) {
             var self = this;
 
-            this.promise = this.$http.get(UriPaths.AppServiceEnvironmentDetails(this.$stateParams))
-                .success(function (data: any) {
-                    self.resource = new HostingEnvironment(data.Details.Subscription, data.Details.ResourceGroupName, data.Details.StampName, data.Details.InternalStampName);
-                })
-                .error(function (err: any) {
-                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-                });
+            if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
+                this.promise = this.$http.get(UriPaths.AppServiceEnvironmentDetails(this.$stateParams))
+                    .success(function (data: any) {
+                        self.resource = new HostingEnvironment(data.Details.Subscription, data.Details.ResourceGroupName, data.Details.StampName, data.Details.InternalStampName);
+                    })
+                    .error(function (err: any) {
+                        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+                    });
+            }
         }
         
         public promise: ng.IPromise<any>;

@@ -21,6 +21,7 @@ module SupportCenter {
 
                         //if the array is empty then the observer call will fail before it gets to this line with a 404 SiteNotFound
                         self.site = self.sites[0];
+                        self.resource = self.sites[0];
 
                         self.$http({
                             method: "GET",
