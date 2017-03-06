@@ -54,11 +54,6 @@ module SupportCenter {
                 case 'handlecount':
                 case 'threadcount':
                 case 'appdomainsunloaded':
-                case 'sitelatency':
-                case 'frontendlatency':
-                case 'stampfrontendlatency':
-                case 'workerlatency':
-                case 'datarolelatency':
                 case 'asehealth':
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
@@ -66,6 +61,15 @@ module SupportCenter {
                 case 'memoryanalysisdetailed':
                     options.chart.type = 'stackedAreaChart';
                     options.chart.useInteractiveGuideline = true;
+                    break;
+                case 'sitelatency':
+                case 'frontendlatency':
+                case 'stampfrontendlatency':
+                case 'workerlatency':
+                case 'datarolelatency':
+                    options.chart.type = 'lineChart';
+                    options.chart.useInteractiveGuideline = true;
+                    options.chart.yAxis.axisLabel = 'Milliseconds';
                     break;
             }
             return options;
