@@ -7,6 +7,8 @@ module SupportCenter {
 
         public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
 
+        private theme: string;
+
         constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
@@ -15,6 +17,8 @@ module SupportCenter {
                     Message: "Yikes... We have some outstanding browser specific issues which we are fixing. For Better experience, you can use Chrome browser for now"
                 });
             }
+
+            this.theme = this.$state.current.name.indexOf('perfanalysis') > 0 ? 'default2' : 'default';
 
             if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
                 // TODO: show error or redirect to home page.

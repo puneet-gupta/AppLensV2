@@ -32,6 +32,12 @@ module SupportCenter {
                 .primaryPalette('teal')
                 .accentPalette('red');
 
+            $mdThemingProvider.theme('default2')
+                .primaryPalette('purple')
+                .accentPalette('red');
+
+            $mdThemingProvider.alwaysWatchTheme(true);
+
             $mdIconProvider
                 .icon('menu', './app/assets/svg/menu.svg', 24);
 
@@ -49,7 +55,7 @@ module SupportCenter {
                     url: '/',
                     templateUrl: 'app/Home/home.html',
                     controller: 'HomeCtrl',
-                    controllerAs: 'home'
+                    controllerAs: 'home',
                 })
                 .state('sites', {
                     url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
