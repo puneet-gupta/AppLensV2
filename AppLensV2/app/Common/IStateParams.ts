@@ -12,5 +12,6 @@ module SupportCenter {
         timeGrain: string;
         detectorName: string;
         analysisType: string;
+        isInternal: string;
     }
 }

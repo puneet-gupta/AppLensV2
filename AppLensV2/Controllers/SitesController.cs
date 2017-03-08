@@ -22,7 +22,14 @@ namespace AppLensV2
                 apiRoute = temp.FirstOrDefault().ToString();
             }
 
-            var response =  await GeoRegionClient.GetResource(apiRoute);
+            temp = null;
+            string IsInternal = "true";
+            if (Request.Headers.TryGetValues("IsInternal", out temp))
+            {
+                IsInternal = temp.FirstOrDefault().ToString();
+            }
+
+            var response =  await GeoRegionClient.GetResource(apiRoute, IsInternal);
             return response;
         }
 

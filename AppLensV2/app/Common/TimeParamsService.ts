@@ -7,6 +7,7 @@ module SupportCenter {
         StartTime: string;
         EndTime: string;
         TimeGrain: string;
+        IsInternal: string;
     }
 
     export class TimeParamsService implements ITimeParamsService {
@@ -16,6 +17,7 @@ module SupportCenter {
         public StartTime: string;
         public EndTime: string;
         public TimeGrain: string;
+        public IsInternal: string;
 
         constructor(private $stateParams: IStateParams) {
             let endTimeOrig: Date = new Date();
@@ -26,6 +28,8 @@ module SupportCenter {
             this.StartTime = angular.isDefined(this.$stateParams.startTime) ? this.$stateParams.startTime : defaultStartTime.toISOString();
             this.EndTime = angular.isDefined(this.$stateParams.startTime) ? this.$stateParams.startTime : defaultStartTime.toISOString();
             this.TimeGrain = angular.isDefined(this.$stateParams.timeGrain) ? this.$stateParams.timeGrain : defaultTimeGrain;
+
+            this.IsInternal = angular.isDefined(this.$stateParams.isInternal) ? this.$stateParams.isInternal : 'true';
         }
     }
 

@@ -12,6 +12,7 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
+        .service("AdvancedOptionsService", ThemeService)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
@@ -21,6 +22,7 @@ module SupportCenter {
         .controller("SiaCtrl", SiaCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
+        .controller("AdvancedOptionsCtrl", AdvancedOptionsCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])
@@ -59,19 +61,19 @@ module SupportCenter {
                     controllerAs: 'home',
                 })
                 .state('sites', {
-                    url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
+                    url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
                 .state('stampsites', {
-                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',
+                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
                 .state('home3', {
-                    url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}',
+                    url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
                     templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
                     controller: 'AppServiceEnvironmentCtrl',
                     controllerAs: 'ase'
