@@ -56,7 +56,7 @@ namespace AppLensV2
             }
         }    
 
-        public static async Task<HttpResponseMessage> GetResource(string apiRoute)
+        public static async Task<HttpResponseMessage> GetResource(string apiRoute, string isPublic)
         {
             if (apiRoute == null)
             {
@@ -75,7 +75,7 @@ namespace AppLensV2
                 client.Timeout = TimeSpan.FromSeconds(5 * 60);
                 client.MaxResponseContentBufferSize = Int32.MaxValue;
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Add("internal-applens", "true");
+                client.DefaultRequestHeaders.Add("internal-applens", isPublic);
 
                 var response = await client.GetAsync(GeoRegionEndpoint + apiRoute);
 

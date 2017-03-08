@@ -26,7 +26,7 @@ module SupportCenter {
 
         static $inject = ['TimeParamsService', '$q', '$http'];
 
-        constructor(private TimeParamsService : ITimeParamsService, private $q: ng.IQService, private $http: ng.IHttpService) {
+        constructor(private TimeParamsService: ITimeParamsService, private $q: ng.IQService, private $http: ng.IHttpService) {
             this.detectorsResponseCache = {};
             this.detectorsWikiCache = {};
             this.detectorsSolutionCache = {};
@@ -50,7 +50,8 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.ListDetectorsPath(resource)
+                    'GeoRegionApiRoute': UriPaths.ListDetectorsPath(resource),
+                    'IsInternal': this.TimeParamsService.IsInternal
                 }
             })
                 .success((data: any) => {
@@ -101,7 +102,8 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain)
+                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
+                    'IsInternal': this.TimeParamsService.IsInternal
                 }
             })
                 .success((data: any) => {
