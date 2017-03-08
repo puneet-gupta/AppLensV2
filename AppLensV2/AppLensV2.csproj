@@ -181,6 +181,7 @@
     <TypeScriptCompile Include="app\Common\SiaService.ts" />
     <TypeScriptCompile Include="app\Common\AseService.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
+    <TypeScriptCompile Include="app\Common\ThemeService.ts" />
     <TypeScriptCompile Include="app\Common\TimeParamsService.ts" />
     <TypeScriptCompile Include="app\DetailDetector\DetailedDetectorViewDirective.ts" />
     <TypeScriptCompile Include="app\Detector\DetectorCtrl.ts" />

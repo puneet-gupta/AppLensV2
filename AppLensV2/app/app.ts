@@ -12,6 +12,7 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
+        .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
         .controller("AppServiceEnvironmentCtrl", AppServiceEnvrionmentCtrl)
@@ -32,6 +33,12 @@ module SupportCenter {
                 .primaryPalette('teal')
                 .accentPalette('red');
 
+            $mdThemingProvider.theme('default2')
+                .primaryPalette('blue')
+                .accentPalette('red');
+
+            $mdThemingProvider.alwaysWatchTheme(true);
+
             $mdIconProvider
                 .icon('menu', './app/assets/svg/menu.svg', 24);
 
@@ -49,7 +56,7 @@ module SupportCenter {
                     url: '/',
                     templateUrl: 'app/Home/home.html',
                     controller: 'HomeCtrl',
-                    controllerAs: 'home'
+                    controllerAs: 'home',
                 })
                 .state('sites', {
                     url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}',

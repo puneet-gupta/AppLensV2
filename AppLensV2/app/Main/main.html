@@ -1,6 +1,6 @@
 ﻿<md-sidenav style="width:260px" flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
 
-    <div style="height:150px;width:100%;background-color:teal;color:white">
+    <div style="height:150px;width:100%" class="custom-theme-{{main.ThemeService.getTheme()}}">
         <div layout="column">
             <div layout="row" flex="60" layout-align="center center" style="padding:5px;padding-top:10px">
                 <img ng-if="main.site.kind !== 'functionapp'" src="app/assets/images/Azure-WebApps-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
@@ -75,7 +75,7 @@
 </md-sidenav>
 
 <div layout="column" flex>
-    <md-toolbar class="md-hue-2">
+    <md-toolbar class="md-hue-2" md-theme="{{main.ThemeService.getTheme()}}">
         <div class="md-toolbar-tools">
             <md-button hide-gt-sm class="md-icon-button" ng-click="main.toggleSideNav()" aria-label="Toggle side menu.">
                 <md-icon md-svg-icon="menu"></md-icon>
@@ -94,21 +94,21 @@
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" ng-click="main.showCaseFeedbackForm()">
-                            <ng-md-icon icon="receipt" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="receipt" class="custom-theme-{{main.ThemeService.getTheme()}}"></ng-md-icon>
                             Support Case Feedback
                         </md-button>
                     </md-menu-item>
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" href="https://github.com/ShekharGupta1988/AppLensV2/issues/new" target="_blank">
-                            <ng-md-icon icon="github-circle" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="github-circle" class="custom-theme-{{main.ThemeService.getTheme()}}"></ng-md-icon>
                             Open New Issue
                         </md-button>
                     </md-menu-item>
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" ng-click="main.sendFeedback()">
-                            <ng-md-icon icon="mail" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="mail" class="custom-theme-{{main.ThemeService.getTheme()}}"></ng-md-icon>
                             Send General Feedback(Email)
                         </md-button>
                     </md-menu-item>
@@ -125,14 +125,14 @@
 <script type="text/ng-template" id="appprofile.html">
     <md-content style="border-radius:5px">
 
-        <md-list flex>
+        <md-list flex">
             <md-list-item class="md-3-line">
 
                 <img ng-src="{{appprofilectrl.logo}}" class="md-avatar" alt="type of app">
                 <div class="md-list-item-text">
                     <h3 style="font-weight:600;font-variant:small-caps;font-size:20px">{{::appprofilectrl.site.name}}</h3>
                     <h4>{{::appprofilectrl.site.kind}}</h4>
-                    <p><a href="https://wawsobserver.azurewebsites.net/sites/{{appprofilectrl.site.name}}" target="_blank" style="font-size:13px;color:teal">Observer Link</a></p>
+                    <p class="custom-theme-{{appprofilectrl.ThemeService.getTheme()}}"><a href="https://wawsobserver.azurewebsites.net/sites/{{appprofilectrl.site.name}}" target="_blank" style="font-size:13px">Observer Link</a></p>
                 </div>
 
             </md-list-item>
@@ -140,7 +140,7 @@
 
             <md-list-item ng-repeat="item in appprofilectrl.properties">
                 <div class="md-list-item-text" layout="column">
-                    <p style="margin-bottom:0;color:teal">{{::item.Name}}</p>
+                    <p style="margin-bottom:0" class="custom-theme-{{appprofilectrl.ThemeService.getTheme()}}">{{::item.Name}}</p>
                     <h3 style="font-weight:400;margin-top:5px;font-size:17px">{{ ::item.Value }}</h3>
                 </div>
             </md-list-item>
@@ -176,7 +176,7 @@
 
 <script type="text/ng-template" id="supportcasefeedback.html">
 
-    <md-dialog>
+    <md-dialog md-theme="{{casefeedbackctrl.ThemeService.getTheme()}}">
 
         <md-dialog-content>
 
