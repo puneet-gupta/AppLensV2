@@ -5,11 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser", "ThemeService"];
 
-        private theme: string;
-
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any, public ThemeService: IThemeService) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
 
@@ -17,8 +15,6 @@ module SupportCenter {
                     Message: "Yikes... We have some outstanding browser specific issues which we are fixing. For Better experience, you can use Chrome browser for now"
                 });
             }
-
-            this.theme = this.$state.current.name.indexOf('perfanalysis') > 0 ? 'default2' : 'default';
 
             if (!angular.isDefined(this.$stateParams.siteName) || this.$stateParams.siteName === '') {
                 // TODO: show error or redirect to home page.
@@ -184,7 +180,7 @@ module SupportCenter {
 
     export class AppProfileCtrl {
 
-        constructor(private SiteService: IResourceService) {
+        constructor(private SiteService: IResourceService, public ThemeService: IThemeService) {
             var self = this;
             this.logo = "app/assets/images/Azure-WebApps-Logo.png";
             this.properties = [];
@@ -213,9 +209,9 @@ module SupportCenter {
 
     export class CaseFeedbackCtrl {
 
-        public static $inject: string[] = ["$mdDialog", "FeedbackService"];
+        public static $inject: string[] = ["$mdDialog", "FeedbackService", "ThemeService"];
 
-        constructor(private $mdDialog: angular.material.IDialogService, private FeedbackService: IFeedbackService) {
+        constructor(private $mdDialog: angular.material.IDialogService, private FeedbackService: IFeedbackService, public ThemeService: IThemeService) {
             this.feedbackOption = 0;
         }
 

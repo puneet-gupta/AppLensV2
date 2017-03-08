@@ -12,6 +12,7 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
+        .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
         .controller("AppServiceEnvironmentCtrl", AppServiceEnvrionmentCtrl)
@@ -33,7 +34,7 @@ module SupportCenter {
                 .accentPalette('red');
 
             $mdThemingProvider.theme('default2')
-                .primaryPalette('purple')
+                .primaryPalette('blue')
                 .accentPalette('red');
 
             $mdThemingProvider.alwaysWatchTheme(true);

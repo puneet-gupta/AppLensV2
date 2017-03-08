@@ -322,3 +322,29 @@ md-badge{
 table.md-table th.md-column{
     font-size: 15px !important;
 }
+
+div.custom-theme-default {
+    background-color:teal;
+    color:white;
+}
+
+p.custom-theme-default {
+    color:teal;
+}
+
+ng-md-icon.custom-theme-default {
+    fill:teal;
+}
+
+div.custom-theme-default2 {
+    background-color:#397fcf;
+    color:white;
+}
+
+p.custom-theme-default2 {
+    color:#397fcf;
+}
+
+ng-md-icon.custom-theme-default2 {
+    fill:#397fcf;
+}
