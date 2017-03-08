@@ -55,6 +55,7 @@ module SupportCenter {
                 case 'threadcount':
                 case 'appdomainsunloaded':
                 case 'asehealth':
+                case 'storagehealth':
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
