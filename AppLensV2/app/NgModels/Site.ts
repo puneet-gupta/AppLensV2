@@ -48,5 +48,14 @@ module SupportCenter {
         ) {
             super(subscriptionId, resourceGroup, hostingEnvironmentName, internalStampName);
         }
+
+        VNetName: string;
+        VNetId: string;
+        VNetSubnetName: string;
+        VNetSubnetAddressRange: string;
+        MultiRoleSizeAndCount: string;
+        SmallWorkerSizeAndCount: string;
+        MediumWorkerSizeAndCount: string;
+        LargeWorkerSizeAndCount: string;
     }
 }

@@ -20,6 +20,7 @@ module SupportCenter {
         .controller("DetectorCtrl", DetectorCtrl)
         .controller("SiaCtrl", SiaCtrl)
         .controller("AppProfileCtrl", AppProfileCtrl)
+        .controller("AseProfileCtrl", AseProfileCtrl)
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
@@ -29,12 +30,19 @@ module SupportCenter {
             $locationProvider: angular.ILocationProvider,
             $stateProvider: angular.ui.IStateProvider) => {
 
+            // App Analysis Theme
             $mdThemingProvider.theme('default')
                 .primaryPalette('teal')
                 .accentPalette('red');
 
+            // Perf Analysis Theme
             $mdThemingProvider.theme('default2')
                 .primaryPalette('blue')
+                .accentPalette('red');
+
+            // ASE Theme
+            $mdThemingProvider.theme('default3')
+                .primaryPalette('brown')
                 .accentPalette('red');
 
             $mdThemingProvider.alwaysWatchTheme(true);
