@@ -27,7 +27,7 @@ module SupportCenter {
                         self.hostingEnvironment.VNetId = data.Details.VNETId;
                         self.hostingEnvironment.VNetSubnetName = data.Details.VNETSubnetName;
                         self.hostingEnvironment.VNetSubnetAddressRange = data.Details.VNETSubnetAddressRange;
-                        self.hostingEnvironment.MediumWorkerSizeAndCount = data.Details.MultiSize + "(Count:" + data.Details.MultiRoleCount + ")";
+                        self.hostingEnvironment.MultiRoleSizeAndCount = data.Details.MultiSize + "(Count:" + data.Details.MultiRoleCount + ")";
                         self.hostingEnvironment.SmallWorkerSizeAndCount = data.Details.SmallDedicatedWebWorkerSize + "(Count:" + data.Details.SmallDedicatedWebWorkerRoleCount + ")"; 
                         self.hostingEnvironment.MediumWorkerSizeAndCount = data.Details.MediumDedicatedWebWorkerSize + "(Count:" + data.Details.MediumDedicatedWebWorkerRoleCount + ")"; 
                         self.hostingEnvironment.LargeWorkerSizeAndCount = data.Details.LargeDedicatedWebWorkerSize + "(Count:" + data.Details.LargeDedicatedWebWorkerRoleCount + ")";
