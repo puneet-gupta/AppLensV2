@@ -1,15 +1,15 @@
 ﻿<md-sidenav style="width:260px" flex-vertical class="md-sidenav-left" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" md-whiteframe="4">
 
-    <div style="height:150px;width:100%;background-color:teal;color:white">
+    <div style="height:150px;width:100%;" class="custom-theme-{{ase.ThemeService.getTheme()}}">
         <div layout="column">
             <div layout="row" flex="60" layout-align="center center" style="padding:5px;padding-top:10px">
-                <img src="app/assets/images/Azure-WebApps-Logo.png" class="md-avatar" alt="app" style="height:60px;width:60px" />
+                <img src="app/assets/images/ASE-Logo.jpg" class="md-avatar" alt="app" style="height:60px;width:60px" />
             </div>
             <div layout="row" flex="20" layout-align="center center" style="font-size:17px;font-weight:400">
-                {{::ase.hostingEnvironment.hostingEnvironmentName}}
+                {{::ase.hostingEnvironment.resourceName}}
             </div>
             <div layout="row" flex="20" layout-align="center center">
-                <md-button style="color:#e2e2e2;text-decoration:underline;font-size:11px" ng-click="ase.showAppProfile($event)">View Details</md-button>
+                <md-button style="color:#e2e2e2;text-decoration:underline;font-size:11px" ng-click="ase.showAseProfile($event)">View Details</md-button>
             </div>
         </div>
     </div>
@@ -69,15 +69,14 @@
 </md-sidenav>
 
 <div layout="column" flex>
-    <md-toolbar class="md-hue-2">
+    <md-toolbar class="md-hue-2" md-theme="{{ase.ThemeService.getTheme()}}">
         <div class="md-toolbar-tools">
             <md-button hide-gt-sm class="md-icon-button" ng-click="ase.toggleSideNav()" aria-label="Toggle side menu.">
                 <md-icon md-svg-icon="menu"></md-icon>
             </md-button>
             <h1 class="md-display-3">
-                App Lens
+                ASE Lens
             </h1>
-            <h3 class="md-subhead">(2.0)</h3>
             <span flex></span>
 
             <md-menu md-offset="0 -7">
@@ -88,21 +87,21 @@
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" ng-click="ase.showCaseFeedbackForm()">
-                            <ng-md-icon icon="receipt" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="receipt" class="custom-theme-{{ase.ThemeService.getTheme()}}"></ng-md-icon>
                             Support Case Feedback
                         </md-button>
                     </md-menu-item>
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" href="https://github.com/ShekharGupta1988/AppLensV2/issues/new" target="_blank">
-                            <ng-md-icon icon="github-circle" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="github-circle" class="custom-theme-{{ase.ThemeService.getTheme()}}"></ng-md-icon>
                             Open New Issue
                         </md-button>
                     </md-menu-item>
 
                     <md-menu-item>
                         <md-button aria-label="Feedback" ng-click="ase.sendFeedback()">
-                            <ng-md-icon icon="mail" style="fill:teal"></ng-md-icon>
+                            <ng-md-icon icon="mail" class="custom-theme-{{ase.ThemeService.getTheme()}}"></ng-md-icon>
                             Send General Feedback(Email)
                         </md-button>
                     </md-menu-item>
@@ -147,25 +146,24 @@
     </md-content>
 </div>
 
-<script type="text/ng-template" id="appprofile.html">
-    <md-content style="border-radius:5px">
+<script type="text/ng-template" id="aseprofile.html">
+    <md-content style="border-radius:5px" md-theme="{{aseprofilectrl.ThemeService.getTheme()}}">
 
         <md-list flex>
             <md-list-item class="md-3-line">
 
-                <img ng-src="{{appprofilectrl.logo}}" class="md-avatar" alt="type of app">
+                <img src="app/assets/images/ASE-Logo.jpg" class="md-avatar" alt="type of resource" style="border-radius:0">
                 <div class="md-list-item-text">
-                    <h3 style="font-weight:600;font-variant:small-caps;font-size:20px">{{::appprofilectrl.site.name}}</h3>
-                    <h4>{{::appprofilectrl.site.kind}}</h4>
-                    <p><a href="https://wawsobserver.azurewebsites.net/sites/{{appprofilectrl.site.name}}" target="_blank" style="font-size:13px;color:teal">Observer Link</a></p>
+                    <h3 style="font-weight:600;font-variant:small-caps;font-size:20px">{{::aseprofilectrl.hostingEnv.resourceName}}</h3>
+                    <p><a href="https://wawsobserver.azurewebsites.net/MiniEnvironments/{{aseprofilectrl.hostingEnv.resourceName}}" target="_blank" style="font-size:13px;" class="custom-theme-{{main.ThemeService.getTheme()}}">Observer Link</a></p>
                 </div>
 
             </md-list-item>
             <md-divider></md-divider>
 
-            <md-list-item ng-repeat="item in appprofilectrl.properties">
+            <md-list-item ng-repeat="item in aseprofilectrl.properties">
                 <div class="md-list-item-text" layout="column">
-                    <p style="margin-bottom:0;color:teal">{{::item.Name}}</p>
+                    <p style="margin-bottom:0;" class="custom-theme-{{aseprofilectrl.ThemeService.getTheme()}}">{{::item.Name}}</p>
                     <h3 style="font-weight:400;margin-top:5px;font-size:17px">{{ ::item.Value }}</h3>
                 </div>
             </md-list-item>
@@ -201,7 +199,7 @@
 
 <script type="text/ng-template" id="supportcasefeedback.html">
 
-    <md-dialog>
+    <md-dialog md-theme="{{casefeedbackctrl.ThemeService.getTheme()}}">
 
         <md-dialog-content>
 

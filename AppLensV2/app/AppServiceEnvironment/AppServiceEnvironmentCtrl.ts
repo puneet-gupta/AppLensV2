@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class AppServiceEnvrionmentCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "AseService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "AseService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser", "ThemeService"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private AseService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private AseService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any, public ThemeService: IThemeService) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
 
@@ -40,7 +40,7 @@ module SupportCenter {
             var self = this;
 
             this.AseService.promise.then(function (data: any) {
-                self.hostingEnvironment = self.AseService.resource;
+                self.hostingEnvironment = self.AseService.hostingEnvironment;
 
                 self.getRuntimeAvailability();
 
@@ -67,7 +67,6 @@ module SupportCenter {
         detectors: DetectorDefinition[];
         detectorListLoaded: boolean = false;
         selectedItem: string;
-        site: Site;
         hostingEnvironment: HostingEnvironment;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
@@ -156,7 +155,59 @@ module SupportCenter {
                 });
         }
 
-        showAppProfile($env): void {
+        showAseProfile($env): void {
+
+            var position = this.$mdPanel.newPanelPosition()
+                .absolute()
+                .center();
+
+            var config = {
+                attachTo: angular.element(document.body),
+                controllerAs: 'aseprofilectrl',
+                controller: AseProfileCtrl,
+                disableParentScroll: true,
+                templateUrl: 'aseprofile.html',
+                hasBackdrop: true,
+                panelClass: 'app-profile-dialog',
+                position: position,
+                trapFocus: true,
+                zIndex: 150,
+                clickOutsideToClose: true,
+                escapeToClose: true,
+                focusOnOpen: true
+            };
+
+            this.$mdPanel.open(config);
         }
+    }
+
+    export class AseProfileCtrl {
+
+        constructor(private AseService: IResourceService, public ThemeService: IThemeService) {
+            var self = this;
+            this.properties = [];
+
+            this.AseService.promise.then(function (data: any) {
+                self.hostingEnv = self.AseService.hostingEnvironment;
+
+                self.properties.push(new NameValuePair("Subscription Id", self.hostingEnv.subscriptionId));
+                self.properties.push(new NameValuePair("Resource Group", self.hostingEnv.resourceGroup));
+                self.properties.push(new NameValuePair("Resource Group", self.hostingEnv.resourceGroup));
+                self.properties.push(new NameValuePair("Internal Stamp Name", self.hostingEnv.resourceInternalStamp));
+                self.properties.push(new NameValuePair("VNet Name", self.hostingEnv.VNetName));
+                self.properties.push(new NameValuePair("VNet Id", self.hostingEnv.VNetId));
+                self.properties.push(new NameValuePair("VNet Subnet Name", self.hostingEnv.VNetSubnetName));
+                self.properties.push(new NameValuePair("VNet Subnet Address Range", self.hostingEnv.VNetSubnetAddressRange));
+                self.properties.push(new NameValuePair("MultiRole Size and Count", self.hostingEnv.MultiRoleSizeAndCount));
+                self.properties.push(new NameValuePair("Small Worker Size and Count", self.hostingEnv.SmallWorkerSizeAndCount));
+                self.properties.push(new NameValuePair("Medium Worker Size and Count", self.hostingEnv.MediumWorkerSizeAndCount));
+                self.properties.push(new NameValuePair("Large Worker Size and Count", self.hostingEnv.LargeWorkerSizeAndCount));
+                
+            }, function (err) {
+            });
+        }
+
+        hostingEnv: HostingEnvironment;
+        properties: NameValuePair[]
     }
 }

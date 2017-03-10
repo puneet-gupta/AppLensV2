@@ -348,3 +348,16 @@ p.custom-theme-default2 {
 ng-md-icon.custom-theme-default2 {
     fill:#397fcf;
 }
+
+div.custom-theme-default3 {
+    background-color:rgb(78,52,46);
+    color:white;
+}
+
+p.custom-theme-default3 {
+    color:rgb(78,52,46);
+}
+
+ng-md-icon.custom-theme-default3 {
+    fill:rgb(78,52,46);
+}

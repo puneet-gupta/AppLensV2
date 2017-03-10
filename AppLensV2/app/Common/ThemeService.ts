@@ -15,7 +15,13 @@ module SupportCenter {
 
 
         getTheme(): string {
-            return this.$state.current.name.indexOf('perfanalysis') > 0 ? 'default2' : 'default';
+            console.log(this.$state.current.name);
+            if (this.$state.current.name.indexOf('home3') >= 0) {
+                return 'default3';
+            }
+            else {
+                return this.$state.current.name.indexOf('perfanalysis') > 0 ? 'default2' : 'default';
+            }
         }
     }
 }
