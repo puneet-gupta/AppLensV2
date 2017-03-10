@@ -192,7 +192,6 @@ module SupportCenter {
 
                 self.properties.push(new NameValuePair("Subscription Id", self.hostingEnv.subscriptionId));
                 self.properties.push(new NameValuePair("Resource Group", self.hostingEnv.resourceGroup));
-                self.properties.push(new NameValuePair("Resource Group", self.hostingEnv.resourceGroup));
                 self.properties.push(new NameValuePair("Internal Stamp Name", self.hostingEnv.resourceInternalStamp));
                 self.properties.push(new NameValuePair("VNet Name", self.hostingEnv.VNetName));
                 self.properties.push(new NameValuePair("VNet Id", self.hostingEnv.VNetId));
