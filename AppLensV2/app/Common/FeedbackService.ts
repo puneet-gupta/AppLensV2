@@ -32,7 +32,7 @@ module SupportCenter {
             var subject = encodeURIComponent('Applensv2 Feedback');
             var body = encodeURIComponent('Current site: ' + this.getCurrentUrlFillMissingData() + '\n'
                 + 'Please provide feedback here:');
-            var link: string = 'mailto:praveenhb@microsoft.com?subject={subject}&body={body}';
+            var link: string = 'mailto:applensdisc@microsoft.com?subject={subject}&body={body}';
             var link = link.replace('{subject}', subject).replace('{body}', body);
             window.location.href = link;
         }

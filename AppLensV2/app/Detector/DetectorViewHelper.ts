@@ -51,6 +51,7 @@ module SupportCenter {
                 case 'cpuanalysisdetailed':
                 case 'exceptioncount':
                 case 'garbagecollectiongen2':
+                case 'garbagecollection':
                 case 'handlecount':
                 case 'threadcount':
                 case 'appdomainsunloaded':
