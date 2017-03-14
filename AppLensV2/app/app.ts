@@ -73,13 +73,13 @@ module SupportCenter {
                     controllerAs: 'main'
                 })
                 .state('stampsites', {
-                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
+                    url: '/stamps/{stamp}/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
                 .state('home3', {
-                    url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
+                    url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
                     templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
                     controller: 'AppServiceEnvironmentCtrl',
                     controllerAs: 'ase'
