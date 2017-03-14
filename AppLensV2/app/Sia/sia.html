@@ -147,7 +147,7 @@
         </div>
 
         <!-- VNext Feature -->
-        <div ng-if="sia.isVNext && sia.selectedAbnormalTimePeriod.data.Events.length !== 0">
+        <div ng-if="sia.isVNext && (sia.SiaResponse.AbnormalTimePeriods.length > 0 && sia.selectedAbnormalTimePeriod.data.Events.length > 0)">
 
             <md-list-item layout="row" style="padding:0">
 
@@ -166,7 +166,6 @@
                 </div>
             </md-list-item>
 
-            
             <md-list-item layout="row" style="padding:0">
 
                 <div class="discussion-timeline"></div>
