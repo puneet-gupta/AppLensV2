@@ -15,7 +15,6 @@ module SupportCenter {
 
 
         getTheme(): string {
-            console.log(this.$state.current.name);
             if (this.$state.current.name.indexOf('home3') >= 0) {
                 return 'default3';
             }
