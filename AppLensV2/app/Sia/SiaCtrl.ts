@@ -5,14 +5,18 @@ module SupportCenter {
 
     export class SiaCtrl {
 
-        public static $inject: string[] = ["SiaService", "SiteService", "$window", "ErrorHandlerService"];
-
-        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService) {
+        public static $inject: string[] = ["SiaService", "SiteService", "$window", "ErrorHandlerService", "ThemeService", "$stateParams"];
+        
+        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService, private ThemeService: IThemeService, private $stateParams: IStateParams) {
 
             var self = this;
             this.DetectorData = {};
 
             this.isLoading = true;
+            this.isVNext = false;
+            if (angular.isDefined(this.$stateParams.vNext) && this.$stateParams.vNext === 'true') {
+                this.isVNext = true;
+            }
 
             this.SiteService.promise.then(function (data: any) {
 
@@ -37,6 +41,7 @@ module SupportCenter {
             }
         }
 
+        public isVNext: boolean;
         public SiaResponse: SiaResponse;
         public DetectorData: ICache<DetectorViewParams>;
         public isLoading: boolean;

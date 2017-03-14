@@ -67,7 +67,7 @@ module SupportCenter {
                     controllerAs: 'home',
                 })
                 .state('sites', {
-                    url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}',
+                    url: '/sites/{siteName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
                     templateUrl: 'app/Main/main.html',
                     controller: 'MainCtrl',
                     controllerAs: 'main'

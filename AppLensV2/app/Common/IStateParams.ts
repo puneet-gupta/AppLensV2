@@ -13,5 +13,6 @@ module SupportCenter {
         detectorName: string;
         analysisType: string;
         isInternal: string;
+        vNext: string;
     }
 }
