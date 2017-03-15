@@ -44,12 +44,14 @@ module SupportCenter {
             this.detailedchartoptions = this.helper.GetChartOptions(this.detectorsource + 'detailed');
             this.detailedchartoptions.chart.height = this.detailedchartoptions.chart.height * 2;
             switch(this.detectorsource) {
-                case 'cpuanalysis':
+                case 'workercpuanalysis':
                 case 'multirolecpuanalysis':
                 case 'sitecpuanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Processor Time';
                     break;
-                case 'memoryanalysis':
+                case 'sitememoryanalysis':
+                case 'multirolememoryanalysis':
+                case 'workermemoryanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Physical Memory Used';
                     break;
             }
