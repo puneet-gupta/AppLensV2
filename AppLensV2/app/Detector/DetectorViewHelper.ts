@@ -46,6 +46,11 @@ module SupportCenter {
             switch (detectorName.toLowerCase()) {
                 case 'runtimeavailability':
                 case 'cpuanalysis':
+                case 'workercpuanalysis':
+                case 'multirolecpuanalysis':
+                case 'multirolecpuanalysisdetailed':
+                case 'sitecpuanalysis':
+                case 'sitecpuanalysisdetailed':
                 case 'workeravailability':
                 case 'memoryanalysis':
                 case 'cpuanalysisdetailed':
@@ -90,7 +95,7 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if ((detectorName === 'cpuanalysis' && metric.Name !== "PercentTotalProcessorTime") || (detectorName === 'memoryanalysis' && metric.Name !== 'PercentOverallMemory')) {
+                if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime") || (detectorName === 'memoryanalysis' && metric.Name !== 'PercentOverallMemory')) {
                     continue;
                 }
 
