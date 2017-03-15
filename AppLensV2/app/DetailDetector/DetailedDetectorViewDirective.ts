@@ -45,6 +45,8 @@ module SupportCenter {
             this.detailedchartoptions.chart.height = this.detailedchartoptions.chart.height * 2;
             switch(this.detectorsource) {
                 case 'cpuanalysis':
+                case 'multirolecpuanalysis':
+                case 'customercpuanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Processor Time';
                     break;
                 case 'memoryanalysis':
