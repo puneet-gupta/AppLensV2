@@ -23,13 +23,33 @@ module SupportCenter {
             let endTimeOrig: Date = new Date();
             let defaultEndTime: Date = new Date(endTimeOrig.getFullYear(), endTimeOrig.getMonth(), endTimeOrig.getDate(), endTimeOrig.getHours(), endTimeOrig.getMinutes());
             let defaultStartTime: Date = new Date(defaultEndTime.getFullYear(), defaultEndTime.getMonth(), defaultEndTime.getDate() - 1, defaultEndTime.getHours(), defaultEndTime.getMinutes());
-            let defaultTimeGrain: string = "PT5M"
+            let defaultTimeGrain: string = '';
 
-            this.StartTime = angular.isDefined(this.$stateParams.startTime) ? this.$stateParams.startTime : defaultStartTime.toISOString();
-            this.EndTime = angular.isDefined(this.$stateParams.startTime) ? this.$stateParams.startTime : defaultStartTime.toISOString();
+            if (angular.isDefined(this.$stateParams.startTime) && angular.isDefined(this.$stateParams.endTime)) {
+                this.StartTime = this.$stateParams.startTime;
+                this.EndTime = this.$stateParams.endTime;
+            }
+            else if (angular.isDefined(this.$stateParams.startTime) && !angular.isDefined(this.$stateParams.endTime)) {
+                this.StartTime = this.$stateParams.startTime;
+                this.EndTime = '';
+            }
+            else if (!angular.isDefined(this.$stateParams.startTime) && angular.isDefined(this.$stateParams.endTime)) {
+                this.StartTime = '';
+                this.EndTime = this.$stateParams.endTime;
+            }
+            else {
+                this.StartTime = defaultStartTime.toISOString();
+                this.EndTime = defaultEndTime.toISOString();
+            }
+
             this.TimeGrain = angular.isDefined(this.$stateParams.timeGrain) ? this.$stateParams.timeGrain : defaultTimeGrain;
 
             this.IsInternal = angular.isDefined(this.$stateParams.isInternal) ? this.$stateParams.isInternal : 'true';
+        }
+
+        private AddDaysToDate(date: Date, days: number) {
+            var returnDate = new Date(date.valueOf());
+            return returnDate.setDate(returnDate.getDate() + days);
         }
     }
 
