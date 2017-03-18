@@ -41,6 +41,16 @@
         </md-card>
     </div>
 
+    <div flex="5" layout="row" ng-if="site.avgAvailability && (site.analysisType === 'appAnalysis')">
+
+        <div layout="column" flex="5" layout-align="center center"></div>
+
+        <div layout="column" flex="95">
+            <p style="margin-bottom:0;font-size:17px;padding-left:5px" class="custom-theme-{{site.ThemeService.getTheme()}}">Organic SLA : {{site.avgAvailability}} %</p>
+        </div>
+
+    </div>
+
     <div flex layout="row">
 
         <div flex ui-view="childContent"></div>
