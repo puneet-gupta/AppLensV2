@@ -7,6 +7,7 @@
                 <md-option ng-value="worker" ng-repeat="worker in detailedctrl.allMetrics.instanceList">{{ worker }}</md-option>
             </md-select>
         </md-input-container>
+        <p ng-if="detailedctrl.processesRemoved > 0"><ng-md-icon icon="warning" style="fill:rgb(255, 106, 0)" size="20"></ng-md-icon>As a result of there being a high number of sites on this instance, <b>{{detailedctrl.processesRemoved}}</b> process or site series were removed, however none of them had any points that were over 0.5% </p>
      </div>
     <div flex>
         <nvd3 options="detailedctrl.detailedchartoptions" data="detailedctrl.graphData"></nvd3>

@@ -26,6 +26,7 @@ module SupportCenter {
         public selectedWorker: string;
         public selectedProcesses: string[];
         public detectorsource: string;
+        public processesRemoved: number;
 
         constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService) {
             var self = this;
@@ -61,6 +62,7 @@ module SupportCenter {
             this.graphData = _.filter(this.allMetrics.metricData, function (item: GraphSeries) {
                 return item.instance === self.selectedWorker;
             });
+            this.processesRemoved = this.allMetrics.processesRemovedPerWorker[self.selectedWorker];
         }
     }
 
