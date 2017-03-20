@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class SiteCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "SiaService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser", "ThemeService"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, private DetectorsService: IDetectorsService, private SiaService: ISiaService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any, public ThemeService: IThemeService) {
 
             this.avaiabilityChartData = [];
             this.requestsChartData = [];
@@ -77,6 +77,7 @@ module SupportCenter {
         containerHeight: string;
         analysisType: string;
         site: Resource;
+        avgAvailability: string;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -89,7 +90,7 @@ module SupportCenter {
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
             this.DetectorsService.getDetectorResponse(self.site, runtimeavailability).then(function (data: DetectorResponse) {
-
+                
                 let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, runtimeavailability);
                 
                 var iterator = 0;
@@ -109,6 +110,24 @@ module SupportCenter {
                     }
 
                 });
+
+                if (angular.isDefined(data.Data) && data.Data.length > 0) {
+                    let metSla = _.find(data.Data[0], function (ele) {
+                        return ele.Name.toLocaleLowerCase() === 'metsla';
+                    });
+
+                    if (angular.isDefined(metSla) && metSla.Value === 'true') {
+                        self.availabilityChartOptions.chart.forceY = [0, 100];
+                    }
+
+                    let avgAvailabilityItem = _.find(data.Data[0], function (ele) {
+                        return ele.Name.toLocaleLowerCase() === 'averageappavailability';
+                    });
+
+                    if (angular.isDefined(avgAvailabilityItem)) {
+                        self.avgAvailability = parseFloat(avgAvailabilityItem.Value).toFixed(2);
+                    }
+                }
 
                 self.dataLoading = false;
             }, function (err) {
