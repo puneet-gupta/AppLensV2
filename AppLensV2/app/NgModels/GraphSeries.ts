@@ -24,7 +24,8 @@ module SupportCenter {
         constructor(
             public instanceList: string[] = [],
             public processList: string[] = [],
-            public metricData: GraphSeries[] = []
+            public metricData: GraphSeries[] = [],
+            public processesRemovedPerWorker: any = {}
         ) {
         }
     }

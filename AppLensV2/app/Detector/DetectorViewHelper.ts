@@ -210,6 +210,7 @@ module SupportCenter {
                     metric.Values.forEach(function (point, index) {
                         if (allDetailedChartData.instanceList.indexOf(point.RoleInstance) < 0) {
                             allDetailedChartData.instanceList.push(point.RoleInstance);
+                            allDetailedChartData.processesRemovedPerWorker[point.RoleInstance] = 0;
                         }
                     });
                 }
@@ -222,8 +223,8 @@ module SupportCenter {
                         return item.RoleInstance === allDetailedChartData.instanceList[index];
                     });
 
-                    //workerData.reverse();
                     var workerChartData = [];
+                    var processMaxUsageOnWorker = 0;
                     var nextElementToAdd = workerData.pop();
 
                     if (!angular.isDefined(nextElementToAdd) || !angular.isDefined(nextElementToAdd.Timestamp)) {
@@ -251,10 +252,20 @@ module SupportCenter {
                             while (angular.isDefined(nextElementToAdd) && new Date(nextElementToAdd.Timestamp).getTime() <= new Date(last.Timestamp).getTime());
                         }
 
+                        if (yValue > processMaxUsageOnWorker) {
+                            processMaxUsageOnWorker = yValue;
+                        }
+
                         workerChartData.push(new GraphPoint(self.ConvertToUTCTime(xDate), yValue));
                     }
 
-                    allDetailedChartData.metricData.push(new GraphSeries(metric.Name, allDetailedChartData.instanceList[index], workerChartData))
+                    if (processMaxUsageOnWorker > 0.5 || metrics.length < 40) {
+                        allDetailedChartData.metricData.push(new GraphSeries(metric.Name, allDetailedChartData.instanceList[index], workerChartData))
+                    }
+                    else {
+                        allDetailedChartData.processesRemovedPerWorker[allDetailedChartData.instanceList[index]] += 1;
+                    }
+
                 }
             }
 
