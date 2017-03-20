@@ -223,8 +223,8 @@ module SupportCenter {
                         return item.RoleInstance === allDetailedChartData.instanceList[index];
                     });
 
-                    var processMaxUsageOnWorker = 0;
                     var workerChartData = [];
+                    var processMaxUsageOnWorker = 0;
                     var nextElementToAdd = workerData.pop();
 
                     if (!angular.isDefined(nextElementToAdd) || !angular.isDefined(nextElementToAdd.Timestamp)) {
@@ -259,6 +259,7 @@ module SupportCenter {
                         workerChartData.push(new GraphPoint(self.ConvertToUTCTime(xDate), yValue));
                     }
 
+                    if (processMaxUsageOnWorker > 0.5 || metrics.length < 40) {
                         allDetailedChartData.metricData.push(new GraphSeries(metric.Name, allDetailedChartData.instanceList[index], workerChartData))
                     }
                     else {
