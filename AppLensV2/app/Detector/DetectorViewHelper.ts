@@ -52,8 +52,10 @@ module SupportCenter {
                 case 'sitecpuanalysis':
                 case 'sitecpuanalysisdetailed':
                 case 'workeravailability':
-                case 'memoryanalysis':
-                case 'cpuanalysisdetailed':
+                case 'sitememoryanalysis':
+                case 'multirolememoryanalysis':
+                case 'workermemoryanalysis':
+                case 'workercpuanalysisdetailed':
                 case 'exceptioncount':
                 case 'garbagecollectiongen2':
                 case 'garbagecollection':
@@ -65,7 +67,9 @@ module SupportCenter {
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
-                case 'memoryanalysisdetailed':
+                case 'sitememoryanalysisdetailed':
+                case 'workermemoryanalysisdetailed':
+                case 'multirolememoryanalysisdetailed':
                     options.chart.type = 'stackedAreaChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
@@ -95,7 +99,7 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime") || (detectorName === 'memoryanalysis' && metric.Name !== 'PercentOverallMemory')) {
+                if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime") || (detectorName.indexOf('memoryanalysis') >= 0 && metric.Name !== 'PercentOverallMemory')) {
                     continue;
                 }
 
