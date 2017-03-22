@@ -17,8 +17,10 @@ module SupportCenter {
             }
 
             this.avaiabilityChartData = [];
+            this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-            this.availabilityChartOptions = helper.GetChartOptions('runtimeavailability');
+            this.availabilityChartOptions = helper.GetChartOptions('overallruntimeavailability');
+            this.requestsChartOptions = helper.GetChartOptions('overallruntimeavailability');
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
 
             if (!angular.isDefined(this.$stateParams.stamp) || this.$stateParams.stamp === '') {
@@ -70,6 +72,8 @@ module SupportCenter {
         hostingEnvironment: HostingEnvironment;
         availabilityChartOptions: any;
         avaiabilityChartData: any;
+        requestsChartOptions: any;
+        requestsChartData: any;
         dataLoading: boolean = true;
         containerHeight: string;
 
@@ -110,19 +114,25 @@ module SupportCenter {
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
-            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'asehealth').then(function (data: DetectorResponse) {
+            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'overallruntimeavailability').then(function (data: DetectorResponse) {
 
-                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'asehealth');
+                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'overallruntimeavailability');
                 self.dataLoading = false;
                 var iterator = 0;
                 var requestsIterator = 0;
 
                 _.each(chartDataList, function (item: any) {
                     var f: string;
-                    if (item.key.toLowerCase().indexOf("asehealth") !== -1) {
+                    if (item.key.toLowerCase().indexOf("availability") !== -1) {
                         item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
                         iterator++;
                         self.avaiabilityChartData.push(item);
+                    }
+                    else {
+                        item.area = true;
+                        item.color = DetectorViewHelper.requestsColors[requestsIterator];
+                        requestsIterator++;
+                        self.requestsChartData.push(item);
                     }
                 });
             }, function (err) {
