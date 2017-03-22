@@ -44,6 +44,7 @@ module SupportCenter {
             };
 
             switch (detectorName.toLowerCase()) {
+                case 'overallruntimeavailability':
                 case 'runtimeavailability':
                 case 'cpuanalysis':
                 case 'workercpuanalysis':
@@ -64,6 +65,8 @@ module SupportCenter {
                 case 'appdomainsunloaded':
                 case 'asehealth':
                 case 'storagehealth':
+                case 'multirolehttperrordisribution':
+                case 'workerrolehttperrordistribution':                    
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
