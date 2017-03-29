@@ -66,7 +66,8 @@ module SupportCenter {
                 case 'asehealth':
                 case 'storagehealth':
                 case 'multirolehttperrordisribution':
-                case 'workerrolehttperrordistribution':                    
+                case 'workerrolehttperrordistribution':  
+                case 'outboundnetworkconnections':                  
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
