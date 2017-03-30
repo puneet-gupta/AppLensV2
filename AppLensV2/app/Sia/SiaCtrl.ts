@@ -13,9 +13,9 @@ module SupportCenter {
             this.DetectorData = {};
 
             this.isLoading = true;
-            this.isVNext = false;
-            if (angular.isDefined(this.$stateParams.vNext) && this.$stateParams.vNext === 'true') {
-                this.isVNext = true;
+            this.isVNext = true;
+            if (angular.isDefined(this.$stateParams.vNext) && this.$stateParams.vNext === 'false') {
+                this.isVNext = false;
             }
 
             this.SiteService.promise.then(function (data: any) {
