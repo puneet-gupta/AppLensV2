@@ -71,8 +71,8 @@ namespace AppLensV2
             {
                 if (_aadCredentials == null)
                 {
-                    var clientId = Debugger.IsAttached && targetSupportApiTestSlot ? ConfigurationManager.AppSettings["clientId"] : Environment.GetEnvironmentVariable("APPSETTING_AADClientId");
-                    var clientSecret = Debugger.IsAttached && targetSupportApiTestSlot ? ConfigurationManager.AppSettings["clientSecret"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverClientSecret");
+                    var clientId = Debugger.IsAttached ? ConfigurationManager.AppSettings["clientId"] : Environment.GetEnvironmentVariable("APPSETTING_AADClientId");
+                    var clientSecret = Debugger.IsAttached ? ConfigurationManager.AppSettings["clientSecret"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverClientSecret");
 
                     _aadCredentials = new ClientCredential(clientId, clientSecret);
                 }
@@ -86,7 +86,7 @@ namespace AppLensV2
             {
                 if (_supportObserverResourceUri == null)
                 {
-                    _supportObserverResourceUri = Debugger.IsAttached && targetSupportApiTestSlot ? ConfigurationManager.AppSettings["resourceId"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverResourceId");
+                    _supportObserverResourceUri = Debugger.IsAttached ? ConfigurationManager.AppSettings["resourceId"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverResourceId");
                 }
 
                 return _supportObserverResourceUri;
