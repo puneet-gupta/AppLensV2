@@ -12,6 +12,7 @@ using System.Web;
 using AppLensV2.Helpers;
 using Newtonsoft.Json;
 using System.Net;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace AppLensV2
 {
@@ -27,6 +28,11 @@ namespace AppLensV2
     /// </summary>
     public sealed class SupportObserverClient
     {
+        private static AuthenticationContext _authContext;
+        private static ClientCredential _aadCredentials;
+        private static string _supportObserverResourceUri;
+        private static object lockObject = new object();
+        private static bool targetSupportApiTestSlot;
 
         /// <summary>
         /// Support API Endpoint
@@ -34,7 +40,6 @@ namespace AppLensV2
         private static string SupportObserverApiEndpoint {
             get
             {
-                bool targetSupportApiTestSlot;
                 bool.TryParse(ConfigurationManager.AppSettings["TargetSupportApiTestSlot"], out targetSupportApiTestSlot);
 
                 //Add condition for Debugger.IsAttached so that we never mistakenly target Support Api test slot in production
@@ -43,15 +48,50 @@ namespace AppLensV2
                     return "https://support-bay-api-test.azurewebsites.net/observer/";
                 }else
                 {
-                    return "https://support-bay-api.azurewebsites.net/observer/";
+                    return "https://support-bay-api-aad.azurewebsites.net/observer/";
                 }
             }
         }
-        
-        /// <summary>
-        /// Signing Key
-        /// </summary>
-        private static string hashKey;
+
+        private static AuthenticationContext AuthContext {
+            get
+            {
+                if (_authContext == null)
+                {
+                    _authContext = new AuthenticationContext("https://login.microsoftonline.com/microsoft.onmicrosoft.com", TokenCache.DefaultShared);
+                }
+
+                return _authContext;
+            }
+        } 
+
+        private static ClientCredential AADCredentials
+        {
+            get
+            {
+                if (_aadCredentials == null)
+                {
+                    var clientId = Debugger.IsAttached ? ConfigurationManager.AppSettings["clientId"] : Environment.GetEnvironmentVariable("APPSETTING_AADClientId");
+                    var clientSecret = Debugger.IsAttached ? ConfigurationManager.AppSettings["clientSecret"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverClientSecret");
+
+                    _aadCredentials = new ClientCredential(clientId, clientSecret);
+                }
+                return _aadCredentials;
+            }
+        }
+
+        private static string SupportObserverResourceUri
+        {
+            get
+            {
+                if (_supportObserverResourceUri == null)
+                {
+                    _supportObserverResourceUri = Debugger.IsAttached ? ConfigurationManager.AppSettings["resourceId"] : Environment.GetEnvironmentVariable("APPSETTING_SupportObserverResourceId");
+                }
+
+                return _supportObserverResourceUri;
+            }
+        }
 
         /// <summary>
         /// http client
@@ -79,36 +119,12 @@ namespace AppLensV2
         }
 
         /// <summary>
-        /// Signing Key
-        /// </summary>
-        public static string SimpleHashAuthenticationHashKey
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(hashKey))
-                {
-                    if (Debugger.IsAttached)
-                    {
-                        hashKey =
-                            ConfigHelper.Evaluate(ConfigurationManager.AppSettings["SimpleHashAuthenticationHashKey"]);
-                    }
-                    else
-                    {
-                        hashKey = Environment.GetEnvironmentVariable("APPSETTING_SimpleHashAuthenticationHashKey");
-                    }
-                }
-
-                return hashKey;
-            }
-        }
-
-        /// <summary>
         /// Get site details for siteName
         /// </summary>
         /// <param name="siteName">Site Name</param>
         internal static async Task<ObserverResponse> GetSite(string siteName)
         {
-            return await GetSiteInternal(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0", string.Format("{{\"site\":\"{0}\"}}", siteName));
+            return await GetSiteInternal(SupportObserverApiEndpoint + "sites/" + siteName + "/adminsites?api-version=2.0");
         }
 
         /// <summary>
@@ -118,11 +134,10 @@ namespace AppLensV2
         /// <param name="siteName">Site Name</param>
         internal static async Task<ObserverResponse> GetSite(string stamp, string siteName)
         {
-            return await GetSiteInternal(SupportObserverApiEndpoint + "stamps/" + stamp + "/sites/" + siteName + "/adminsites?api-version=2.0",
-                string.Format("{{\"stamp\":\"{0}\",\"site\":\"{1}\"}}", stamp, siteName));
+            return await GetSiteInternal(SupportObserverApiEndpoint + "stamps/" + stamp + "/sites/" + siteName + "/adminsites?api-version=2.0");
         }
 
-        private static async Task<ObserverResponse> GetSiteInternal(string endpoint, string hashInput)
+        private static async Task<ObserverResponse> GetSiteInternal(string endpoint)
         {
             var request = new HttpRequestMessage()
             {
@@ -130,7 +145,7 @@ namespace AppLensV2
                 Method = HttpMethod.Get
             };
             
-            request.Headers.Add("client-hash", SignData(hashInput, SimpleHashAuthenticationHashKey));
+            request.Headers.Add("Authorization", await GetSupportObserverAccessToken());
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetAdminSite");
@@ -151,7 +166,7 @@ namespace AppLensV2
             };
           
             var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", site } });
-            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            request.Headers.Add("Authorization", await GetSupportObserverAccessToken());
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetResourceGroup(2.0)");
@@ -172,7 +187,7 @@ namespace AppLensV2
             };
 
             var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
-            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            request.Headers.Add("Authorization", await GetSupportObserverAccessToken());
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetStamp");
@@ -193,7 +208,7 @@ namespace AppLensV2
             };
 
             var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "site", siteName } });
-            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            request.Headers.Add("Authorization", await GetSupportObserverAccessToken());
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetHostnames(2.0)");
@@ -209,28 +224,11 @@ namespace AppLensV2
             };
 
             var serializedParameters = JsonConvert.SerializeObject(new Dictionary<string, string>() { { "hostingEnvironment", hostingEnvironmentName } });
-            request.Headers.Add("client-hash", SignData(serializedParameters, SimpleHashAuthenticationHashKey));
+            request.Headers.Add("Authorization", await GetSupportObserverAccessToken());
             var response = await _httpClient.SendAsync(request);
 
             ObserverResponse res = await CreateObserverResponse(response, "GetHostingEnvironmentDetails(2.0)");
             return res;
-        }
-
-        /// <summary>
-        /// Sign Data
-        /// </summary>
-        /// <param name="data">data</param>
-        /// <param name="key">key</param>
-        /// <returns>hash value</returns>
-        private static string SignData(string data, string key)
-        {
-            var signedList = new List<string>();
-            using (var hmacSha1 = new HMACSHA1())
-            {
-                hmacSha1.Key = Encoding.UTF8.GetBytes(key);
-                byte[] hashBytes = hmacSha1.ComputeHash(Encoding.UTF8.GetBytes(data));
-                return Convert.ToBase64String(hashBytes);
-            }
         }
 
         private static async Task<ObserverResponse> CreateObserverResponse(HttpResponseMessage response, string apiName = "")
@@ -259,6 +257,12 @@ namespace AppLensV2
             }
 
             return observerResponse;
+        }
+
+        private static async Task<string> GetSupportObserverAccessToken()
+        {
+            var authResult = await AuthContext.AcquireTokenAsync(SupportObserverResourceUri, AADCredentials);
+            return "Bearer " + authResult.AccessToken;
         }
     }
 }
