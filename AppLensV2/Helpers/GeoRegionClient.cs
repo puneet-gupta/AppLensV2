@@ -44,7 +44,7 @@ namespace AppLensV2
                     if (Debugger.IsAttached)
                     {
                         _authCertThumbprint =
-                            ConfigHelper.Evaluate(ConfigurationManager.AppSettings["GeoRegionAuthCertThumbprint"]);
+                            ConfigHelper.Evaluate(ConfigurationManager.AppSettings["geoRegionAuthCertThumbprint"]);
                     }
                     else
                     {

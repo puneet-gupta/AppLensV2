@@ -270,3 +270,6 @@ __pycache__/
 app.d.ts
 app.js
 *.map
+
+# secrets file
+AppLensV2Settings.config
