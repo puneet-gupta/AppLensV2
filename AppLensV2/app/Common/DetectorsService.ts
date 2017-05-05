@@ -6,6 +6,7 @@ module SupportCenter {
     export interface IDetectorsService {
         getDetectors(resource: Resource): ng.IPromise<DetectorDefinition[]>;
         getDetectorResponse(resource: Resource, detectorName: string): ng.IPromise<DetectorResponse>;
+        getDetectorResponseWithDates(resource: Resource, detectorName: string, startTime: Date, endTime: Date): ng.IPromise<DetectorResponse>;
         getDetectorWiki(detectorName: string): ng.IPromise<string>;
         getDetectorSolution(detectorName: string): ng.IPromise<string>;
 
@@ -88,12 +89,20 @@ module SupportCenter {
             return deferred.promise;
         }
 
-
         getDetectorResponse(resource: Resource, detectorName: string): ng.IPromise<DetectorResponse> {
+            return this.getDetectorResponseWithDates(resource, detectorName, null, null);
+        }
+
+        getDetectorResponseWithDates(resource: Resource, detectorName: string, startTime: Date = null, endTime: Date = null): ng.IPromise<DetectorResponse> {
 
             var deferred = this.$q.defer<DetectorResponse>();
 
-            if (angular.isDefined(this.detectorsResponseCache[detectorName])) {
+            var apiRoute = UriPaths.DetectorResourcePath(resource, detectorName, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain);
+
+            if (startTime != null && endTime != null) {
+                apiRoute = UriPaths.DetectorResourcePath(resource, detectorName, startTime.toJSON(), endTime.toJSON(), this.TimeParamsService.TimeGrain);
+            }
+            else if (angular.isDefined(this.detectorsResponseCache[detectorName])) {
                 deferred.resolve(this.detectorsResponseCache[detectorName]);
                 return deferred.promise;
             }
@@ -102,7 +111,7 @@ module SupportCenter {
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.DetectorResourcePath(resource, detectorName, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
+                    'GeoRegionApiRoute': apiRoute,
                     'IsInternal': this.TimeParamsService.IsInternal
                 }
             })
@@ -113,7 +122,18 @@ module SupportCenter {
                     if (angular.isDefined(data.Properties)) {
                         response = data.Properties;
                         deferred.resolve(response);
-                        this.detectorsResponseCache[detectorName] = response;
+
+                        var timeDifferenceInMinutes = 24 * 60;
+                        if (startTime != null && endTime != null) {
+                            var msMinute = 60 * 1000,
+                                msDay = 60 * 60 * 24 * 1000;
+
+                            timeDifferenceInMinutes = Math.floor(((endTime.getTime() - startTime.getTime()) % msDay) / msMinute);
+                        }
+                        if (timeDifferenceInMinutes > 10) {
+                            this.detectorsResponseCache[detectorName] = response;
+                        }
+
                     }
                     else {
                         deferred.reject(new ErrorModel(0, "Properties field not present in Get Detector Data Api response"));

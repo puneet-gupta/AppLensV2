@@ -13,7 +13,6 @@ module SupportCenter {
             this.detectorName = this.$stateParams.detectorName.toLowerCase();
             
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-            this.chartOptions = helper.GetChartOptions(this.detectorName);
 
             let resourceService: IResourceService;
 
@@ -35,6 +34,7 @@ module SupportCenter {
 
                 self.DetectorsService.getDetectorResponse(self.resource, self.detectorName).then(function (data: DetectorResponse) {
                     self.detectorResponse = data;
+                    self.chartOptions = helper.GetChartOptions(self.detectorName, DetectorsService, self.resource);
                     self.chartData = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, self.detectorName);
 
                     self.chartOptions.chart.height =
