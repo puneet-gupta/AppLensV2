@@ -48,20 +48,22 @@
                             <span ng-if="!detectorviewctrl.showDetailedView">Show Per Instance Data</span>
                             <span ng-if="detectorviewctrl.showDetailedView">Hide Per Instance Data</span>
                         </md-button>
-                        <table style="width: 100%; border-spacing: 1px; padding-right: 25px; border-collapse: separate;" 
+                        <table style="width: 100%; border-spacing: 1px; padding-right: 25px; border-collapse: separate;"
                                ng-if="detectorviewctrl.info.Name === 'instanceallocations'">
                             <tr ng-repeat="instance in detectorviewctrl.chartdata">
                                 <td class="small" style="width: 55px;">
                                     <span style="font-size: 10px;">{{instance.key|worker}}</span>
                                 </td>
                                 <td ng-repeat="change in instance.values" data-toggle="tooltip"
-                                     ng-style="{'background-color':(change.y === 1?'#009933':'#efefef')}"
+                                    ng-style="{'background-color':(change.y === 1?'#009933':'#efefef')}"
                                     data-placement="top" title="{{instance.key}} | {{change.x | date: 'EEE MMM-dd, hh:mm a'}} (UTC)">
                                     <span style="font-size: 1px;">.</span>
                                 </td>
 
                             </tr>
                         </table>
+
+                        <span ng-if="detectorviewctrl.info.Name === 'loganalyzer'">*Click on the bars to view the logs</span>
 
                         <md-table-container ng-if="detectorviewctrl.info.Name === 'workerprocessrecycle'">
                             <h3 style="color:teal;text-decoration:underline">More Information</h3>
