@@ -61,7 +61,7 @@ module SupportCenter {
             });
 
             //if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === "home3") {
+            if (this.$state.current.name === "home3" || this.$state.current.name === "home3.aseAvailabilityAnalysis") {
                 this.setSelectedItem("sia");
             }
             else {
