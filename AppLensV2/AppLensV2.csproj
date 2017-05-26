@@ -212,6 +212,11 @@
     <TypeScriptCompile Include="app\NgModels\SiaResponse.ts" />
     <TypeScriptCompile Include="app\NgModels\Site.ts" />
     <TypeScriptCompile Include="app\references.ts" />
+    <TypeScriptCompile Include="app\Sia\AnalysisResponse\AnalysisResponseFactory.ts" />
+    <TypeScriptCompile Include="app\Sia\AnalysisResponse\AseAvailabilityAnalysisResponse.ts" />
+    <TypeScriptCompile Include="app\Sia\AnalysisResponse\IAnalysisResponse.ts" />
+    <TypeScriptCompile Include="app\Sia\AnalysisResponse\AppAnalysisResponse.ts" />
+    <TypeScriptCompile Include="app\Sia\AnalysisResponse\PerfAnalysisResponse.ts" />
     <TypeScriptCompile Include="app\Sia\SiaCtrl.ts" />
     <TypeScriptCompile Include="app\Site\SiteCtrl.ts" />
   </ItemGroup>

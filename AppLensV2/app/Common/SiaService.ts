@@ -19,10 +19,10 @@ module SupportCenter {
         private analysisPromiseCache: ICache<ng.IPromise<any>>;
         private analysisResultCache: ICache<SiaResponse>;
 
-        public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams"];
+        public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams", "AnalysisResponseFactory"];
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: IResourceService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams) {
+        constructor(private SiteService: IResourceService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams, private AnalysisFactory: AnalysisResponseFactory) {
             this.analysisPromiseCache = {};
             this.analysisResultCache = {};
             this.analysisCache = {};
@@ -31,7 +31,8 @@ module SupportCenter {
         }
 
         getSiaResponse(): ng.IPromise<IAnalysisResult> {
-            return this.$stateParams.analysisType === 'perfAnalysis' ? this.getPerfAnalysisResponse() : this.getAppAnalysisResponse();
+            //return this.$stateParams.analysisType === 'perfAnalysis' ? this.getPerfAnalysisResponse() : this.getAppAnalysisResponse();
+            return this.AnalysisFactory.GetAnalysis().getAnalysisResponse();
         }
 
         getAppAnalysisResponse(): ng.IPromise<IAnalysisResult> {

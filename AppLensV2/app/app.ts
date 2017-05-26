@@ -12,6 +12,7 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
+        .service("AnalysisResponseFactory", AnalysisResponseFactory)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
