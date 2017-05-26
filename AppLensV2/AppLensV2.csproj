@@ -191,6 +191,7 @@
     <TypeScriptCompile Include="app\Common\ErrorHandlerService.ts" />
     <TypeScriptCompile Include="app\Common\FeedbackService.ts" />
     <TypeScriptCompile Include="app\Common\IStateParams.ts" />
+    <TypeScriptCompile Include="app\Common\ResourceServiceFactory.ts" />
     <TypeScriptCompile Include="app\Common\SiaService.ts" />
     <TypeScriptCompile Include="app\Common\AseService.ts" />
     <TypeScriptCompile Include="app\Common\SiteService.ts" />
