@@ -13,6 +13,7 @@ module SupportCenter {
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
         .service("AnalysisResponseFactory", AnalysisResponseFactory)
+        .service("ResourceServiceFactory", ResourceServiceFactory)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
@@ -137,6 +138,19 @@ module SupportCenter {
                         analysisType: 'perfAnalysis'
                     }
                 })
+                .state('home3.aseAvailabilityAnalysis', {
+                    url: '/aseAvailabilityAnalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
+                            controller: 'AppServiceEnvironmentCtrl',
+                            controllerAs: 'ase'
+                        }
+                    },
+                    params: {
+                        analysisType: 'aseAvailabilityAnalysis'
+                    }
+                })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
                 .state('sites.detector', {
                     url: '/detectors/{detectorName}',
@@ -166,8 +180,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home3.sia', {
-                    url: '/appanalysis',
+                .state('home3.aseAvailabilityAnalysis.sia', {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Sia/sia.html',

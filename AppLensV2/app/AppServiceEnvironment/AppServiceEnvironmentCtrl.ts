@@ -61,8 +61,11 @@ module SupportCenter {
             });
 
             //if no child route is defined, then set default child route to sia
-            if (this.$state.current.name.indexOf('.detector') >= 0) {
-                this.selectedItem = this.$state.params['detectorName'];
+            if (this.$state.current.name === "home3") {
+                this.setSelectedItem("sia");
+            }
+            else {
+                this.setSelectedItem(this.$state.params['detectorName']);
             }
         }
 
@@ -82,16 +85,11 @@ module SupportCenter {
         }
 
         setSelectedItem(name: string): void {
+            this.selectedItem = name;
             if (name === 'sia') {
-                this.selectedItem = "sia";
-                if (this.$state.current.name.indexOf('home2') >= 0) {
-                    this.$state.go('home2.sia');
-                } else {
-                    this.$state.go('home.sia');
-                }
+                this.$state.go('home3.aseAvailabilityAnalysis.sia')
             }
             else {
-                this.selectedItem = name;
                 if (this.$state.current.name.indexOf('home3') >= 0) {
                     if ((this.$state.current.name !== 'home3.detector') || (this.$state.current.name === 'home3.detector' && this.$state.params['detectorName'] !== name)) {
                         this.$state.go('home3.detector', { detectorName: name });
