@@ -49,6 +49,27 @@ module SupportCenter {
                 self.DetectorsService.getDetectors(self.hostingEnvironment).then(function (data: DetectorDefinition[]) {
                     self.detectors = data;
                     self.detectorListLoaded = true;
+                    self.SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
+                        var siaResponse = data.Response;
+                        _.each(siaResponse.NonCorrelatedDetectors, function (item: DetectorDefinition) {
+                            _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
+                                if (item.DisplayName == detector.DisplayName) {
+                                    detector.Correlated = 0;
+                                }
+                            });
+                        });
+
+                        _.each(siaResponse.Payload, function (item: AnalysisData) {
+                            _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
+                                if (item.DetectorDefinition.DisplayName == detector.DisplayName) {
+                                    detector.Correlated = 1;
+                                }
+                            });
+                        });
+                    }, function (err) {
+                        // Error in App Analysis
+                        self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+                    });
                 }, function (err) {
                     self.detectorListLoaded = true;
                     self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
@@ -87,7 +108,7 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             this.selectedItem = name;
             if (name === 'sia') {
-                this.$state.go('home3.aseAvailabilityAnalysis.sia')
+                this.$state.go('home3.sia')
             }
             else {
                 if (this.$state.current.name.indexOf('home3') >= 0) {
