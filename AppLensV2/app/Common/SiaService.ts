@@ -5,8 +5,6 @@ module SupportCenter {
 
     export interface ISiaService {
         getSiaResponse(): ng.IPromise<IAnalysisResult>;
-        getAppAnalysisResponse(): ng.IPromise<IAnalysisResult>;
-        getPerfAnalysisResponse(): ng.IPromise<IAnalysisResult>;
         selectAppDowntime(index: number): void
         PrepareDetectorViewParams(siaResponse: SiaResponse): ICache<DetectorViewParams>
     }
@@ -19,21 +17,23 @@ module SupportCenter {
         private analysisPromiseCache: ICache<ng.IPromise<any>>;
         private analysisResultCache: ICache<SiaResponse>;
 
-        public static $inject: string[] = ["SiteService", "DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams", "AnalysisResponseFactory"];
+        public static $inject: string[] = ["DetectorsService", "TimeParamsService", "$http", "$q", "$window", "$state", "$stateParams", "AnalysisResponseFactory"];
         public selectedAbnormalTimePeriod: any;
 
-        constructor(private SiteService: IResourceService, private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams, private AnalysisFactory: AnalysisResponseFactory) {
+        constructor(private DetectorsService: IDetectorsService, private TimeParamsService: ITimeParamsService, private $http: ng.IHttpService, private $q: ng.IQService, private $window: angular.IWindowService, private $state: angular.ui.IStateService, private $stateParams: IStateParams, private AnalysisFactory: AnalysisResponseFactory) {
             this.analysisPromiseCache = {};
             this.analysisResultCache = {};
             this.analysisCache = {};
-            this.analysisCache['appAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
-            this.analysisCache['perfAnalysis'] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
         }
 
         getSiaResponse(): ng.IPromise<IAnalysisResult> {
             let analysisType = this.$stateParams.analysisType;
             var deferred = this.$q.defer<IAnalysisResult>();
             var self = this;
+
+            if (!angular.isDefined(this.analysisCache[analysisType])) {
+                this.analysisCache[analysisType] = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
+            }
 
             if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
                 this.analysisCache[analysisType].Promise.then(function (data: any) {
@@ -46,90 +46,6 @@ module SupportCenter {
                 this.analysisCache[analysisType].Promise = this.AnalysisFactory.GetAnalysis().getAnalysisResponse();
                 return this.analysisCache[analysisType].Promise;
             }
-        }
-
-        getAppAnalysisResponse(): ng.IPromise<IAnalysisResult> {
-            var self = this;
-            var deferred = this.$q.defer<IAnalysisResult>();
-
-            var analysisType = 'appAnalysis';
-            if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
-                this.analysisCache[analysisType].Promise.then(function (data: any) {
-                    
-                    deferred.resolve(self.analysisCache[analysisType])
-                });
-                return deferred.promise;
-            }
-
-            this.analysisCache[analysisType].Promise = this.$http({
-                method: "GET",
-                url: UriPaths.DiagnosticsPassThroughAPIPath(),
-                headers: {
-                    'GeoRegionApiRoute': UriPaths.AppAnalysisPath(this.SiteService.site, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
-                    'IsInternal': this.TimeParamsService.IsInternal
-                }
-            })
-                .success((data: any) => {
-
-                    
-                    if (angular.isDefined(data.Properties)) {
-                        this.analysisCache[analysisType].Response = data.Properties;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index];
-
-                        deferred.resolve(this.analysisCache[analysisType]);
-                    }
-                    else {
-                        deferred.reject(new ErrorModel(0, "Invalid Data from appanalysis API"));
-                    }
-                })
-                .error((data: any) => {
-                    deferred.reject(new ErrorModel(0, "Error calling appanalysis API"));
-                });
-
-            return deferred.promise;
-        }
-
-        getPerfAnalysisResponse(): ng.IPromise<IAnalysisResult> {
-            var self = this;
-            var deferred = this.$q.defer<IAnalysisResult>();
-
-            var analysisType = 'perfAnalysis';
-            if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
-                this.analysisCache[analysisType].Promise.then(function (data: any) {
-                    deferred.resolve(self.analysisCache[analysisType])
-                });
-                return deferred.promise;
-            }
-
-            this.analysisCache[analysisType].Promise = this.$http({
-                method: "GET",
-                url: UriPaths.DiagnosticsPassThroughAPIPath(),
-                headers: {
-                    'GeoRegionApiRoute': UriPaths.PerfAnalysisPath(this.SiteService.site, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
-                    'IsInternal': this.TimeParamsService.IsInternal
-                }
-            })
-                .success((data: any) => {
-
-                    if (angular.isDefined(data.Properties)) {
-                        this.analysisCache[analysisType].Response = data.Properties;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod = {};
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index = this.analysisCache[analysisType].Response.AbnormalTimePeriods.length - 1;
-                        this.analysisCache[analysisType].SelectedAbnormalTimePeriod.data = this.analysisCache[analysisType].Response.AbnormalTimePeriods[this.analysisCache[analysisType].SelectedAbnormalTimePeriod.index];
-
-                        deferred.resolve(this.analysisCache[analysisType]);
-                    }
-                    else {
-                        deferred.reject(new ErrorModel(0, "Invalid Data from perfanalysis API"));
-                    }
-                })
-                .error((data: any) => {
-                    deferred.reject(new ErrorModel(0, "Error in call to perfanalysis API"));
-                });
-
-            return deferred.promise;
         }
 
         public PrepareDetectorViewParams(siaResponse: SiaResponse): ICache<DetectorViewParams> {
