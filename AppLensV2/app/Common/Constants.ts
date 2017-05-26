@@ -27,7 +27,7 @@ module SupportCenter {
         private static appAnalysis: string = "/appAnalysis?" + UriPaths.commonQueryString;
         private static perfAnalysis: string = "/perfAnalysis?" + UriPaths.commonQueryString;
         //will remove 'detectors' from aseAvailabilityAnalysis once DiagRole API path is corrected
-        private static aseAvailabilityAnalysis: string = "detectors/aseAvailabilityAnalysis?" + UriPaths.commonQueryString;
+        private static aseAvailabilityAnalysis: string = "/detectors/aseAvailabilityAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = "/detectors";
         private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = "/properties";
