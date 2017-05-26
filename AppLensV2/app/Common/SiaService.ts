@@ -31,8 +31,21 @@ module SupportCenter {
         }
 
         getSiaResponse(): ng.IPromise<IAnalysisResult> {
-            //return this.$stateParams.analysisType === 'perfAnalysis' ? this.getPerfAnalysisResponse() : this.getAppAnalysisResponse();
-            return this.AnalysisFactory.GetAnalysis().getAnalysisResponse();
+            let analysisType = this.$stateParams.analysisType;
+            var deferred = this.$q.defer<IAnalysisResult>();
+            var self = this;
+
+            if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
+                this.analysisCache[analysisType].Promise.then(function (data: any) {
+                    self.analysisCache[analysisType].Response = data.Response;
+                    self.analysisCache[analysisType].SelectedAbnormalTimePeriod = data.SelectedAbnormalTimePeriod;
+                    deferred.resolve(self.analysisCache[analysisType])
+                });
+                return deferred.promise;
+            }else {
+                this.analysisCache[analysisType].Promise = this.AnalysisFactory.GetAnalysis().getAnalysisResponse();
+                return this.analysisCache[analysisType].Promise;
+            }
         }
 
         getAppAnalysisResponse(): ng.IPromise<IAnalysisResult> {
@@ -42,6 +55,7 @@ module SupportCenter {
             var analysisType = 'appAnalysis';
             if (angular.isDefined(this.analysisCache[analysisType].Promise) && this.analysisCache[analysisType].Promise !== null) {
                 this.analysisCache[analysisType].Promise.then(function (data: any) {
+                    
                     deferred.resolve(self.analysisCache[analysisType])
                 });
                 return deferred.promise;
