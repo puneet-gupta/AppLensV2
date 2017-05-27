@@ -141,10 +141,10 @@ module SupportCenter {
                 .state('home3.aseAvailabilityAnalysis', {
                     url: '/aseAvailabilityAnalysis',
                     views: {
-                        'mainContent': {
-                            templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
-                            controller: 'AppServiceEnvironmentCtrl',
-                            controllerAs: 'ase'
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
                         }
                     },
                     params: {
@@ -178,18 +178,6 @@ module SupportCenter {
                             controller: 'SiaCtrl',
                             controllerAs: 'sia'
                         }
-                    }
-                })
-                .state('home3.sia', {
-                    views: {
-                        'childContent': {
-                            templateUrl: 'app/Sia/sia.html',
-                            controller: 'SiaCtrl',
-                            controllerAs: 'sia'
-                        }
-                    },
-                    params: {
-                        analysisType: 'aseAvailabilityAnalysis'
                     }
                 })
                 .state('sites.appanalysis.detector', {

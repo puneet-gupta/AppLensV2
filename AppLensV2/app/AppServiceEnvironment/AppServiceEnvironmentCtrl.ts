@@ -108,7 +108,7 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             this.selectedItem = name;
             if (name === 'sia') {
-                this.$state.go('home3.sia')
+                this.$state.go('home3.aseAvailabilityAnalysis')
             }
             else {
                 if (this.$state.current.name.indexOf('home3') >= 0) {
