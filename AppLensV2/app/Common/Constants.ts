@@ -8,6 +8,7 @@ module SupportCenter {
         public static aggregatedWorkerName: string = "aggregated";
         public static perfAnalysis: string = "perfAnalysis";
         public static appAnalysis: string = "appAnalysis";
+        public static aseAvailabilityAnalysis: string = "aseAvailabilityAnalysis";
     }
 
     export class UriPaths {
@@ -25,6 +26,7 @@ module SupportCenter {
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
         private static appAnalysis: string = "/appAnalysis?" + UriPaths.commonQueryString;
         private static perfAnalysis: string = "/perfAnalysis?" + UriPaths.commonQueryString;
+        private static aseAvailabilityAnalysis: string = "/aseAvailabilityAnalysis?" + UriPaths.commonQueryString;
         private static detectors: string = "/detectors";
         private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = "/properties";
@@ -87,6 +89,10 @@ module SupportCenter {
         public static DetectorResourcePath(resource: Resource, detectorName: string, startTime: string, endTime: string, timeGrain: string): string {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, resource, startTime, endTime, timeGrain)
                 .replace("{detectorName}", detectorName);
+        }
+
+        public static AseAvailabilityAnalysisPath(resource: Resource, startTime: string, endTime: string, timeGrain: string) {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.aseAvailabilityAnalysis, resource, startTime, endTime, timeGrain);
         }
 
         private static CreateGeoRegionAPIPath(pathFormat: string, resource: Resource, startTime: string, endTime: string, timeGrain: string): string {

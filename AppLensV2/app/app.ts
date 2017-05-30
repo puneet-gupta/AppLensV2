@@ -12,6 +12,8 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
+        .service("AnalysisResponseFactory", AnalysisResponseFactory)
+        .service("ResourceServiceFactory", ResourceServiceFactory)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
@@ -78,7 +80,7 @@ module SupportCenter {
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
-                .state('home3', {
+                .state('appServiceEnvironment', {
                     url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
                     templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
                     controller: 'AppServiceEnvironmentCtrl',
@@ -136,6 +138,19 @@ module SupportCenter {
                         analysisType: 'perfAnalysis'
                     }
                 })
+                .state('appServiceEnvironment.aseAvailabilityAnalysis', {
+                    url: '/aseAvailabilityAnalysis',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    },
+                    params: {
+                        analysisType: 'aseAvailabilityAnalysis'
+                    }
+                })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
                 .state('sites.detector', {
                     url: '/detectors/{detectorName}',
@@ -165,16 +180,6 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home3.sia', {
-                    url: '/appanalysis',
-                    views: {
-                        'childContent': {
-                            templateUrl: 'app/Sia/sia.html',
-                            controller: 'SiaCtrl',
-                            controllerAs: 'sia'
-                        }
-                    }
-                })
                 .state('sites.appanalysis.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
@@ -195,7 +200,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home3.detector', {
+                .state('appServiceEnvironment.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

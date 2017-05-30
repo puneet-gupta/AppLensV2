@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class SiaCtrl {
 
-        public static $inject: string[] = ["SiaService", "SiteService", "$window", "ErrorHandlerService", "ThemeService", "$stateParams"];
+        public static $inject: string[] = ["SiaService", "$window", "ErrorHandlerService", "ThemeService", "$stateParams", "ResourceServiceFactory"];
         
-        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService, private ThemeService: IThemeService, private $stateParams: IStateParams) {
+        constructor(private SiaService: ISiaService, private $window: angular.IWindowService, private ErrorHandlerService: IErrorHandlerService, private ThemeService: IThemeService, private $stateParams: IStateParams, private ResourceServiceFactory: ResourceServiceFactory) {
 
             var self = this;
             this.DetectorData = {};
@@ -18,7 +18,8 @@ module SupportCenter {
                 this.isVNext = false;
             }
 
-            this.SiteService.promise.then(function (data: any) {
+            let service = ResourceServiceFactory.GetResourceService();
+            service.promise.then(function (data: any) {
 
                 self.SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
                     self.SiaResponse = data.Response;
