@@ -32,7 +32,7 @@ module SupportCenter {
             }
             else if (resourceType === 'ase') {
                 this.$stateParams.hostingEnvironmentName = this.aseName;
-                this.$state.go('home3', this.$stateParams);
+                this.$state.go('appServiceEnvironment', this.$stateParams);
             }
         }
     }

@@ -13,18 +13,17 @@ module SupportCenter {
     }
 
     export class DowntimeTimelineCtrl implements IDowntimeTimelineCtrl {
-        public static $inject: string[] = ["SiaService", "SiteService", "$stateParams", "$state"];
+        public static $inject: string[] = ["SiaService", "ResourceServiceFactory", "$stateParams", "$state"];
         public loading: boolean = true;
         public singleabnormaltimeperiod: AbnormalTimePeriod;
         public allTimePeriods: any[] = [];
         public SiaResponse: SiaResponse;
         public selectedDowntime: any;
 
-        constructor(private SiaService: ISiaService, private SiteService: IResourceService, private $stateParams: IStateParams, private $state: angular.ui.IStateService) {
+        constructor(private SiaService: ISiaService, private ResourceServiceFactory: ResourceServiceFactory, private $stateParams: IStateParams, private $state: angular.ui.IStateService) {
             var self = this;
-            this.SiteService.promise.then(function (data: any) {
-                var site = self.SiteService.site;
-
+            let resourceService = ResourceServiceFactory.GetResourceService();
+            resourceService.promise.then(function (data: any) {
                 SiaService.getSiaResponse().then(function (data: IAnalysisResult) {
                     self.SiaResponse = data.Response;
                     self.selectedDowntime = data.SelectedAbnormalTimePeriod

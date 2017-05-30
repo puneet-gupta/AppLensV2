@@ -48,7 +48,7 @@ namespace AppLensV2
                     return "https://support-bay-api-test.azurewebsites.net/observer/";
                 }else
                 {
-                    return "https://support-bay-api-aad.azurewebsites.net/observer/";
+                    return "https://support-bay-api.azurewebsites.net/observer/";
                 }
             }
         }
