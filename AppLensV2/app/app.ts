@@ -80,7 +80,7 @@ module SupportCenter {
                     controller: 'MainCtrl',
                     controllerAs: 'main'
                 })
-                .state('home3', {
+                .state('appServiceEnvironment', {
                     url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
                     templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
                     controller: 'AppServiceEnvironmentCtrl',
@@ -138,7 +138,7 @@ module SupportCenter {
                         analysisType: 'perfAnalysis'
                     }
                 })
-                .state('home3.aseAvailabilityAnalysis', {
+                .state('appServiceEnvironment.aseAvailabilityAnalysis', {
                     url: '/aseAvailabilityAnalysis',
                     views: {
                         'childContent': {
@@ -200,7 +200,7 @@ module SupportCenter {
                         }
                     }
                 })
-                .state('home3.detector', {
+                .state('appServiceEnvironment.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

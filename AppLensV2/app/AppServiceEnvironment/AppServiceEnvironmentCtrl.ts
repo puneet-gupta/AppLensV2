@@ -82,7 +82,7 @@ module SupportCenter {
             });
 
             //if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === "home3" || this.$state.current.name === "home3.aseAvailabilityAnalysis") {
+            if (this.$state.current.name === "appServiceEnvironment" || this.$state.current.name === "appServiceEnvironment.aseAvailabilityAnalysis") {
                 this.setSelectedItem("sia");
             }
             else {
@@ -108,12 +108,12 @@ module SupportCenter {
         setSelectedItem(name: string): void {
             this.selectedItem = name;
             if (name === 'sia') {
-                this.$state.go('home3.aseAvailabilityAnalysis')
+                this.$state.go('appServiceEnvironment.aseAvailabilityAnalysis')
             }
             else {
-                if (this.$state.current.name.indexOf('home3') >= 0) {
-                    if ((this.$state.current.name !== 'home3.detector') || (this.$state.current.name === 'home3.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go('home3.detector', { detectorName: name });
+                if (this.$state.current.name.indexOf('appServiceEnvironment') >= 0) {
+                    if ((this.$state.current.name !== 'appServiceEnvironment.detector') || (this.$state.current.name === 'appServiceEnvironment.detector' && this.$state.params['detectorName'] !== name)) {
+                        this.$state.go('appServiceEnvironment.detector', { detectorName: name });
                     }
                 }
             }

@@ -15,7 +15,7 @@ module SupportCenter {
 
 
         getTheme(): string {
-            if (this.$state.current.name.indexOf('home3') >= 0) {
+            if (this.$state.current.name.indexOf('appServiceEnvironment') >= 0) {
                 return 'default3';
             }
             else {
