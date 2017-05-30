@@ -53,7 +53,7 @@ module SupportCenter {
                         var siaResponse = data.Response;
                         _.each(siaResponse.NonCorrelatedDetectors, function (item: DetectorDefinition) {
                             _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
-                                if (item.DisplayName == detector.DisplayName) {
+                                if (item.DisplayName === detector.DisplayName) {
                                     detector.Correlated = 0;
                                 }
                             });
@@ -61,7 +61,7 @@ module SupportCenter {
 
                         _.each(siaResponse.Payload, function (item: AnalysisData) {
                             _.each(self.DetectorsService.detectorsList, function (detector: DetectorDefinition) {
-                                if (item.DetectorDefinition.DisplayName == detector.DisplayName) {
+                                if (item.DetectorDefinition.DisplayName === detector.DisplayName) {
                                     detector.Correlated = 1;
                                 }
                             });
