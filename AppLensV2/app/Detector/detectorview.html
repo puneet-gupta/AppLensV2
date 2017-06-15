@@ -65,7 +65,7 @@
 
                         <span ng-if="detectorviewctrl.info.Name === 'loganalyzer'">*Click on the bars to view the logs</span>
 
-                        <md-table-container ng-if="detectorviewctrl.info.Name === 'workerprocessrecycle'">
+                        <md-table-container ng-if="detectorviewctrl.info.Rank >= 1999">
                             <h3 style="color:teal;text-decoration:underline">More Information</h3>
                             <table md-table ng-if="detectorviewctrl.additionaldata.length > 0">
                                 <thead md-head>
@@ -74,7 +74,7 @@
                                     </tr>
                                 </thead>
                                 <tbody md-body>
-                                    <tr md-row ng-repeat="row in detectorviewctrl.additionaldata">
+                                    <tr md-row ng-repeat="row in detectorviewctrl.additionaldata | limitTo:10">
                                         <td md-cell ng-repeat="col in row">{{col.Value}}</td>
                                     </tr>
                                 </tbody>

@@ -63,14 +63,16 @@ module SupportCenter {
 
                             if (angular.isDefined(item.Properties)) {
 
-                                var detector = new DetectorDefinition(
-                                    item.Properties.Name,
-                                    item.Properties.DisplayName,
-                                    item.Properties.Description,
-                                    item.Properties.Rank,
-                                    item.Properties.IsEnabled, -1);
+                                if (item.Properties.Rank > 1999) {
+                                    var detector = new DetectorDefinition(
+                                        item.Properties.Name,
+                                        item.Properties.DisplayName,
+                                        item.Properties.Description,
+                                        item.Properties.Rank,
+                                        item.Properties.IsEnabled, -1);
 
-                                detectors.push(detector);
+                                    detectors.push(detector);
+                                }
                             }
                         });
 

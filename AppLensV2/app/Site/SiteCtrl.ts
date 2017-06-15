@@ -85,7 +85,7 @@ module SupportCenter {
 
         private getRuntimeAvailability(): void {
 
-            var runtimeavailability = 'runtimeavailability';
+            var runtimeavailability = 'functionexecution';//'runtimeavailability';
             var self = this;
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
 
