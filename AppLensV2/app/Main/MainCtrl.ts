@@ -5,9 +5,9 @@ module SupportCenter {
 
     export class MainCtrl {
 
-        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser", "ThemeService"];
+        public static $inject: string[] = ["$http", "$q", "DetectorsService", "$mdSidenav", "SiteService", "$stateParams", "$state", "$window", "$mdPanel", "FeedbackService", "$mdToast", "ErrorHandlerService", "$mdDialog", "bowser", "ThemeService", "SupportCenterService"];
 
-        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any, public ThemeService: IThemeService) {
+        constructor(private $http: ng.IHttpService, private $q: ng.IQService, public DetectorsService: IDetectorsService, private $mdSidenav: angular.material.ISidenavService, private SiteService: IResourceService, private $stateParams: IStateParams, public $state: angular.ui.IStateService, private $window: angular.IWindowService, private $mdPanel: angular.material.IPanelService, private FeedbackService: IFeedbackService, private $mdToast: angular.material.IToastService, private ErrorHandlerService: IErrorHandlerService, private $mdDialog: angular.material.IDialogService, private bowser: any, public ThemeService: IThemeService, public SupportCenterService: ISupportCenterService) {
 
             if (bowser.msie || bowser.msedge || bowser.firefox) {
 
@@ -55,11 +55,17 @@ module SupportCenter {
             } else if (this.$state.current.name.indexOf('.detector') >= 0) {
                 this.selectedItem = this.$state.params['detectorName'];
             }
+
+            this.SupportCenterService.dataPromise.then(function (data) {
+                self.supportCenterSessions = self.SupportCenterService.supportCenterWorkflowList.length;
+            });
         }
 
         detectorListLoaded: boolean = false;
         selectedItem: string;
         site: Site;
+
+        supportCenterSessions: number = 0;
 
         toggleSideNav(): void {
             this.$mdSidenav('left').toggle();
@@ -79,6 +85,13 @@ module SupportCenter {
                     this.$state.go('stampsites.perfanalysis.sia');
                 } else {
                     this.$state.go('sites.perfanalysis.sia');
+                }
+            }
+            else if (name === 'supportcentersessions') {
+                if (this.$state.current.name.indexOf('stampsites') >= 0) {
+                    this.$state.go('stampsites.supportcasestudy');
+                } else {
+                    this.$state.go('sites.supportcasestudy');
                 }
             }
             else {

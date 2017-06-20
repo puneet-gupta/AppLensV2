@@ -14,6 +14,7 @@ module SupportCenter {
         .service("AseService", AseService)
         .service("AnalysisResponseFactory", AnalysisResponseFactory)
         .service("ResourceServiceFactory", ResourceServiceFactory)
+        .service("SupportCenterService", SupportCenterService)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
@@ -24,9 +25,13 @@ module SupportCenter {
         .controller("AppProfileCtrl", AppProfileCtrl)
         .controller("AseProfileCtrl", AseProfileCtrl)
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
+        .controller("SessionListCtrl", SessionListCtrl)
+        .controller("SessionCtrl", SessionCtrl)
+        .controller("TicketWorkflowCtrl", TicketWorkflowCtrl) 
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])
+        .directive("sessionView", [() => new SessionViewDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
             $mdIconProvider: angular.material.IIconProvider,
             $locationProvider: angular.ILocationProvider,
@@ -247,7 +252,70 @@ module SupportCenter {
                             controllerAs: 'detector'
                         }
                     }
-                });
+                })
+
+
+                .state('sites.supportcasestudy', {
+                    url: '/supportcentersessions',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/sessionslist.html',
+                            controller: 'SessionListCtrl',
+                            controllerAs: 'sessionlistctrl'
+                        }
+                    }
+                })
+                .state('stampsites.supportcasestudy', {
+                    url: '/supportcentersessions',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/sessionslist.html',
+                            controller: 'SessionListCtrl',
+                            controllerAs: 'sessionlistctrl'
+                        }
+                    }
+                })
+                .state('sites.supportworkflow', {
+                    url: '/supportcenterworflows/{supportWorkflowId}',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/TicketWorkflow/ticketworkflow.html',
+                            controller: 'TicketWorkflowCtrl',
+                            controllerAs: 'ticketworkflowctrl'
+                        }
+                    }
+                })
+                .state('stampsites.supportworflow', {
+                    url: '/supportcenterworflows/{supportWorkflowId}',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/TicketWorkflow/ticketworkflow.html',
+                            controller: 'TicketWorkflowCtrl',
+                            controllerAs: 'ticketworkflowctrl'
+                        }
+                    }
+                })
+                .state('sites.supportsession', {
+                    url: '/supportcentersessions/{supportSessionId}',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/Session/session.html',
+                            controller: 'SessionCtrl',
+                            controllerAs: 'sessionctrl'
+                        }
+                    }
+                })
+                .state('stampsites.supportsession', {
+                    url: '/supportcentersessions/{supportSessionId}',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/SupportCenter/Session/session.html',
+                            controller: 'SessionCtrl',
+                            controllerAs: 'sessionctrl'
+                        }
+                    }
+                })
+                ;
 
             $locationProvider.html5Mode(true);
         });

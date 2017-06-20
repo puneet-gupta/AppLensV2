@@ -14,5 +14,7 @@ module SupportCenter {
         analysisType: string;
         isInternal: string;
         vNext: string;
+        supportWorkflowId: string;
+        supportSessionId: string;
     }
 }

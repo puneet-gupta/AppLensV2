@@ -1,0 +1,66 @@
+﻿<div style="margin:20px;padding:20px;width:80%;background: white; border: 1px solid #eef; border-radius:5px;box-shadow: 1px 1px 3px 0px #d2d2d2;">
+
+    <h4 style="margin-top:0;color:grey">Session Id : {{sessionviewctrl.sessiondata.SessionId}}</h4>
+
+    <md-list style="width:100%;">
+
+        <md-list-item layout="row" style="padding:0;padding-bottom:15px" ng-repeat="item in sessionviewctrl.uimodel">
+
+            <div class="discussion-timeline"></div>
+
+            <div layout="column" flex="5">
+                <div class="caseanalysis-timeline-icon">
+                    <ng-md-icon icon="{{item.icon}}" style="fill:{{item.iconColor}};margin-top:2px;margin-left:3px;width:100%;height:100%"></ng-md-icon>
+                </div>
+            </div>
+
+            <div layout="column" flex="95" style="margin-left:-10px">
+
+                <div layout="row" style="font-weight:400;font-size:15px">
+                    <p class="caseanalysis-message" ng-bind-html="item.message"></p>
+                </div>
+
+                <div layout="row" ng-if="item.body" style="padding-top: 2px;margin-bottom: 5px">
+
+                    <div ng-if="item.eventName === 'downtimevisitedsummary'" style="border:1px solid #4db6ac;padding: 10px; width:70%">
+                        <div style="padding:2px;text-decoration:underline;font-weight:500;font-size:15px;margin-bottom:5px;color:teal">Downtime Summary</div>
+
+                        <div style="margin-bottom:3px"><span style="font-weight:500;color:grey">Start Time</span> : {{item.body.startTime}}</div>
+                        <div style="margin-bottom:3px"><span style="font-weight:500;color:grey">End Time</span> : {{item.body.endTime}}</div>
+
+                        <div ng-if="item.body.observations.length === 0" style="margin-bottom:3px;font-weight:500;color:#E53935">No Detectors correlated during this time.</div>
+
+                        <div ng-if="item.body.observations.length > 0" layout="row" style="margin-bottom:3px">
+                            <div layout="column" style="font-weight:500;color:grey">Detectors that correlated:</div>
+                            <div layout="column">
+                                <ul style="padding-left:0">
+                                    <li ng-repeat="detector in item.body.observations">{{detector}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div ng-if="item.body.solutions.length === 0" style="margin-bottom:3px;font-weight:500;color:#E53935">No Solutions suggested during this time.</div>
+
+                        <div ng-if="item.body.solutions.length > 0" layout="row" style="margin-bottom:3px">
+                            <div layout="column" style="font-weight:500;color:grey">Solutions suggested:</div>
+                            <div layout="column">
+                                <ul style="padding-left:0">
+                                    <li ng-repeat="sol in item.body.solutions">{{sol}}</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div layout="row" class="layout-row" style="padding-top: 2px;font-weight: 500;font-size: 13px;color: #929191;">
+                    {{item.timestamp}}
+                </div>
+            </div>
+
+        </md-list-item>
+
+    </md-list>
+
+</div>
