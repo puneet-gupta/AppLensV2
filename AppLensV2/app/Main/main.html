@@ -27,7 +27,15 @@
             </md-list-item>
             <md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'perfanalysis'}" ng-click="main.setSelectedItem('perfanalysis')">
                 <div class="md-list-item-text" layout="column">
-                    <h3>Performance Analysis <ng-md-icon icon="fibre_new" style="fill:rgb(255, 117, 0)" size="25"></ng-md-icon></h3>
+                    <h3>Performance Analysis</h3>
+                </div>
+            </md-list-item>
+            <md-list-item class="md-2-line" ng-class="{'selected' : main.selectedItem === 'supportcentersessions'}" ng-click="main.setSelectedItem('supportcentersessions')" title="Check out customer interactions in Support Center for this site.">
+                <div class="md-list-item-text" layout="column">
+                    <h3>Support Center Sessions</h3>
+                    <span ng-if="main.supportCenterSessions > 0" class="md-secondary" style="padding:13px;padding-top:0; padding-bottom:0;background-color:#5bc0de;color:white;font-size:15px;font-weight:700;border-radius:50%">
+                        {{main.supportCenterSessions}}
+                    </span>
                 </div>
             </md-list-item>
             <md-divider></md-divider>
@@ -84,6 +92,7 @@
                 App Lens
             </h1>
             <h3 class="md-subhead">(2.0)</h3>
+
             <span flex></span>
 
             <md-menu md-offset="0 -7">

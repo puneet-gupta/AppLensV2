@@ -1,0 +1,38 @@
+﻿<md-content>
+    <h2 style="padding-left: 10px;margin-bottom:0;color:#737373">Support Center Sessions</h2>
+    <p style="font-weight:500;padding-left: 10px;margin-top:5px;margin-bottom:0;color:#737373">(Last 7 Days)</p>
+    <p style="padding-left: 10px;margin-top:5px;color:teal">Know how many times customer viewed App Services Support Center (from support case submission flow or directly from websites blade) for this site. Analyze a session or a workflow to know what customer viewed and tried to recover the app health.</p>
+    
+    <md-list ng-repeat="(key, list) in sessionlistctrl.workflowsPerDay">
+
+        <md-divider></md-divider>
+        <md-subheader class="md-no-sticky" style="color:#BF360C">Date : {{key}}</md-subheader>
+        
+        <md-list-item class="md-2-line secondary-button-padding" style="width:60%;background-color: white; margin:10px; margin-bottom:20px !important; border: 1px solid #eef; border-radius:5px;box-shadow: 1px 1px 3px 0px #d2d2d2;" ng-repeat="item in list">
+            
+            <div class="md-avatar">
+                <div style="margin:45% auto; width:10px;height:10px;background-color:red;border-radius:50%" ng-style="item.TicketWorkflowId && {'background-color': '#01579B'} || !item.TicketWorkflowId && {'background-color': '#2E7D32'}"></div>
+            </div>
+
+            <div class="md-list-item-text" layout="column" ng-if="item.TicketWorkflowId">
+                
+                <h3 style="color:#484848">Support Center opened from <span style="color: #01579B;font-weight:500;text-decoration:underline">"Case Submission Flow"</span></h3>
+                <p style="margin-top:5px">Workflow Id : {{item.TicketWorkflowId}}</p>
+                <p style="margin-top:5px" ng-if="item.MsSolveCaseId">
+                    <ng-md-icon icon="error" style="fill:#FF6F00;font-size:13px"></ng-md-icon> Support Case got created for this workflow.
+                </p>
+                
+            </div>
+            <md-button class="md-secondary md-small" style="color:teal" ng-click="sessionlistctrl.AnalyzeSession(item)">Analyze</md-button>
+            <div class="md-list-item-text" layout="column" ng-if="!item.TicketWorkflowId">
+                <h3 style="color:#484848">
+                    Support Center opened from <span style="color:#2E7D32;font-weight:500;text-decoration: underline">"Diagnose And Solve"</span>  in Websites Blade
+                </h3>
+                <p style="margin-top:5px">Session Id : {{item.Sessions[0].SessionId}}</p>
+            </div>
+
+
+        </md-list-item>
+    </md-list>
+    
+</md-content>
