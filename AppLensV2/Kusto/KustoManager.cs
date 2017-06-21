@@ -2,12 +2,14 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Kusto.Data;
 using Kusto.Data.Common;
 using Kusto.Data.Net.Client;
+using System.Configuration;
 
 namespace AppLensV2
 {
@@ -16,14 +18,39 @@ namespace AppLensV2
     /// </summary>
     public sealed class KustoManager : IDisposable
     {
+        private static string _kustoAppId;
+        private static string _kustoAppKey;
+
         /// <summary>
         /// Kusto Endpoint
         /// </summary>
         private const string KustoEndpoint = "https://{0}.kusto.windows.net:443/";
-        
-        private const string KustoAppId = "d3aa1eaa-156b-4954-983d-659e3d5a5f0b";
 
-        private const string KustoAppKey = "jWP9DWtdNa8zSIm6XeLct44o/SBRi3CrX3jxrnTOCjE=";
+        private static string KustoAppId
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_kustoAppId))
+                {
+                    _kustoAppId = Debugger.IsAttached ? ConfigurationManager.AppSettings["KustoAppId"] : Environment.GetEnvironmentVariable("APPSETTING_KustoAppId");
+                }
+
+                return _kustoAppId;
+            }
+        }
+
+        private static string KustoAppKey
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_kustoAppKey))
+                {
+                    _kustoAppKey = Debugger.IsAttached ? ConfigurationManager.AppSettings["KustoAppKey"] : Environment.GetEnvironmentVariable("APPSETTING_KustoAppKey");
+                }
+
+                return _kustoAppKey;
+            }
+        }
 
         /// <summary>
         /// Maintains a Cluster-specific Kusto Query Client Collection
