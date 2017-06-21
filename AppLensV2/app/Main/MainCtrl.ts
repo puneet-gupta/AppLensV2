@@ -98,11 +98,24 @@ module SupportCenter {
                 if (this.$state.current.name.indexOf('stampsites') >= 0) {
                     var parent = this.$state.current.parent;
                     if ((this.$state.current.name !== 'stampsites.appanalysis.detector') || (this.$state.current.name === 'stampsites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go(this.$state.current.name.replace('sia','detector'), { detectorName: name });
+
+                        let nextState = 'stampsites.appanalysis.detector';
+                        if (this.$state.current.name.indexOf('perfanalysis') >= 0) {
+                            nextState = 'stampsites.perfanalysis.detector';
+                        }
+
+                        this.$state.go(nextState, { detectorName: name });
                     }
                 } else {
                     if ((this.$state.current.name !== 'sites.appanalysis.detector') || (this.$state.current.name === 'sites.appanalysis.detector' && this.$state.params['detectorName'] !== name)) {
-                        this.$state.go(this.$state.current.name.replace('sia', 'detector'), { detectorName: name });
+
+                        let nextState = 'sites.appanalysis.detector';
+                        if (this.$state.current.name.indexOf('perfanalysis') >= 0) {
+                            nextState = 'sites.perfanalysis.detector';
+                        }
+
+                        this.$state.go(nextState, { detectorName: name });
+
                     }
                 }
             }
