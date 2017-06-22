@@ -46,6 +46,7 @@ namespace AppLensV2
             | where resourceName =~ ""{ResourceName}"" 
             | parse['data'] with * ""ticketBladeWorkflowId="" ticketWorkflowId  ';' *
             | parse['data'] with * ""sessionId="" localSessionId  ';' *
+            | order by TIMESTAMP asc
             | summarize count() by bin(TIMESTAMP, 1d),  ticketWorkflowId , localSessionId
             | sort by TIMESTAMP desc";
 
