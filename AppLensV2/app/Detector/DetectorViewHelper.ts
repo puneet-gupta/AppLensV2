@@ -43,7 +43,8 @@ module SupportCenter {
                     multibar: {
                         dispatch: {
                             elementClick: function (e) {
-                                if (detectorName === "loganalyzer" && e.data !== null && e.data.key !== null) {
+                                if ((detectorName === "loganalyzer" || detectorName === "nodeloganalyzer")
+                                    && e.data !== null && e.data.key !== null) {
 
                                     var startTime = new Date((new Date(e.data.x)).getTime() - ((new Date()).getTimezoneOffset() * 60 * 1000));
                                     var idateTime = startTime.getTime() + (5 * 60 * 1000);
@@ -52,9 +53,9 @@ module SupportCenter {
 
                                         var logData = "";
 
-                                        for (var i = 0; i < data.Data[0].length; i++) {
-                                            if (data.Data[0][i].Name === "Logs") {
-                                                logData = data.Data[0][i].Value;
+                                        for (var i = 0; i < data.Data[1].length; i++) {
+                                            if (data.Data[1][i].Name === "Logs") {
+                                                logData = data.Data[1][i].Value;
                                             }
                                         }
 
@@ -103,7 +104,8 @@ module SupportCenter {
                 case 'storagehealth':
                 case 'multirolehttperrordisribution':
                 case 'workerrolehttperrordistribution':  
-                case 'outboundnetworkconnections':                  
+                case 'outboundnetworkconnections':   
+                case 'functioninstanceallocations':                 
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;

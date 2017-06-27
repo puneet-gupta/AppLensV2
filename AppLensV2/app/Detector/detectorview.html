@@ -38,7 +38,7 @@
                     </md-tab-label>
                     <md-tab-body>
                         <downtime-timeline singleabnormaltimeperiod="detectorviewctrl.abnormaltimeperiod" height="'10px'" ng-if="detectorviewctrl.abnormaltimeperiod !== undefined"></downtime-timeline>
-                        <span ng-if="detectorviewctrl.info.Name === 'loganalyzer'">*Click on the bars to view the logs. Make sure popup blocker is disabled</span>
+                        <span ng-if="detectorviewctrl.info.Name === 'loganalyzer' || detectorviewctrl.info.Name === 'nodeloganalyzer'">* Click on the bars to view the logs. Make sure popup blocker is disabled</span>
                         <!--<div flex ng-if="detectorviewctrl.isLoading" ng-style="{'height':detectorviewctrl.chartOptions.chart.height}">
                          </div>-->
                         <nvd3 options="detectorviewctrl.chartoptions" data="detectorviewctrl.chartdata"
@@ -63,21 +63,37 @@
 
                             </tr>
                         </table>
-
-                        <span ng-if="detectorviewctrl.info.Name === 'loganalyzer'">*Click on the bars to view the logs</span>
-
+                        
                         <md-table-container ng-if="detectorviewctrl.info.Name === 'workerprocessrecycle'">
-                            <h3 style="color:teal;text-decoration:underline">More Information</h3>
+                            <h3 style="color: teal; text-decoration: underline">More Information</h3>
+                            <table md-table ng-if="detectorviewctrl.additionaldata.length > 0">
+                                <thead md-head>
+                                <tr md-row>
+                                    <th md-column ng-repeat="header in detectorviewctrl.additionaldata[0]"><span>{{header.Name}}</span></th>
+                                </tr>
+                                </thead>
+                                <tbody md-body>
+                                <tr md-row ng-repeat="row in detectorviewctrl.additionaldata">
+                                    <td md-cell ng-repeat="col in row">{{col.Value}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+
+                        <md-table-container ng-if="detectorviewctrl.info.Name === 'loganalyzer' || detectorviewctrl.info.Name === 'nodeloganalyzer'">
+                            <h3 style="color:teal;text-decoration:underline">Top Errors</h3>
                             <table md-table ng-if="detectorviewctrl.additionaldata.length > 0">
                                 <thead md-head>
                                     <tr md-row>
-                                        <th md-column ng-repeat="header in detectorviewctrl.additionaldata[0]"><span>{{header.Name}}</span></th>
+                                        <th md-column><span>Count</span></th>
+                                        <th md-column><span>Error</span></th>
                                     </tr>
                                 </thead>
                                 <tbody md-body>
-                                    <tr md-row ng-repeat="row in detectorviewctrl.additionaldata">
-                                        <td md-cell ng-repeat="col in row">{{col.Value}}</td>
-                                    </tr>
+                                <tr md-row ng-repeat="row in detectorviewctrl.additionaldata[0]">
+                                    <td md-cell>{{row.Value}}</td><td md-cell>
+                                        <p style="white-space: pre;">{{row.Name}}</p></td>
+                                </tr>
                                 </tbody>
                             </table>
                         </md-table-container>
