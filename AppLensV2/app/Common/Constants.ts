@@ -35,6 +35,11 @@ module SupportCenter {
         private static caseFeedback: string = "/api/cases/{caseId}/feedback";
         private static detectorFeedback: string = "/api/detectors/{detectorName}/feedback";
 
+        // Uri Paths for Support Center sessions
+        private static supportCenterSessionsList: string = "/api/caseanalysis/{site}/sessions";
+        private static supportCenterSession: string = "/api/supportcentersessions/{sessionId}";
+        private static supportCenterTicketWorflow: string = "/api/supportcenterworkflows/{ticketWorkflowId}";
+
         public static SiteDetailsPath(params: IStateParams): string {
             if (angular.isDefined(params.stamp) && params.stamp !== '') {
                 return UriPaths.siteDetailsWithStamp.replace("{stamp}", params.stamp).replace("{siteName}", params.siteName);
@@ -95,6 +100,20 @@ module SupportCenter {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.aseAvailabilityAnalysis, resource, startTime, endTime, timeGrain);
         }
 
+        public static SupportCenterSessionsListPath(siteName: string): string {
+            return UriPaths.supportCenterSessionsList.replace("{site}", siteName);
+        }
+
+        public static SupportCenterSessionPath(sessionId: string): string {
+            return UriPaths.supportCenterSession
+                .replace("{sessionId}", sessionId);
+        }
+
+        public static SupportCenterTicketWorkflowPath(ticketWorkflowId: string): string {
+            return UriPaths.supportCenterTicketWorflow
+                .replace("{ticketWorkflowId}", ticketWorkflowId);
+        }
+
         private static CreateGeoRegionAPIPath(pathFormat: string, resource: Resource, startTime: string, endTime: string, timeGrain: string): string {
             if (resource instanceof Site) {
                 pathFormat = UriPaths.baseAPIPathSites + pathFormat;
@@ -128,5 +147,6 @@ module SupportCenter {
 
             return path;
         }
+
     }
 }
