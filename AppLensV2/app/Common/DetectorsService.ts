@@ -57,9 +57,9 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    if (angular.isDefined(data.Value)) {
+                    if (angular.isDefined(data)) {
 
-                        _.each(data.Value, function (item: any) {
+                        _.each(data, function (item: any) {
 
                             if (angular.isDefined(item.Properties)) {
 
@@ -69,6 +69,16 @@ module SupportCenter {
                                     item.Properties.Description,
                                     item.Properties.Rank,
                                     item.Properties.IsEnabled, -1);
+
+                                detectors.push(detector);
+                            }
+                            else {
+                                var detector = new DetectorDefinition(
+                                    item.Name,
+                                    item.DisplayName,
+                                    item.Description,
+                                    item.Rank,
+                                    item.IsEnabled, -1);
 
                                 detectors.push(detector);
                             }
@@ -119,8 +129,8 @@ module SupportCenter {
 
                     var response = new DetectorResponse(this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, [], [], null);
 
-                    if (angular.isDefined(data.Properties)) {
-                        response = data.Properties;
+                    if (angular.isDefined(data)) {
+                        response = angular.isDefined(data.Properties) ? data.Properties : data;
                         deferred.resolve(response);
 
                         var timeDifferenceInMinutes = 24 * 60;
