@@ -57,9 +57,9 @@ module SupportCenter {
             })
                 .success((data: any) => {
 
-                    if (angular.isDefined(data)) {
+                    if (angular.isDefined(data) && angular.isDefined(data.Value)) {
 
-                        _.each(data, function (item: any) {
+                        _.each(data.Value, function (item: any) {
 
                             if (angular.isDefined(item.Properties)) {
 
