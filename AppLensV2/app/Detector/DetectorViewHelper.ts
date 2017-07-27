@@ -103,9 +103,10 @@ module SupportCenter {
                 case 'asehealth':
                 case 'storagehealth':
                 case 'multirolehttperrordisribution':
-                case 'workerrolehttperrordistribution':  
-                case 'outboundnetworkconnections':   
-                case 'functioninstanceallocations':                 
+                case 'workerrolehttperrordistribution':
+                case 'outboundnetworkconnections':
+                case 'functioninstanceallocations':
+                case 'httpqueuelength':
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
@@ -124,6 +125,19 @@ module SupportCenter {
                     options.chart.useInteractiveGuideline = true;
                     options.chart.yAxis.axisLabel = 'Milliseconds';
                     break;
+                case 'filesystemusage':
+                    options.chart.type = 'pieChart';
+                    options.chart.showLabels = true;
+                    options.chart.x = function (d) { return d.key; };
+                    options.chart.y = function (d) { return d.y; };
+                    options.chart.height = 400;
+                    options.chart.duration = 500;
+                    options.chart.labelThreshold = 0.0001;
+                    options.chart.labelSunbeamLayout = true;
+                    options.chart.labelsOutside = true;
+                    options.chart.pie = {};
+                    options.chart.donut = true;
+                    break;
             }
             return options;
         }
@@ -132,8 +146,12 @@ module SupportCenter {
 
             var self = this;
             var perWorkerGraph: boolean = false;
+
+            var diskUsageData: any = {};
             
             var chartData = [];
+
+            var fileStorageTitle = [];
             
             var startTime = new Date(startTimeStr);
             var endTime = new Date(endTimeStr);
@@ -142,6 +160,17 @@ module SupportCenter {
             for (let metric of metrics) {
 
                 if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime") || (detectorName.indexOf('memoryanalysis') >= 0 && metric.Name !== 'PercentOverallMemory')) {
+                    continue;
+                }
+
+                if (detectorName.indexOf('filesystemusage') >= 0) {
+                    diskUsageData = {
+                        key: metric.Name,
+                        y: metric.Values[0].Total
+                    };
+                    if (metric.Name !== "Total" && metric.Name !== "Used") {
+                        chartData.push(diskUsageData);
+                    }
                     continue;
                 }
 
