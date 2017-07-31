@@ -107,8 +107,11 @@ module SupportCenter {
 
         setSelectedItem(name: string): void {
             this.selectedItem = name;
-            if (name === 'sia') {
-                this.$state.go('appServiceEnvironment.aseAvailabilityAnalysis')
+            if (name === 'aseAvailabilityAnalysis') {
+                this.$state.go('appServiceEnvironment.' + name)
+            }
+            else if (name === 'aseDeploymentAnalysis') {
+                this.$state.go('appServiceEnvironment.' + name)
             }
             else {
                 if (this.$state.current.name.indexOf('appServiceEnvironment') >= 0) {

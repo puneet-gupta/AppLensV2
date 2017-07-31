@@ -156,6 +156,19 @@ module SupportCenter {
                         analysisType: 'aseAvailabilityAnalysis'
                     }
                 })
+                .state('appServiceEnvironment.aseDeploymentAnalysis', {
+                    url: '/aseDeploymentAnalysis',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Sia/sia.html',
+                            controller: 'SiaCtrl',
+                            controllerAs: 'sia'
+                        }
+                    },
+                    params: {
+                        analysisType: 'aseDeploymentAnalysis'
+                    }
+                })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
                 .state('sites.detector', {
                     url: '/detectors/{detectorName}',
