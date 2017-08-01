@@ -27,11 +27,12 @@ module SupportCenter {
         .controller("CaseFeedbackCtrl", CaseFeedbackCtrl)
         .controller("SessionListCtrl", SessionListCtrl)
         .controller("SessionCtrl", SessionCtrl)
-        .controller("TicketWorkflowCtrl", TicketWorkflowCtrl) 
+        .controller("TicketWorkflowCtrl", TicketWorkflowCtrl)
         .directive("detectorView", [() => new DetectorViewDir()])
         .directive("detailedDetectorView", [() => new DetailedDetectorViewDir()])
         .directive("downtimeTimeline", [() => new DowntimeTimelineDir()])
         .directive("sessionView", [() => new SessionViewDir()])
+        .directive("topLevelSignal", [() => new TopLevelSignalDir()])
         .config(($mdThemingProvider: angular.material.IThemingProvider,
             $mdIconProvider: angular.material.IIconProvider,
             $locationProvider: angular.ILocationProvider,

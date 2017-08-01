@@ -81,12 +81,17 @@ module SupportCenter {
                 self.dataLoading = false;
             });
 
-            //if no child route is defined, then set default child route to sia
-            if (this.$state.current.name === "appServiceEnvironment" || this.$state.current.name === "appServiceEnvironment.aseAvailabilityAnalysis") {
-                this.setSelectedItem("sia");
-            }
-            else {
-                this.setSelectedItem(this.$state.params['detectorName']);
+            switch (this.$state.current.name) {
+                case "appServiceEnvironment":
+                case "appServiceEnvironment.aseAvailabilityAnalysis":
+                    this.setSelectedItem("aseAvailabilityAnalysis");
+                    break;
+                case "appServiceEnvironment.aseDeploymentAnalysis":
+                    this.setSelectedItem("aseDeploymentAnalysis");
+                    break;
+                default:
+                    this.setSelectedItem(this.$state.params['detectorName']);
+                    break;
             }
         }
 
