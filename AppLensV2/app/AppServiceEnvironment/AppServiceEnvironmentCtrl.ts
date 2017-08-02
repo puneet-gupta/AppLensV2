@@ -16,11 +16,7 @@ module SupportCenter {
                 });
             }
 
-            this.avaiabilityChartData = [];
-            this.requestsChartData = [];
             let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-            this.availabilityChartOptions = helper.GetChartOptions('overallruntimeavailability');
-            this.requestsChartOptions = helper.GetChartOptions('overallruntimeavailability');
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
 
             if (!angular.isDefined(this.$stateParams.stamp) || this.$stateParams.stamp === '') {
@@ -43,8 +39,6 @@ module SupportCenter {
 
             this.AseService.promise.then(function (data: any) {
                 self.hostingEnvironment = self.AseService.hostingEnvironment;
-
-                self.getRuntimeAvailability();
 
                 self.DetectorsService.getDetectors(self.hostingEnvironment).then(function (data: DetectorDefinition[]) {
                     self.detectors = data;
@@ -99,10 +93,6 @@ module SupportCenter {
         detectorListLoaded: boolean = false;
         selectedItem: string;
         hostingEnvironment: HostingEnvironment;
-        availabilityChartOptions: any;
-        avaiabilityChartData: any;
-        requestsChartOptions: any;
-        requestsChartData: any;
         dataLoading: boolean = true;
         containerHeight: string;
 
