@@ -5,75 +5,74 @@ module SupportCenter {
 
     export interface ITopLevelSignalCtrl {
         getTemplateUrl(): string;
+        updateChartInfo(ctrl: TopLevelSignalCtrl, analysisType: string): void;
     }
 
     export interface ITopLevelSignalScope extends ng.IScope {
         template: string;
         getTemplateUrl(): string;
+        updateChart(analysisType: string): void;
     }
 
     export class TopLevelSignalCtrl implements ITopLevelSignalCtrl {
-        public static $inject: string[] = ["DetectorsService", "$stateParams", "$window", "ResourceServiceFactory", 'ErrorHandlerService'];
+        public static $inject: string[] = ["$scope", "DetectorsService", "$stateParams", "$window", "ResourceServiceFactory", 'ErrorHandlerService'];
         public analysisType: string;
         public topLevelDetectorName: string;
         public viewHelper: DetectorViewHelper;
         public dataLoading: boolean;
         public containerHeight: string;
         public resourceService: IResourceService;
+        public detectorsService: IDetectorsService;
         public chartOptions: any;
         public chartData: any;
 
-        constructor(private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private resourceServiceFactory: ResourceServiceFactory, private ErrorHandlerService: IErrorHandlerService) {
+        constructor(private $scope: ITopLevelSignalScope, private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private resourceServiceFactory: ResourceServiceFactory, private ErrorHandlerService: IErrorHandlerService) {
             let self = this;
             this.analysisType = this.$stateParams.analysisType;
-            let viewHelper = new DetectorViewHelper(this.$window);
+            self.viewHelper = new DetectorViewHelper(this.$window);
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
-            let resourceService = this.resourceServiceFactory.GetResourceService();
+            self.resourceService = this.resourceServiceFactory.GetResourceService();
+            self.detectorsService = this.DetectorsService;
+            this.$scope.updateChart = function (analysisType: string) { self.updateChartInfo(self, analysisType) };
 
-            switch (this.$stateParams.analysisType) {
-                case Constants.deploymentAnalysis:
-                    self.topLevelDetectorName = "asedeployment";
-                    break;
-                case Constants.aseAvailabilityAnalysis:
-                    self.topLevelDetectorName = "overallruntimeavailability";
-                    break;
-            }
-
-            resourceService.promise.then(function (data: any) {
-                DetectorsService.getDetectorResponse(resourceService.resource, self.topLevelDetectorName).then(function (detectorResponse: DetectorResponse) {
-                    self.chartOptions = viewHelper.GetChartOptions(self.topLevelDetectorName, DetectorsService, resourceService.resource);
-                    self.chartData = viewHelper.GetChartData(detectorResponse.StartTime, detectorResponse.EndTime, detectorResponse.Metrics, self.topLevelDetectorName);
-                    self.chartOptions.chart.height = self.chartOptions.chart.height + (self.chartData.length / 8) * 20;
-                    self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
-                });
-            });
+            //switch (this.$stateParams.analysisType) {
+            //    case Constants.deploymentAnalysis:
+            //        self.topLevelDetectorName = "asedeployment";
+            //        break;
+            //    case Constants.aseAvailabilityAnalysis:
+            //        self.topLevelDetectorName = "overallruntimeavailability";
+            //        break;
+            //}
         }
 
         getTemplateUrl(): string {
             return "app/TopLevelSignal/deployment-toplevelview.html";
         }
 
-        getChartOptions(): any {
+        getAnalysisType(): string {
             let self = this;
-            let chartOptions = self.viewHelper.GetChartOptions(self.topLevelDetectorName);
-            chartOptions.chart.height = chartOptions.chart.height + (self.chartData.length / 8) * 20;
-            self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
-            return this.viewHelper.GetChartOptions(this.topLevelDetectorName);
+            return self.$stateParams.analysisType;
         }
 
-        getChartData(): any {
-            let self = this;
+        updateChartInfo(ctrl: TopLevelSignalCtrl, analysisType: string): void {
+            console.log("updateChartInfo called");
+            let self = ctrl;
+            let topLevelDetector;
+            switch (this.$stateParams.analysisType) {
+                case Constants.deploymentAnalysis:
+                    topLevelDetector = "asedeployment";
+                    break;
+                case Constants.aseAvailabilityAnalysis:
+                    topLevelDetector = "overallruntimeavailability";
+                    break;
+            }
             self.resourceService.promise.then(function (data: any) {
-                self.DetectorsService.getDetectorResponse(self.resourceService.resource, self.topLevelDetectorName).then(function (data: DetectorResponse) {
-                    let chartDataList: any = self.viewHelper.GetChartData(data.StartTime, data.EndTime, data.Metrics, self.topLevelDetectorName);
-                    self.dataLoading = false;
-                    return chartDataList;
-                }, function (err) {
-                    self.dataLoading = false;
-                    self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
+                self.detectorsService.getDetectorResponse(self.resourceService.resource, topLevelDetector).then(function (detectorResponse: DetectorResponse) {
+                    self.chartOptions = self.viewHelper.GetChartOptions(topLevelDetector, self.detectorsService, self.resourceService.resource);
+                    self.chartData = self.viewHelper.GetChartData(detectorResponse.StartTime, detectorResponse.EndTime, detectorResponse.Metrics, topLevelDetector);
+                    self.chartOptions.chart.height = self.chartOptions.chart.height + (self.chartData.length / 8) * 20;
+                    self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
                 });
-            }, function (err) {
-
             });
         }
     }
@@ -83,7 +82,11 @@ module SupportCenter {
         templateUrl = './app/TopLevelSignal/placeholder.html';
         controller = TopLevelSignalCtrl;
         controllerAs = "ctrl";
-        public link = function (ctrl: ITopLevelSignalCtrl) {
+        public link = function (scope: ITopLevelSignalScope, controller: ITopLevelSignalCtrl) {
+            scope.$watch("ctrl.getAnalysisType()", function (value: string) {
+                console.log("calling controller function");
+                scope.updateChart(value);
+            }, true);
         }
     }
 }
