@@ -72,7 +72,6 @@ module SupportCenter {
                 // Error in calling ASE Details
 
                 self.detectorListLoaded = true;
-                self.dataLoading = false;
             });
 
             switch (this.$state.current.name) {
@@ -93,7 +92,6 @@ module SupportCenter {
         detectorListLoaded: boolean = false;
         selectedItem: string;
         hostingEnvironment: HostingEnvironment;
-        dataLoading: boolean = true;
         containerHeight: string;
 
         toggleSideNav(): void {
@@ -124,38 +122,6 @@ module SupportCenter {
 
         sendFeedback(): void {
             this.FeedbackService.sendGeneralFeedback();
-        }
-
-        private getRuntimeAvailability(): void {
-
-            var self = this;
-            let helper: DetectorViewHelper = new DetectorViewHelper(this.$window);
-
-            this.DetectorsService.getDetectorResponse(self.hostingEnvironment, 'overallruntimeavailability').then(function (data: DetectorResponse) {
-
-                let chartDataList: any = helper.GetChartData(data.StartTime, data.EndTime, data.Metrics, 'overallruntimeavailability');
-                self.dataLoading = false;
-                var iterator = 0;
-                var requestsIterator = 0;
-
-                _.each(chartDataList, function (item: any) {
-                    var f: string;
-                    if (item.key.toLowerCase().indexOf("availability") !== -1) {
-                        item.color = DetectorViewHelper.runtimeAvailabilityColors[iterator];
-                        iterator++;
-                        self.avaiabilityChartData.push(item);
-                    }
-                    else {
-                        item.area = true;
-                        item.color = DetectorViewHelper.requestsColors[requestsIterator];
-                        requestsIterator++;
-                        self.requestsChartData.push(item);
-                    }
-                });
-            }, function (err) {
-                self.dataLoading = false;
-                self.ErrorHandlerService.showError(ErrorModelBuilder.Build(err));
-            });
         }
 
         showCaseFeedbackForm(ev): void {
