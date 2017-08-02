@@ -16,7 +16,6 @@ module SupportCenter {
 
     export class TopLevelSignalCtrl implements ITopLevelSignalCtrl {
         public static $inject: string[] = ["$scope", "DetectorsService", "$stateParams", "$window", "ResourceServiceFactory", 'ErrorHandlerService'];
-        public analysisType: string;
         public topLevelDetectorName: string;
         public viewHelper: DetectorViewHelper;
         public dataLoading: boolean;
@@ -28,21 +27,11 @@ module SupportCenter {
 
         constructor(private $scope: ITopLevelSignalScope, private DetectorsService: IDetectorsService, private $stateParams: IStateParams, private $window: angular.IWindowService, private resourceServiceFactory: ResourceServiceFactory, private ErrorHandlerService: IErrorHandlerService) {
             let self = this;
-            this.analysisType = this.$stateParams.analysisType;
             self.viewHelper = new DetectorViewHelper(this.$window);
             this.containerHeight = this.$window.innerHeight * 0.25 + 'px';
             self.resourceService = this.resourceServiceFactory.GetResourceService();
             self.detectorsService = this.DetectorsService;
             this.$scope.updateChart = function (analysisType: string) { self.updateChartInfo(self, analysisType) };
-
-            //switch (this.$stateParams.analysisType) {
-            //    case Constants.deploymentAnalysis:
-            //        self.topLevelDetectorName = "asedeployment";
-            //        break;
-            //    case Constants.aseAvailabilityAnalysis:
-            //        self.topLevelDetectorName = "overallruntimeavailability";
-            //        break;
-            //}
         }
 
         getTemplateUrl(): string {
@@ -55,9 +44,9 @@ module SupportCenter {
         }
 
         updateChartInfo(ctrl: TopLevelSignalCtrl, analysisType: string): void {
-            console.log("updateChartInfo called");
             let self = ctrl;
             let topLevelDetector;
+            ctrl.dataLoading = true;
             switch (this.$stateParams.analysisType) {
                 case Constants.deploymentAnalysis:
                     topLevelDetector = "asedeployment";
@@ -72,6 +61,7 @@ module SupportCenter {
                     self.chartData = self.viewHelper.GetChartData(detectorResponse.StartTime, detectorResponse.EndTime, detectorResponse.Metrics, topLevelDetector);
                     self.chartOptions.chart.height = self.chartOptions.chart.height + (self.chartData.length / 8) * 20;
                     self.chartOptions.chart.margin.top = 20 + (self.chartData.length / 8) * 20;
+                    ctrl.dataLoading = false;
                 });
             });
         }
@@ -84,7 +74,6 @@ module SupportCenter {
         controllerAs = "ctrl";
         public link = function (scope: ITopLevelSignalScope, controller: ITopLevelSignalCtrl) {
             scope.$watch("ctrl.getAnalysisType()", function (value: string) {
-                console.log("calling controller function");
                 scope.updateChart(value);
             }, true);
         }
