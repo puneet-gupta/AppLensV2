@@ -9,6 +9,7 @@ module SupportCenter {
         public static perfAnalysis: string = "perfAnalysis";
         public static appAnalysis: string = "appAnalysis";
         public static aseAvailabilityAnalysis: string = "aseAvailabilityAnalysis";
+        public static deploymentAnalysis: string = "aseDeploymentAnalysis";
     }
 
     export class UriPaths {
@@ -23,10 +24,9 @@ module SupportCenter {
         private static baseAPIPathSites: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/sites/{site}/diagnostics";
         private static baseAPIPathAse: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/troubleshoot";
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
-        //private static appAnalysis: string = "/appAnalysis?" + UriPaths.commonQueryString;
-        //private static perfAnalysis: string = "/perfAnalysis?" + UriPaths.commonQueryString;
+        
         private static analysisResrouce: string = "/{analysisName}" + UriPaths.commonQueryString;
-        //private static aseAvailabilityAnalysis: string = "/aseAvailabilityAnalysis?" + UriPaths.commonQueryString;
+
         private static detectors: string = "/detectors";
         private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;
         private static siteDiagnosticProperties: string = "/properties";
@@ -75,8 +75,8 @@ module SupportCenter {
                 .replace("{detectorName}", detectorName);
         }
 
-        public static AnalysisResourcePath(analysisResourceName: string, site: Site, startTime: string, endTime: string, timeGrain: string): string {
-            return UriPaths.CreateGeoRegionAPIPath(UriPaths.analysisResrouce.replace("{analysisName}", analysisResourceName), site, startTime, endTime, timeGrain);
+        public static AnalysisResourcePath(analysisResourceName: string, resource: Resource, startTime: string, endTime: string, timeGrain: string): string {
+            return UriPaths.CreateGeoRegionAPIPath(UriPaths.analysisResrouce.replace("{analysisName}", analysisResourceName), resource, startTime, endTime, timeGrain);
         }
         
         public static ListDetectorsPath(resource: Resource): string {
@@ -91,7 +91,7 @@ module SupportCenter {
             return UriPaths.CreateGeoRegionAPIPath(UriPaths.detectorResource, resource, startTime, endTime, timeGrain)
                 .replace("{detectorName}", detectorName);
         }
-
+        
         public static SupportCenterSessionsListPath(siteName: string): string {
             return UriPaths.supportCenterSessionsList.replace("{site}", siteName);
         }

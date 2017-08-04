@@ -14,7 +14,7 @@
                 method: "GET",
                 url: UriPaths.DiagnosticsPassThroughAPIPath(),
                 headers: {
-                    'GeoRegionApiRoute': UriPaths.AseAvailabilityAnalysisPath(this.AseService.resource, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
+                    'GeoRegionApiRoute': UriPaths.AnalysisResourcePath("aseAvailabilityAnalysis", this.AseService.resource, this.TimeParamsService.StartTime, this.TimeParamsService.EndTime, this.TimeParamsService.TimeGrain),
                     'IsInternal': this.TimeParamsService.IsInternal
                 }
             }).success((data: any) => {
