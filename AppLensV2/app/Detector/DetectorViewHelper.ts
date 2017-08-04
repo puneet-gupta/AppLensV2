@@ -267,14 +267,14 @@ module SupportCenter {
             var chartObjectRows = [];
 
             for (let metric of metrics) {
-                chartObjectRows.push({ c: [{ v: metric.Name.substring(metric.Name.lastIndexOf("-") + 1) }, { v: new Date(metric.StartTime) }, { v: new Date(metric.EndTime) }] });
+                chartObjectRows.push({ c: [{ v: metric.Name.substring(metric.Name.lastIndexOf("-") + 1) }, { v: new Date(metric.StartTime.replace("Z", "")) }, { v: new Date(metric.EndTime.replace("Z", "")) }] });
             }
 
             chartObject.data = {
                 "cols": [
                     { label: "UpgradeDomain", type: "string" },
-                    { label: "Start", type: "date" },
-                    { label: "End", type: "date" }
+                    { label: "Start", type: "datetime" },
+                    { label: "End", type: "datetime" }
                 ],
                 "rows": chartObjectRows
             };
