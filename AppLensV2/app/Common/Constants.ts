@@ -25,7 +25,7 @@ module SupportCenter {
         private static baseAPIPathAse: string = "subscriptions/{sub}/resourceGroups/{rg}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/troubleshoot";
         private static commonQueryString: string = "stampName={stamp}&{hostnames}&startTime={start}&endTime={end}&timeGrain={grain}";
         
-        private static analysisResrouce: string = "/{analysisName}" + UriPaths.commonQueryString;
+        private static analysisResrouce: string = "/{analysisName}?" + UriPaths.commonQueryString;
 
         private static detectors: string = "/detectors";
         private static detectorResource: string = "/detectors/{detectorName}?" + UriPaths.commonQueryString;

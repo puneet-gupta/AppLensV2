@@ -12,7 +12,6 @@ module SupportCenter {
         .service("FeedbackService", FeedbackService)
         .service("ErrorHandlerService", ErrorHandlerService)
         .service("AseService", AseService)
-        .service("AnalysisResponseFactory", AnalysisResponseFactory)
         .service("ResourceServiceFactory", ResourceServiceFactory)
         .service("SupportCenterService", SupportCenterService)
         .service("ThemeService", ThemeService)
