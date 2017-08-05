@@ -151,6 +151,10 @@ module SupportCenter {
             
             var chartData = [];
 
+            if (!self.IsNvd3ChartEnabled(detectorName)) {
+                return self.GetGoogleChartData(startTimeStr, endTimeStr, metrics, detectorName);
+            }
+
             var fileStorageTitle = [];
             
             var startTime = new Date(startTimeStr);
@@ -255,6 +259,47 @@ module SupportCenter {
             }
 
             return chartData;
+        }
+
+        public GetGoogleChartData(startTimeStr: string, endTimeStr: string, metrics: DiagnosticMetricSet[], detectorName: string = ''): any {
+            var chartObject: any = {};
+            chartObject.type = "Timeline";
+            var chartObjectRows = [];
+
+            for (let metric of metrics) {
+                chartObjectRows.push({ c: [{ v: metric.Name.substring(metric.Name.lastIndexOf("-") + 1) }, { v: new Date(metric.StartTime.replace("Z", "")) }, { v: new Date(metric.EndTime.replace("Z", "")) }] });
+            }
+
+            chartObject.data = {
+                "cols": [
+                    { label: "UpgradeDomain", type: "string" },
+                    { label: "Start", type: "datetime" },
+                    { label: "End", type: "datetime" }
+                ],
+                "rows": chartObjectRows
+            };
+
+            chartObject.options = {
+                'title': 'Upgrade Domain',
+                'width': this.$window.innerWidth * 0.75,
+                'height': this.graphHeight * 2
+            };
+
+            return chartObject;
+        }
+
+        public IsNvd3ChartEnabled(detectorName: string): boolean {
+            let isNv3ChartEnabled: boolean = false;
+            switch (detectorName) {
+                case 'rebootrolesstuck':
+                    isNv3ChartEnabled = false;
+                    break;
+                default:
+                    isNv3ChartEnabled = true;
+                    break;
+            }
+
+            return isNv3ChartEnabled;
         }
 
         public GetDetailedChartData(metrics: DiagnosticMetricSet[], detectorName: string = ''): DetailedGraphData {
