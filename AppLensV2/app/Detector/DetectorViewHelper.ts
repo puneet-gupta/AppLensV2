@@ -151,7 +151,7 @@ module SupportCenter {
             
             var chartData = [];
 
-            if (!self.IsNv3ChartEnabled(detectorName)) {
+            if (!self.IsNvd3ChartEnabled(detectorName)) {
                 return self.GetGoogleChartData(startTimeStr, endTimeStr, metrics, detectorName);
             }
 
@@ -281,14 +281,14 @@ module SupportCenter {
 
             chartObject.options = {
                 'title': 'Upgrade Domain',
-                'width': 1400,
+                'width': this.$window.innerWidth * 0.75,
                 'height': this.graphHeight * 2
             };
 
             return chartObject;
         }
 
-        public IsNv3ChartEnabled(detectorName: string): boolean {
+        public IsNvd3ChartEnabled(detectorName: string): boolean {
             let isNv3ChartEnabled: boolean = false;
             switch (detectorName) {
                 case 'rebootrolesstuck':
