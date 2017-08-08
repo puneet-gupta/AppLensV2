@@ -8,6 +8,7 @@ module SupportCenter {
         public static aggregatedWorkerName: string = "aggregated";
         public static perfAnalysis: string = "perfAnalysis";
         public static appAnalysis: string = "appAnalysis";
+        public static appRestartAnalysis: string = "appRestartAnalysis"
         public static aseAvailabilityAnalysis: string = "aseAvailabilityAnalysis";
         public static deploymentAnalysis: string = "aseDeploymentAnalysis";
     }

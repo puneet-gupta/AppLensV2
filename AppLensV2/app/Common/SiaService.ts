@@ -113,6 +113,7 @@ module SupportCenter {
             var deferred = this.$q.defer<IAnalysisResult>();
             let resourceService: IResourceService = this.ResourceServiceFactory.GetResourceService();
             var self = this;
+
             resourceService.promise.then(function (data: any) {
 
                 let analysis = { Promise: null, Response: null, SelectedAbnormalTimePeriod: null };
