@@ -93,7 +93,7 @@ module SupportCenter {
                 })
                 .state('appServiceEnvironment', {
                     url: '/hostingEnvironments/{hostingEnvironmentName}?{startTime}&{endTime}&{timeGrain}&{isInternal}&{vNext}',
-                    templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
+                    templateUrl: 'app/AppServiceEnvironment/appServiceEnvironmentMain.html',
                     controller: 'AppServiceEnvironmentCtrl',
                     controllerAs: 'ase'
                 })
@@ -178,6 +178,31 @@ module SupportCenter {
                 .state('appServiceEnvironment.aseAvailabilityAnalysis', {
                     url: '/aseAvailabilityAnalysis',
                     views: {
+                        'mainContent': {
+                            templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
+                            controller: 'AppServiceEnvironmentCtrl',
+                            controllerAs: 'ase'
+                        }
+                    },
+                    params: {
+                        analysisType: 'aseAvailabilityAnalysis'
+                    }
+                })
+                .state('appServiceEnvironment.aseDeploymentAnalysis', {
+                    url: '/aseDeploymentAnalysis',
+                    views: {
+                        'mainContent': {
+                            templateUrl: 'app/AppServiceEnvironment/appServiceEnvironment.html',
+                            controller: 'AppServiceEnvironmentCtrl',
+                            controllerAs: 'ase'
+                        }
+                    },
+                    params: {
+                        analysisType: 'aseDeploymentAnalysis'
+                    }
+                })
+                .state('appServiceEnvironment.aseAvailabilityAnalysis.sia', {
+                    views: {
                         'childContent': {
                             templateUrl: 'app/Analysis/sia.html',
                             controller: 'SiaCtrl',
@@ -188,8 +213,7 @@ module SupportCenter {
                         analysisType: 'aseAvailabilityAnalysis'
                     }
                 })
-                .state('appServiceEnvironment.aseDeploymentAnalysis', {
-                    url: '/aseDeploymentAnalysis',
+                .state('appServiceEnvironment.aseDeploymentAnalysis.sia', {
                     views: {
                         'childContent': {
                             templateUrl: 'app/Analysis/sia.html',
@@ -199,6 +223,26 @@ module SupportCenter {
                     },
                     params: {
                         analysisType: 'aseDeploymentAnalysis'
+                    }
+                })
+                .state('appServiceEnvironment.aseAvailabilityAnalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
+                    }
+                })
+                .state('appServiceEnvironment.aseDeploymentAnalysis.detector', {
+                    url: '/detectors/{detectorName}',
+                    views: {
+                        'childContent': {
+                            templateUrl: 'app/Detector/detector.html',
+                            controller: 'DetectorCtrl',
+                            controllerAs: 'detector'
+                        }
                     }
                 })
                 // Old state - just exists to redirect to [sites/stampsites].appanalysis.detector
@@ -241,16 +285,6 @@ module SupportCenter {
                     }
                 })
                 .state('stampsites.appanalysis.detector', {
-                    url: '/detectors/{detectorName}',
-                    views: {
-                        'childContent': {
-                            templateUrl: 'app/Detector/detector.html',
-                            controller: 'DetectorCtrl',
-                            controllerAs: 'detector'
-                        }
-                    }
-                })
-                .state('appServiceEnvironment.detector', {
                     url: '/detectors/{detectorName}',
                     views: {
                         'childContent': {

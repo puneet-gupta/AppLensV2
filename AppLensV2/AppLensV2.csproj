@@ -179,6 +179,7 @@
   <ItemGroup>
     <Content Include="app\Analysis\AppRestartAnalysis\apprestartanalysis.html" />
     <Content Include="app\AppServiceEnvironment\appServiceEnvironment.html" />
+    <Content Include="app\AppServiceEnvironment\appServiceEnvironmentMain.html" />
     <Content Include="app\assets\app.css" />
     <Content Include="app\assets\images\ASE-Logo.jpg" />
     <Content Include="app\assets\images\Azure-Functions-Logo.png" />
