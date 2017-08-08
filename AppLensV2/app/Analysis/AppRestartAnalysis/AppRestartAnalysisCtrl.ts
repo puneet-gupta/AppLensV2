@@ -29,8 +29,6 @@ module SupportCenter {
                 chart.dispatch.changeState({ disabled: { 0: true } });
             }
 
-            this.chartData = this.MetricsPerInstance[this.selectedWorker];
-
             this.isLoading = true;
 
             this.SiteService.promise.then(function (data) {
@@ -66,11 +64,7 @@ module SupportCenter {
                 });
             });
         }
-
-        public UpdateChartData() {
-            this.chartData = this.MetricsPerInstance[this.selectedWorker];
-        }
-
+        
         public GetHelpulTipName(evidence: NameValuePair[]): string {
             let displayName = _.find(evidence, function (item) { return item.Name === 'displayedName' });
             if (angular.isDefined(displayName)) {
@@ -204,7 +198,6 @@ module SupportCenter {
         public analysisResult: DetectorAbnormalTimePeriod[];
         public MetricsPerInstance: ICache<any>;
         public chartOptions: any;
-        public chartData: any;
         public selectedWorker: string;
         public isLoading: boolean;
         public noReason: any;
