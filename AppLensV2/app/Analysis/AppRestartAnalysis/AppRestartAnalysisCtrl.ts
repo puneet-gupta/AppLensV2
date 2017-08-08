@@ -25,6 +25,7 @@ module SupportCenter {
 
             this.chartOptions = helper.GetChartOptions();
             this.chartOptions.chart.height = this.$window.innerHeight * 0.25;
+            this.chartOptions.chart.color = this.seriesColors;
             this.chartOptions.chart.callback = function (chart) {
                 chart.dispatch.changeState({ disabled: { 0: true } });
             }
@@ -203,5 +204,7 @@ module SupportCenter {
         public noReason: any;
 
         private chartLegendState: any;
+        public seriesColors: [string] = ["#D4E157", "hsl(120, 57%, 40%)", "#117dbb", "#FFA726", "#aa0000", "#311B92", "#4DB6AC", "#880E4F", "#0D47A1", "#00695C"];
+        private 
     }
 }
