@@ -418,15 +418,15 @@ ng-md-icon.custom-theme-default4 {
     min-height:100px;
 }
     .restart-container.restart-message {
-        border-left-color: rgb(121, 91, 214);
+        border-color: rgb(121, 91, 214);
         border-left-width: 10px !important;
         padding:10px;
     }
         .restart-container.restart-message.no-restart {
-            border-left-color: #00E676 !important;
+            border-color: #00E676 !important;
         }
         .restart-container.restart-message.no-reason {
-            border-left-color: #546E7A !important;
+            border-color: #546E7A !important;
         }
 .evidence{
     padding:10px;
