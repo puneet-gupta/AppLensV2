@@ -51,14 +51,14 @@ module SupportCenter {
 
             if (analysisResult.length <= 0) {
                 if (type === 0) {
-                    text += `During this time period, your application didn't experience any restarts.`
+                    text += `During this time period your application didn't experience any restarts.`
                 }
                 else if (type === 1) {
-                    text += `During this time period, Your application did experienced restarts. However, at this point of time, we couldn't find any reasons for the application restart.`;
+                    text += `During this time period your application did experienced restarts. However, at this point of time, we couldn't find any reasons for the application restart.`;
                 }
             }
             else {
-                text += `We found your application experienced restarted due to following reasons:\n`;
+                text += `We found your application experienced restarts due to following reasons:\n`;
                 analysisResult.forEach(function (item) {
                     text += `- ${item.Message}\n`;
 
