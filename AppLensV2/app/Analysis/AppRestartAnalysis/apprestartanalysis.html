@@ -28,10 +28,10 @@
         </div>
 
         <h3 class="restart-section-heading">Top Reasons</h3>
-
+        
         <div class="restart-container restart-message" ng-if="apprestart.analysisResult.length !== 0">
-
-            <ul style="margin-top:0">
+            <md-button ng-click="apprestart.CopyToClipboard()" class="md-primary md-raised" md-theme="default4"  style="float:right">Copy Report to clipboard</md-button>    
+            <ul style="margin-top:60px">
                 <li ng-repeat="item in apprestart.analysisResult" style="list-style-type: square;margin-top:30px;">
                     <p style="font-size:16px;color:#412f79">{{ ::item.Message }}</p>
 

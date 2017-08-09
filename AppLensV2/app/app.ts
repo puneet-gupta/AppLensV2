@@ -3,7 +3,7 @@
 module SupportCenter {
     "use strict";
 
-    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown", "jlareau.bowser", "md.data.table", "googlechart"])
+    var app = angular.module("supportCenterApp", ["ngMaterial", "ngMdIcons", "ngLetterAvatar", "ui.router", "nvd3", "ngSanitize", "btford.markdown", "jlareau.bowser", "md.data.table", "googlechart", "angular-clipboard"])
 
         .service("DetectorsService", DetectorsService)
         .service("SiaService", SiaService)
@@ -14,6 +14,7 @@ module SupportCenter {
         .service("AseService", AseService)
         .service("ResourceServiceFactory", ResourceServiceFactory)
         .service("SupportCenterService", SupportCenterService)
+        .service("AppRestartAnalysisService", AppRestartAnalysisService)
         .service("ThemeService", ThemeService)
         .controller("HomeCtrl",HomeCtrl)
         .controller("MainCtrl", MainCtrl)
