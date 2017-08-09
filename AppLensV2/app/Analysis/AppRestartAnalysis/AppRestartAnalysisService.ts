@@ -41,7 +41,7 @@ module SupportCenter {
                 }
                 else {
                     endTime = new Date(startTime.getTime());
-                    endTime.setHours(endTime.getHours() + 24));
+                    endTime.setHours(endTime.getHours() + 24);
                 }
             }
             
