@@ -83,6 +83,10 @@ module SupportCenter {
                     this.$window.open('https://blogs.msdn.microsoft.com/waws/2015/11/04/auto-heal-your-azure-web-app/', '_blank');
                     break;
 
+                case 'crashdiagnoser':
+                    this.$window.open('https://blogs.msdn.microsoft.com/asiatech/2015/12/28/use-crash-diagnoser-site-extension-to-capture-dump-for-intermittent-exception-issues-or-performance-issues-on-azure-web-app/', '_blank');
+                    break;
+
                 case 'appanalysis':
                 case 'perfanalysis':
                     var nextState = '';
