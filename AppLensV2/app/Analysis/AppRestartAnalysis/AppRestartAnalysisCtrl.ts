@@ -5,9 +5,9 @@ module SupportCenter {
     
     export class AppRestartAnalysisCtrl {
 
-        public static $inject: string[] = ["SiaService", "ThemeService", "$stateParams", "SiteService", "$window", "$state"];
+        public static $inject: string[] = ["SiaService", "ThemeService", "$stateParams", "SiteService", "$window", "$state", "AppRestartAnalysisService", "clipboard", "$mdToast"];
 
-        constructor(private SiaService: ISiaService, private ThemeService: IThemeService, private $stateParams: IStateParams, private SiteService: IResourceService, private $window: angular.IWindowService, public $state: angular.ui.IStateService) {
+        constructor(private SiaService: ISiaService, private ThemeService: IThemeService, private $stateParams: IStateParams, private SiteService: IResourceService, private $window: angular.IWindowService, public $state: angular.ui.IStateService, public AppRestartAnalysisService: IAppRestartAnalysisService, public clipboard: any, private $mdToast: angular.material.IToastService) {
 
             this.analysisResult = [];
             this.MetricsPerInstance = {};
@@ -33,6 +33,8 @@ module SupportCenter {
             this.isLoading = true;
 
             this.SiteService.promise.then(function (data) {
+                self.siteName = self.SiteService.site.name;
+
                 self.SiaService.getSiaResponse().then(function (analysisResult) {
                     let response = analysisResult.Response;
                     if (response.AbnormalTimePeriods && response.AbnormalTimePeriods.length > 0) {
@@ -67,12 +69,7 @@ module SupportCenter {
         }
         
         public GetHelpulTipName(evidence: NameValuePair[]): string {
-            let displayName = _.find(evidence, function (item) { return item.Name === 'displayedName' });
-            if (angular.isDefined(displayName)) {
-                return displayName.Value;
-            }
-
-            return '';
+            return this.AppRestartAnalysisService.getHelpfulTipName(evidence);
         }
 
         public OpenHelpulTip(evidence: NameValuePair[]): void {
@@ -117,6 +114,11 @@ module SupportCenter {
                     this.$window.open('https://docs.microsoft.com/en-us/azure/app-service-web/web-sites-traffic-manager', '_blank');
                     break;
             }
+        }
+
+        public CopyToClipboard(): void {
+            this.clipboard.copyText(this.AppRestartAnalysisService.getEmailText(this.siteName, this.analysisResult, this.noReason.type));
+            this.$mdToast.showSimple("Report copied to clipboard !!");
         }
 
         private InitializeMetricsPerInstance(metrics: DiagnosticMetricSet[], startTime: string, endTime: string): void {
@@ -202,9 +204,7 @@ module SupportCenter {
         public selectedWorker: string;
         public isLoading: boolean;
         public noReason: any;
-
-        private chartLegendState: any;
-        public seriesColors: [string] = ["#D4E157", "hsl(120, 57%, 40%)", "#117dbb", "#FFA726", "#aa0000", "#311B92", "#4DB6AC", "#880E4F", "#0D47A1", "#00695C"];
-        private 
+        public seriesColors: [string] = ["#D4E157", "hsl(120, 57%, 40%)", "#117dbb", "#FFA726", "#aa0000", "#311B92", "#4DB6AC", "#880E4F", "#0D47A1", "#00695C"]; 
+        public siteName;
     }
 }

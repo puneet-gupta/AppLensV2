@@ -254,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app\Analysis\AppRestartAnalysis\AppRestartAnalysisCtrl.ts" />
+    <TypeScriptCompile Include="app\Analysis\AppRestartAnalysis\AppRestartAnalysisService.ts" />
     <TypeScriptCompile Include="app\app.ts" />
     <TypeScriptCompile Include="app\Common\Constants.ts" />
     <TypeScriptCompile Include="app\Common\DetectorsService.ts" />
