@@ -51,6 +51,9 @@ module SupportCenter {
                 case 'sitecpuanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Processor Time';
                     break;
+                case 'tcpconnectionsusage':
+                    this.detailedchartoptions.chart.yAxis.axisLabel = 'Connection Count';
+                    break;
                 case 'sitememoryanalysis':
                 case 'multirolememoryanalysis':
                 case 'workermemoryanalysis':

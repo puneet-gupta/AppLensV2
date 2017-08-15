@@ -43,6 +43,9 @@ module SupportCenter {
                     if (self.detectorName.indexOf('sitecpuanalysis') > 0 || self.detectorName.indexOf('sitememoryanalysis') > 0) {
                         self.chartOptions.chart.yAxis.axisLabel = 'Percent';
                     }
+                    if (self.detectorName.indexOf('tcpconnectionsusage') > 0) {
+                        self.chartOptions.chart.yAxis.axisLabel = 'Connection Count';
+                    }
                     self.dataLoading = false;
                     if (self.detectorName.indexOf('filesystemusage') >= 0) {
                         let title = "";
