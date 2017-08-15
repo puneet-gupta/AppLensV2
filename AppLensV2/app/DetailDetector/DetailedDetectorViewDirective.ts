@@ -59,6 +59,8 @@ module SupportCenter {
                 case 'workermemoryanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Physical Memory Used';
                     break;
+                default:
+                    this.detailedchartoptions.chart.yAxis.axisLabel = '';
             }
             this.updateGraphData();
         }

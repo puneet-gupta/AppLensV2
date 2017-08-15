@@ -87,6 +87,8 @@ module SupportCenter {
                 case 'workercpuanalysis':
                 case 'multirolecpuanalysis':
                 case 'multirolecpuanalysisdetailed':
+                case 'machinememoryusage':
+                case 'machinememoryusagedetailed':
                 case 'sitecpuanalysis':
                 case 'sitecpuanalysisdetailed':
                 case 'workeravailability':
@@ -165,7 +167,10 @@ module SupportCenter {
 
             for (let metric of metrics) {
 
-                if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime") || (detectorName.indexOf('memoryanalysis') >= 0 && metric.Name !== 'PercentOverallMemory') || (detectorName.indexOf('tcpconnectionsusage') >= 0 && metric.Name !== 'Outbound')) {
+                if ((detectorName.indexOf('cpuanalysis') >= 0 && metric.Name !== "PercentTotalProcessorTime")
+                    || (detectorName.indexOf('sitememoryanalysis') >= 0 && metric.Name !== 'PercentOverallMemory')
+                    || (detectorName.indexOf('machinememoryusage') >= 0 && metric.Name !== 'Committed MBytes')
+                    || (detectorName.indexOf('tcpconnectionsusage') >= 0 && metric.Name !== 'Outbound')) {
                     continue;
                 }
 
