@@ -47,7 +47,7 @@ module SupportCenter {
             switch (this.detectorsource) {
                 case 'cpuanalysis':
                 case 'workercpuanalysis':
-                case 'multirolecpuanalysis':                
+                case 'multirolecpuanalysis':
                 case 'sitecpuanalysis':
                     this.detailedchartoptions.chart.yAxis.axisLabel = 'Percent Processor Time';
                     break;
