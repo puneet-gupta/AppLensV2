@@ -116,6 +116,11 @@ module SupportCenter {
                     options.chart.type = 'lineChart';
                     options.chart.useInteractiveGuideline = true;
                     break;
+                case 'aseexternalconnectionhealth':
+                    options.chart.type = 'lineChart';
+                    options.chart.useInteractiveGuideline = true;
+                    options.chart.yAxis.axisLabel = 'Availability';
+                    break;
                 case 'sitememoryanalysisdetailed':
                 case 'workermemoryanalysisdetailed':
                 case 'multirolememoryanalysisdetailed':

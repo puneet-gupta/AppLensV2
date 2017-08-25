@@ -2,7 +2,7 @@
 
 module SupportCenter {
     "use strict";
-    
+
     export class AppRestartAnalysisCtrl {
 
         public static $inject: string[] = ["SiaService", "ThemeService", "$stateParams", "SiteService", "$window", "$state", "AppRestartAnalysisService", "clipboard", "$mdToast"];
@@ -123,6 +123,11 @@ module SupportCenter {
         public CopyToClipboard(): void {
             this.clipboard.copyText(this.AppRestartAnalysisService.getEmailText(this.siteName, this.analysisResult, this.noReason.type));
             this.$mdToast.showSimple("Report copied to clipboard !!");
+
+            var appInsightsClient = _.find(Object.keys(this.$window.window), function (item) { return item === 'appInsights' });
+            if (appInsightsClient) {
+                this.$window.window[appInsightsClient].trackEvent('AppRestartAnalysis_ReportCopied');
+            }
         }
 
         private InitializeMetricsPerInstance(metrics: DiagnosticMetricSet[], startTime: string, endTime: string): void {
